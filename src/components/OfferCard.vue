@@ -1,9 +1,9 @@
 <template>
     <div class="offer-card">
-        <van-panel :title="offer.Mission" status="状态">
-            <van-cell title="爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大爱仕达大" />
-            
-            <van-cell :title="offer.Reward+' DET'" :value="offer_amount+' offer'" />
+        <van-panel :title="title" status="状态">
+            <van-cell :title="content" />
+
+            <van-cell :title="offer.reward+' DET'" :value="offer_amount+' offer'" />
             <div slot="footer">
                 <van-button size="small" type="danger">accept</van-button>
             </div>
@@ -13,18 +13,40 @@
 </template>
 <script>
     export default {
-        props:[
+        props: [
             "offer"
         ],
         data() {
             return {}
         },
-        computed:{
-            offer_amount:function(){
+        computed: {
+            offer_amount: function() {
                 let self = this
                 let offer = self.offer
-                let amount = offer.Solutions&&offer.Solutions.length?offer.Solutions.length:0
+                let amount = offer.Solutions && offer.Solutions.length ? offer.Solutions.length : 0
                 return amount
+            },
+            title: function() {
+                let self = this
+                let title = ""
+                try {
+                    title = JSON.parse(self.offer.data)['title']
+                }
+                catch {
+                    title = "标题"
+                }
+                return title
+            },
+            content: function() {
+                let self = this
+                let content = ""
+                try {
+                    content = JSON.parse(self.offer.data)['desc']
+                }
+                catch {
+                    content = self.offer.mission
+                }
+                return content
             }
         }
     }

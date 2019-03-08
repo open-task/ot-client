@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import OfferList from '@/views/OfferList.vue'
 import CreateOffer from '@/views/CreatOffer.vue'
 import OfferDetail from '@/views/OfferDetail.vue'
+import test from '@/views/test.vue'
 
 Vue.use(Router)
 
@@ -25,6 +26,11 @@ export default new Router({
       path: '/detail',
       name: 'detail',
       component: OfferDetail
+    },
+      {
+      path: '/test',
+      name: 'test',
+      component: test
     },
     
   ]
