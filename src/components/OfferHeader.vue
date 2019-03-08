@@ -2,8 +2,8 @@
     <div class="offer-header">
         <van-nav-bar
   title="标题"
-  left-text="返回"
-  right-text="按钮"
+  left-text="首页"
+  right-text="创建"
   left-arrow
   @click-left="onClickLeft"
   @click-right="onClickRight"
@@ -16,8 +16,13 @@ export default {
         return {}
     },
     methods:{
-        onClickLeft:function(){},
-        onClickRight:function(){}
+        onClickLeft:function(){
+            this.$router.push({name:"home"})
+        },
+        onClickRight:function(){
+            this.$router.push({name:"create"})
+            
+        }
     }
 }
 </script>

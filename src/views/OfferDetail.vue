@@ -4,13 +4,18 @@
             <van-panel :title="title" status="状态">
                 <van-cell :title="content" />
                 <van-cell :title="reward+'DET'" :value="solution_amount+'个方案'" />
-                <div slot="footer">
-                    <van-button size="small" type="danger">accept</van-button>
-                </div>
             </van-panel>
-            <van-panel>
-                <van-cell :title="solution" v-for="(solution,key) in solutions" :key='key' />
-            </van-panel>
+            <br>
+            <div v-if="solutions">
+                <van-cell title="解决方案列表:" />
+            <van-collapse v-model="activeNames">
+                <van-collapse-item :title="'方案ID: '+solution.solution" :name="id" v-for='(solution,id) in solutions'>
+                {{solution.data.content}}
+                </van-collapse-item>
+            </van-collapse>
+            </div>
+            
+
 
         </div>
         <van-cell-group>
@@ -34,7 +39,8 @@
                 reward: 0,
                 solution_amount: 0,
                 solutions: [],
-                new_solution: ""
+                new_solution: "",
+                activeNames: []
             }
         },
         methods: {
@@ -83,12 +89,18 @@
                 "id": "11"
             }).then(function(re) {
                 let res = re.body.result
-                console.log(re)
 
                 self.id = res.mission
                 self.reward = web3api.fromWei(res.reward)
                 let data_info = {}
-                self.solutions = res.solutions
+                let solutions = res.solutions
+                if(solutions){
+                    solutions.forEach(function(e) {
+                    e.data = JSON.parse(e.data)
+                })
+                }
+                
+                self.solutions = solutions
                 self.solution_amount = self.solutions ? self.solutions.length : 0
                 try {
                     let info = JSON.parse(res.data)

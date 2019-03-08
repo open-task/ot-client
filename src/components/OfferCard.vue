@@ -2,10 +2,11 @@
     <div class="offer-card">
         <van-panel :title="title" status="状态">
             <van-cell :title="content" />
-
             <van-cell :title="offer.reward+' DET'" :value="offer_amount+' offer'" />
             <div slot="footer">
-                <van-button size="small" type="danger">accept</van-button>
+               <router-link :to="{name:'detail',query:{task_id:offer.mission}}">
+                <van-button size="small" type="danger" >详情</van-button>
+               </router-link>
             </div>
         </van-panel>
     </div>
