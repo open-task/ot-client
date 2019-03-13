@@ -50,22 +50,24 @@
             accept_solution:function(solution_id){
                 let self = this
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
-                Task.Accept(solution_id, function(err, txHash) {
+                Task.accept(solution_id, function(err, txHash) {
                     if(!err){
                         self.$dialog.alert({
-                            title: "发生错误",
+                            title: "成功接受",
                             message: txHash
                         })
                     }
+                    console.log("1")
                 })
             },
             reject_solution:function(solution_id){
+                console.log(solution_id)
                 let self = this
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
-                Task.Reject(solution_id, function(err, txHash) {
+                Task.reject(solution_id, function(err, txHash) {
                     if(!err){
                         self.$dialog.alert({
-                            title: "发生错误",
+                            title: "成功拒绝",
                             message: txHash
                         })
                     }
