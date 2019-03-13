@@ -11,6 +11,9 @@
             <van-collapse v-model="activeNames">
                 <van-collapse-item :title="'方案ID: '+solution.solution" :name="id" v-for='(solution,id) in solutions'>
                 {{solution.data.content}}
+                <br><br>
+                <van-button style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution)">Accept</van-button>
+                <van-button type="danger" size="small" @click="reject_solution(solution.solution)">Reject</van-button>
                 </van-collapse-item>
             </van-collapse>
             </div>
@@ -44,6 +47,30 @@
             }
         },
         methods: {
+            accept_solution:function(solution_id){
+                let self = this
+                var Task = self.web3api.eth.contract(abi_).at(token_address)
+                Task.Accept(solution_id, function(err, txHash) {
+                    if(!err){
+                        self.$dialog.alert({
+                            title: "发生错误",
+                            message: txHash
+                        })
+                    }
+                })
+            },
+            reject_solution:function(solution_id){
+                let self = this
+                var Task = self.web3api.eth.contract(abi_).at(token_address)
+                Task.Reject(solution_id, function(err, txHash) {
+                    if(!err){
+                        self.$dialog.alert({
+                            title: "发生错误",
+                            message: txHash
+                        })
+                    }
+                })
+            },
             add_solution: function() {
                 let self = this
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
@@ -96,7 +123,13 @@
                 let solutions = res.solutions
                 if(solutions){
                     solutions.forEach(function(e) {
+                        try{
                     e.data = JSON.parse(e.data)
+                            
+                        }catch(err){
+                            e.data = {content:e.data}
+                            
+                        }
                 })
                 }
                 
