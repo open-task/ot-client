@@ -8,7 +8,7 @@
         <br>
         <van-cell-group>
             <van-field v-model="charge" type='number' placeholder="请输入报酬">
-<!--                <van-button slot="button" size="small" type="primary">托管报酬</van-button>-->
+                <!--                <van-button slot="button" size="small" type="primary">托管报酬</van-button>-->
             </van-field>
         </van-cell-group>
         <van-button type="primary" class="success-btn" @click="send">主要按钮</van-button>
@@ -39,18 +39,15 @@
                 let charge = self.charge
                 let web3api = new Web3(web3.currentProvider);
                 var accounts = web3api.eth.accounts;
-                
+
                 if (typeof accounts === 'undefined' || accounts.length === 0) {
                     console.log(false, '请解锁 MetaMask');
                 } else {
                     if (typeof accounts === 'undefined' || accounts.length === 0) {
                         _showMessage(false, '请解锁 MetaMask');
                     } else {
-                        var decimals = web3api.toBigNumber(18);
-                        console.log('转账金额:',charge)
-                        var amount = web3api.toBigNumber(parseFloat(charge));
-
-                        var value = amount.times(web3api.toBigNumber(amount).pow(decimals));
+                        console.log('转账金额:', charge)
+                        var value = web3api.toWei(charge)
                         var Task = web3api.eth.contract(abi_).at(token_address);
                         let DET = web3api.eth.contract(det_abi).at(det_address)
                         let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
@@ -70,9 +67,14 @@
                                     } else {
                                         self.$dialog.alert({
                                             title: '项目创建成功',
-                                            message: '项目哈希:'+txHash+"<br><br>项目id:"+id
+                                            message: '项目哈希:' + txHash + "<br><br>项目id:" + id
                                         }).then(() => {
-                                            self.$router.push({"name":"detail",'query':{'task_id':id}})
+                                            self.$router.push({
+                                                "name": "detail",
+                                                'query': {
+                                                    'task_id': id
+                                                }
+                                            })
                                         });
                                     }
                                 });
@@ -90,7 +92,7 @@
         mounted() {
             let self = this
             if (typeof web3 !== 'undefined') {
-                
+
             } else {
                 console.log(false, '请安装 MetaMask 插件');
             }
