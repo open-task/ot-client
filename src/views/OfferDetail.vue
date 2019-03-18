@@ -24,7 +24,7 @@
         <van-cell-group>
             <van-field v-model="new_solution" type='textarea' rows='6' placeholder="请在此处粘贴你要提交的内容" />
         </van-cell-group>
-        <van-button type="primary" class="success-btn" @click="add_solution">提交内容</van-button>
+        <van-button type="primary" class="success-btn" @click="add_solution">提交解决方案</van-button>
     </div>
 </template>
 <script>
