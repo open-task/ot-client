@@ -2,7 +2,7 @@
      devServer: {
          proxy:{
              '/v1': {
-             target: 'http://kovan3.opentask.chainpower.io'
+             target: 'http://opentask.api.chainpower.io'
          },
          }
          
