@@ -2,7 +2,7 @@
      devServer: {
          proxy:{
              '/v1': {
-             target: 'http://opentask.api.chainpower.io'
+             target: 'http://opentask.chainpower.io'
          },
          }
          
