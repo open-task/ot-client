@@ -18,9 +18,9 @@
 
 
 <script>
-    import abi_ from '@/assets/abi.js'
+    import opentask_abi from '@/assets/abi.js'
     import det_abi from '@/assets/detabi.js'
-    let token_address = '0x51fC15CA47034bDF62F6e0fd0E37AB389832994C'
+    let opentask_address = '0xA3434f0ABAC66f46ABCf2E6c47488C00aA1980Cb'
     let det_address = "0x6ffF60A882CE1Cd793dC14261Eec0f0d6A470E21"
     let tokenDecimals = "18"
 
@@ -48,7 +48,7 @@
                     } else {
                         console.log('转账金额:', charge)
                         var value = web3api.toWei(charge)
-                        var Task = web3api.eth.contract(abi_).at(token_address);
+                        var Task = web3api.eth.contract(opentask_abi_).at(opentask_address);
                         let DET = web3api.eth.contract(det_abi).at(det_address)
                         let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                         //                        生成不重复id
@@ -57,6 +57,8 @@
                             "title": self.title,
                             "desc": self.desc
                         })
+                        // TODO: 此处有BUG
+                        // 正确的逻辑是：查询“已授权额度”，然后在此基础上增加value这么多额度
                         DET.approve(token_address, value, (err, txHash) => {
                             if (err) {
                                 console.log("发生错误", err)
