@@ -2,7 +2,7 @@
     <div class="offer-header">
         <van-nav-bar
   title="标题"
-  left-text="首页"
+  left-text="任务列表"
   right-text="创建"
   left-arrow
   @click-left="onClickLeft"

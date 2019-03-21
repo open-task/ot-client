@@ -9,7 +9,7 @@
             <div v-if="solutions">
                 <van-cell title="解决方案列表:" />
             <van-collapse v-model="activeNames">
-                <van-collapse-item :title="'方案ID: '+solution.solution" :name="id" v-for='(solution,id) in solutions'>
+                <van-collapse-item :title="'方案ID: '+solution.solution_id" :name="id" v-for='(solution,id) in solutions'>
                 {{solution.data.content}}
                 <br><br>
                 <van-button style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution)">Accept</van-button>
@@ -17,9 +17,6 @@
                 </van-collapse-item>
             </van-collapse>
             </div>
-            
-
-
         </div>
         <van-cell-group>
             <van-field v-model="new_solution" type='textarea' rows='6' placeholder="请在此处粘贴你要提交的内容" />
@@ -57,11 +54,9 @@
                             message: txHash
                         })
                     }
-                    console.log("1")
                 })
             },
             reject_solution:function(solution_id){
-                console.log(solution_id)
                 let self = this
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
                 Task.reject(solution_id, function(err, txHash) {
@@ -74,14 +69,22 @@
                 })
             },
             add_solution: function() {
+                
                 let self = this
+                if(self.new_solution.replace(/^\s+|\s+$/g, '')==""){
+                    self.$dialog({message:"请勿提交空的内容"})
+                    return 
+                }
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
                 let task_id = self.task_id
                 let solution_id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                 let data = JSON.stringify({
                     content: self.new_solution
                 })
+                console.log(data)
                 Task.solve(solution_id, task_id, data, function(err, txHash) {
+                    console.log(err)
+                    
                     if (err) {
                         self.$dialog.alert({
                             title: "发生错误",
@@ -110,7 +113,6 @@
             self.task_id = task_id
             let web3api = new Web3(web3.currentProvider);
             self.web3api = web3api
-
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
                 "method": "GetMissionInfo",
@@ -118,9 +120,8 @@
                 "id": "11"
             }).then(function(re) {
                 let res = re.body.result
-
-                self.id = res.mission
-                self.reward = web3api.fromWei(res.reward)
+                self.id = res.mission_id
+                self.reward = web3api.fromWei(res.reward_wei)
                 let data_info = {}
                 let solutions = res.solutions
                 if(solutions){
