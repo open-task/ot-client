@@ -76,15 +76,16 @@
                     return 
                 }
                 var Task = self.web3api.eth.contract(abi_).at(token_address)
+                console.log(Task)
                 let task_id = self.task_id
                 let solution_id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                 let data = JSON.stringify({
                     content: self.new_solution
                 })
-                console.log(data)
+                console.log(solution_id, task_id, data)
                 Task.solve(solution_id, task_id, data, function(err, txHash) {
                     console.log(err)
-                    
+                    console.log(txHash)
                     if (err) {
                         self.$dialog.alert({
                             title: "发生错误",
