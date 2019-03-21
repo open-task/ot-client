@@ -48,7 +48,7 @@
                     } else {
                         console.log('转账金额:', charge)
                         var value = web3api.toWei(charge)
-                        var Task = web3api.eth.contract(opentask_abi_).at(opentask_address);
+                        var Task = web3api.eth.contract(opentask_abi).at(opentask_address);
                         let DET = web3api.eth.contract(det_abi).at(det_address)
                         let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                         //                        生成不重复id
@@ -59,7 +59,7 @@
                         })
                         // TODO: 此处有BUG
                         // 正确的逻辑是：查询“已授权额度”，然后在此基础上增加value这么多额度
-                        DET.approve(token_address, value, (err, txHash) => {
+                        DET.approve(opentask_address, value, (err, txHash) => {
                             if (err) {
                                 console.log("发生错误", err)
                             } else {

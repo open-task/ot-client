@@ -119,8 +119,8 @@
             }).then(function(re) {
                 let res = re.body.result
 
-                self.id = res.mission
-                self.reward = web3api.fromWei(res.reward)
+                self.id = res.mission_id
+                self.reward = res.reward_det
                 let data_info = {}
                 let solutions = res.solutions
                 if(solutions){
