@@ -2,7 +2,9 @@
     <div class="offer-card">
         <van-panel :title="title" status="状态">
             <van-cell :title="content" />
+
             <van-cell :title="offer.reward_det+' DET'" :value="offer_amount+' Solutions'" />
+
             <div slot="footer">
                <router-link :to="{name:'detail',query:{task_id:offer.mission_id}}">
                 <van-button size="small" type="danger" >详情</van-button>
@@ -51,6 +53,7 @@
                 }
                 catch {
                     content = self.offer.data
+
                 }
                 return content
             }

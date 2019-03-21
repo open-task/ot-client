@@ -11,7 +11,7 @@
                 <!--                <van-button slot="button" size="small" type="primary">托管报酬</van-button>-->
             </van-field>
         </van-cell-group>
-        <van-button type="primary" class="success-btn" @click="send">主要按钮</van-button>
+        <van-button type="primary" class="success-btn" @click="send">发布任务</van-button>
     </div>
 
 </template>
