@@ -2,9 +2,11 @@
     <div class="offer-card">
         <van-panel :title="title" status="状态">
             <van-cell :title="content" />
-            <van-cell :title="offer.reward_det+' DET'" :value="offer_amount+' offer'" />
+
+            <van-cell :title="offer.reward_det+' DET'" :value="offer_amount+' Solutions'" />
+
             <div slot="footer">
-               <router-link :to="{name:'detail',query:{task_id:offer.mission}}">
+               <router-link :to="{name:'detail',query:{task_id:offer.mission_id}}">
                 <van-button size="small" type="danger" >详情</van-button>
                </router-link>
             </div>
@@ -20,11 +22,16 @@
         data() {
             return {}
         },
+        mounted(){
+            let self = this
+            
+            console.log(self.offer)
+        },
         computed: {
             offer_amount: function() {
                 let self = this
                 let offer = self.offer
-                let amount = offer.Solutions && offer.Solutions.length ? offer.Solutions.length : 0
+                let amount = offer.solutions && offer.solutions.length ? offer.solutions.length : 0
                 return amount
             },
             title: function() {
@@ -34,7 +41,7 @@
                     title = JSON.parse(self.offer.data)['title']
                 }
                 catch {
-                    title = "标题"
+                    title = "未命名"
                 }
                 return title
             },
@@ -45,7 +52,8 @@
                     content = JSON.parse(self.offer.data)['desc']
                 }
                 catch {
-                    content = self.offer.mission_id
+                    content = self.offer.data
+
                 }
                 return content
             }
