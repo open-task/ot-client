@@ -18,12 +18,6 @@
 
 
 <script>
-    import abi_ from '@/assets/abi.js'
-    import det_abi from '@/assets/detabi.js'
-    let token_address = '0x51fC15CA47034bDF62F6e0fd0E37AB389832994C'
-    let det_address = "0x6ffF60A882CE1Cd793dC14261Eec0f0d6A470E21"
-    let tokenDecimals = "18"
-
     export default {
         data() {
             return {
@@ -37,53 +31,49 @@
             send: function() {
                 let self = this
                 let charge = self.charge
-                let web3api = new Web3(web3.currentProvider);
+                let web3api = self.$web3api
                 var accounts = web3api.eth.accounts;
 
+
                 if (typeof accounts === 'undefined' || accounts.length === 0) {
-                    console.log(false, '请解锁 MetaMask');
+                    alert('请解锁 MetaMask 后刷新');
                 } else {
-                    if (typeof accounts === 'undefined' || accounts.length === 0) {
-                        _showMessage(false, '请解锁 MetaMask');
-                    } else {
-                        console.log('转账金额:', charge)
-                        var value = web3api.toWei(charge)
-                        var Task = web3api.eth.contract(abi_).at(token_address);
-                        let DET = web3api.eth.contract(det_abi).at(det_address)
-                        let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
-                        //                        生成不重复id
-                        console.log(id)
-                        let data = JSON.stringify({
-                            "title": self.title,
-                            "desc": self.desc
-                        })
-                        DET.approve(token_address, value, (err, txHash) => {
-                            if (err) {
-                                console.log("发生错误", err)
-                            } else {
-                                Task.publish(id, value, data, (err, txHash) => {
-                                    if (err) {
-                                        console.log('发生错误', err)
-                                    } else {
-                                        self.$dialog.alert({
-                                            title: '项目创建成功',
-                                            message: '项目哈希:' + txHash + "<br><br>项目id:" + id
-                                        }).then(() => {
-                                            self.$router.push({
-                                                "name": "detail",
-                                                'query': {
-                                                    'task_id': id
-                                                }
-                                            })
-                                        });
-                                    }
-                                });
-                            }
+                    var value = self.$web3api.toWei(charge)
+                    let DET = self.$det
+                    let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
+                    //生成不重复id
+                    console.log(id)
+                    let data = JSON.stringify({
+                        "title": self.title,
+                        "desc": self.desc
+                    })
+                    DET.approve(token_address, value, (err, txHash) => {
+                        if (err) {
+                            console.log("发生错误", err)
+                        } else {
+                            self.$task.publish(id, value, data, (err, txHash) => {
+                                if (err) {
+                                    console.log('发生错误', err)
+                                } else {
+                                    self.$dialog.alert({
+                                        title: '项目创建成功',
+                                        message: '项目哈希:' + txHash + "<br><br>项目id:" + id
+                                    }).then(() => {
+                                        self.$router.push({
+                                            "name": "detail",
+                                            'query': {
+                                                'task_id': id
+                                            }
+                                        })
+                                    });
+                                }
+                            });
+                        }
 
-                        })
-                    }
-
+                    })
                 }
+
+
 
 
 

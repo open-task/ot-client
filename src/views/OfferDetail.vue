@@ -8,14 +8,14 @@
             <br>
             <div v-if="solutions">
                 <van-cell title="解决方案列表:" />
-            <van-collapse v-model="activeNames">
-                <van-collapse-item :title="'方案ID: '+solution.solution_id" :name="id" v-for='(solution,id) in solutions'>
-                {{solution.data.content}}
-                <br><br>
-                <van-button style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution)">Accept</van-button>
-                <van-button type="danger" size="small" @click="reject_solution(solution.solution)">Reject</van-button>
-                </van-collapse-item>
-            </van-collapse>
+                <van-collapse v-model="activeNames">
+                    <van-collapse-item :title="'方案ID: '+solution.solution_id" :name="id" v-for='(solution,id) in solutions'>
+                        {{solution.data.content}}
+                        <br><br>
+                        <van-button style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution_id)">Accept</van-button>
+                        <van-button type="danger" size="small" @click="reject_solution(solution.solution_id)">Reject</van-button>
+                    </van-collapse-item>
+                </van-collapse>
             </div>
         </div>
         <van-cell-group>
@@ -25,9 +25,6 @@
     </div>
 </template>
 <script>
-    import abi_ from '@/assets/abi.js'
-    let token_address = '0x51fC15CA47034bDF62F6e0fd0E37AB389832994C'
-
     export default {
         data() {
             return {
@@ -44,11 +41,12 @@
             }
         },
         methods: {
-            accept_solution:function(solution_id){
+            accept_solution: function(solution_id) {
                 let self = this
-                var Task = self.web3api.eth.contract(abi_).at(token_address)
+                var Task = self.$task
+                console.log('accept',solution_id)
                 Task.accept(solution_id, function(err, txHash) {
-                    if(!err){
+                    if (!err) {
                         self.$dialog.alert({
                             title: "成功接受",
                             message: txHash
@@ -56,11 +54,14 @@
                     }
                 })
             },
-            reject_solution:function(solution_id){
+            reject_solution: function(solution_id) {
                 let self = this
-                var Task = self.web3api.eth.contract(abi_).at(token_address)
+                var Task = self.$task
+                
+
                 Task.reject(solution_id, function(err, txHash) {
-                    if(!err){
+                    console.log(err)
+                    if (!err) {
                         self.$dialog.alert({
                             title: "成功拒绝",
                             message: txHash
@@ -69,20 +70,21 @@
                 })
             },
             add_solution: function() {
-                
+
                 let self = this
-                if(self.new_solution.replace(/^\s+|\s+$/g, '')==""){
-                    self.$dialog({message:"请勿提交空的内容"})
-                    return 
+                if (self.new_solution.replace(/^\s+|\s+$/g, '') == "") {
+                    self.$dialog({
+                        message: "请勿提交空的内容"
+                    })
+                    return
                 }
-                var Task = self.web3api.eth.contract(abi_).at(token_address)
-                console.log(Task)
+                var Task = self.$task
+
                 let task_id = self.task_id
                 let solution_id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                 let data = JSON.stringify({
                     content: self.new_solution
                 })
-                console.log(solution_id, task_id, data)
                 Task.solve(solution_id, task_id, data, function(err, txHash) {
                     console.log(err)
                     console.log(txHash)
@@ -112,7 +114,7 @@
             let self = this
             let task_id = self.$route.query.task_id
             self.task_id = task_id
-            let web3api = new Web3(web3.currentProvider);
+            let web3api = self.$web3api
             self.web3api = web3api
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
@@ -125,18 +127,20 @@
                 self.reward = web3api.fromWei(res.reward_wei)
                 let data_info = {}
                 let solutions = res.solutions
-                if(solutions){
+                if (solutions) {
                     solutions.forEach(function(e) {
-                        try{
-                    e.data = JSON.parse(e.data)
-                            
-                        }catch(err){
-                            e.data = {content:e.data}
-                            
+                        try {
+                            e.data = JSON.parse(e.data)
+
+                        } catch (err) {
+                            e.data = {
+                                content: e.data
+                            }
+
                         }
-                })
+                    })
                 }
-                
+
                 self.solutions = solutions
                 self.solution_amount = self.solutions ? self.solutions.length : 0
                 try {

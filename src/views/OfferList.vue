@@ -12,7 +12,6 @@
         },
         mounted() {
             let self = this
-
             self.get_page()
         },
         methods: {
