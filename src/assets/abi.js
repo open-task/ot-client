@@ -8,109 +8,6 @@ export default [
 			}
 		],
 		"name": "accept",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-//    选择认可项目
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "solutionId",
-				"type": "string"
-			}
-		],
-		"name": "reject",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-//    选择忽略的项目
-	{
-		"constant": false,
-		"inputs": [
-			{
-				"name": "newDETAddress",
-				"type": "address"
-			}
-		],
-		"name": "setDETAddress",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-//    备用
-	{
-		"constant": true,
-		"inputs": [
-			{
-				"name": "missionId",
-				"type": "string"
-			}
-		],
-		"name": "getMission",
-		"outputs": [
-			{
-				"name": "rewardInWei",
-				"type": "uint256"
-			},
-			{
-				"name": "data",
-				"type": "string"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-//    获取任务详情
-	{
-		"constant": false,
-		"inputs": [],
-		"name": "renounceOwnership",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-//    放弃所有权
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "getDETAddress",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-//    获取DET地址 
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "owner",
-		"outputs": [
-			{
-				"name": "",
-				"type": "address"
-			}
-		],
-		"payable": false,
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"constant": true,
-		"inputs": [],
-		"name": "isOwner",
 		"outputs": [
 			{
 				"name": "",
@@ -118,7 +15,7 @@ export default [
 			}
 		],
 		"payable": false,
-		"stateMutability": "view",
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -134,12 +31,16 @@ export default [
 			}
 		],
 		"name": "confirm",
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
-    
 	{
 		"constant": false,
 		"inputs": [
@@ -157,12 +58,72 @@ export default [
 			}
 		],
 		"name": "publish",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "solutionId",
+				"type": "string"
+			}
+		],
+		"name": "reject",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "renounceOwnership",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
-//    发布任务
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newDETAddress",
+				"type": "address"
+			}
+		],
+		"name": "setDETAddress",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newFee",
+				"type": "uint8"
+			}
+		],
+		"name": "setFee",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
 	{
 		"constant": false,
 		"inputs": [
@@ -180,12 +141,16 @@ export default [
 			}
 		],
 		"name": "solve",
-		"outputs": [],
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "function"
 	},
-//    解决任务
 	{
 		"constant": false,
 		"inputs": [
@@ -205,6 +170,10 @@ export default [
 			{
 				"name": "initialDETAddress",
 				"type": "address"
+			},
+			{
+				"name": "initialFee",
+				"type": "uint8"
 			}
 		],
 		"payable": false,
@@ -221,6 +190,18 @@ export default [
 			}
 		],
 		"name": "SetDETAddress",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"name": "newFee",
+				"type": "uint8"
+			}
+		],
+		"name": "SetFee",
 		"type": "event"
 	},
 	{
@@ -324,5 +305,84 @@ export default [
 		],
 		"name": "OwnershipTransferred",
 		"type": "event"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getDETAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getFee",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint8"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "missionId",
+				"type": "string"
+			}
+		],
+		"name": "getMission",
+		"outputs": [
+			{
+				"name": "rewardInWei",
+				"type": "uint256"
+			},
+			{
+				"name": "data",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "isOwner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ]

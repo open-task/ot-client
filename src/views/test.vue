@@ -13,7 +13,7 @@
     import abi_ from '@/assets/abi.js'
     import det_abi from '@/assets/detabi.js'
     //    合约地址
-    let token_address = '0x51fC15CA47034bDF62F6e0fd0E37AB389832994C'
+    let token_address = '0xA3434f0ABAC66f46ABCf2E6c47488C00aA1980Cb'
 
     export default {
         mounted() {
