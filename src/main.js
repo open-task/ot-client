@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-import { task , web3api ,det} from '@/assets/test'
+import { task , web3api ,det,token_address} from '@/assets/test'
 
 import VueResource from 'vue-resource'
 import Vant from 'vant';
@@ -15,6 +15,7 @@ Vue.config.productionTip = false
 Vue.prototype.$task = task
 Vue.prototype.$web3api = web3api
 Vue.prototype.$det = det
+Vue.prototype.$token_address = token_address
 //var task,det
 //task = web3api.eth.contract(abi_).at(token_address);
 

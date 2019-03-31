@@ -28,6 +28,7 @@
                 }).then(function(re) {
                     console.log(re)
                     if(!re.body.result){
+                        self.page-=1
                         self.$dialog({message:"已加载全部内容"})
                     }else{
                     self.offer_list = re.body.result

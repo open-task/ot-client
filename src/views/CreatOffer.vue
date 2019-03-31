@@ -8,7 +8,6 @@
         <br>
         <van-cell-group>
             <van-field v-model="charge" type='number' placeholder="请输入报酬">
-                <!--                <van-button slot="button" size="small" type="primary">托管报酬</van-button>-->
             </van-field>
         </van-cell-group>
         <van-button type="primary" class="success-btn" @click="send">发布任务</van-button>
@@ -29,10 +28,11 @@
         },
         methods: {
 
-            send: function() {
+            send: async function() {
                 let self = this
                 let charge = self.charge
                 let web3api = self.$web3api
+                await ethereum.enable()
                 var accounts = web3api.eth.accounts;
 
 
@@ -48,11 +48,15 @@
                         "title": self.title,
                         "desc": self.desc
                     })
-                    DET.approve(token_address, value, (err, txHash) => {
+                    DET.approve(self.$token_address, value, (err, txHash) => {
+                        console.log('approve')
                         if (err) {
                             console.log("发生错误", err)
                         } else {
+                            
                             self.$task.publish(id, value, data, (err, txHash) => {
+                        console.log('publish')
+                                
                                 if (err) {
                                     console.log('发生错误', err)
                                 } else {
@@ -128,6 +132,7 @@
             } else {
                 console.log(false, '请安装 MetaMask 插件');
             }
+            console.log('11',ethereum)
         }
     }
 

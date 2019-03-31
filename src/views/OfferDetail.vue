@@ -12,8 +12,8 @@
                     <van-collapse-item :title="'方案ID: '+solution.solution_id" :name="id" v-for='(solution,id) in solutions'>
                         {{solution.data.content}}
                         <br><br>
-                        <van-button style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution_id)">Accept</van-button>
-                        <van-button type="danger" size="small" @click="reject_solution(solution.solution_id)">Reject</van-button>
+                        <van-button v-if='show_botton' style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution_id)">Accept</van-button>
+                        <van-button v-if='show_botton' type="danger" size="small" @click="reject_solution(solution.solution_id)">Reject</van-button>
                     </van-collapse-item>
                 </van-collapse>
             </div>
@@ -38,14 +38,15 @@
                 solution_amount: 0,
                 solutions: [],
                 new_solution: "",
-                activeNames: []
+                activeNames: [],
+                show_botton:false
             }
         },
         methods: {
-            accept_solution: function(solution_id) {
+            accept_solution: async function(solution_id) {
                 let self = this
                 var Task = self.$task
-                console.log('accept',solution_id)
+                await ethereum.enable()
                 Task.accept(solution_id, function(err, txHash) {
                     if (!err) {
                         self.$dialog.alert({
@@ -55,10 +56,10 @@
                     }
                 })
             },
-            reject_solution: function(solution_id) {
+            reject_solution: async function(solution_id) {
                 let self = this
                 var Task = self.$task
-                
+                await ethereum.enable()
 
                 Task.reject(solution_id, function(err, txHash) {
                     console.log(err)
@@ -70,9 +71,11 @@
                     }
                 })
             },
-            add_solution: function() {
+            add_solution: async function() {
 
                 let self = this
+                
+                await ethereum.enable()
                 if (self.new_solution.replace(/^\s+|\s+$/g, '') == "") {
                     self.$dialog({
                         message: "请勿提交空的内容"
@@ -111,11 +114,14 @@
 
             }
         },
-        mounted() {
+        async mounted() {
             let self = this
+            await ethereum.enable()
             let task_id = self.$route.query.task_id
             self.task_id = task_id
             let web3api = self.$web3api
+            let accounts = web3api.eth.accounts
+            
             self.web3api = web3api
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
@@ -124,6 +130,10 @@
                 "id": "11"
             }).then(function(re) {
                 let res = re.body.result
+                console.log(re.body.result)
+                if(accounts.indexOf(res.publisher)+1){
+                    self.show_botton = true
+                }
                 self.id = res.mission_id
                 self.reward = web3api.fromWei(res.reward_wei)
                 let data_info = {}
@@ -132,7 +142,6 @@
                     solutions.forEach(function(e) {
                         try {
                             e.data = JSON.parse(e.data)
-
                         } catch (err) {
                             e.data = {
                                 content: e.data
