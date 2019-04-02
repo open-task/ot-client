@@ -17,7 +17,6 @@
 
 
 <script>
-
     export default {
         data() {
             return {
@@ -43,7 +42,6 @@
                     let DET = self.$det
                     let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                     //生成不重复id
-                    console.log(id)
                     let data = JSON.stringify({
                         "title": self.title,
                         "desc": self.desc
@@ -53,10 +51,9 @@
                         if (err) {
                             console.log("发生错误", err)
                         } else {
-                            
                             self.$task.publish(id, value, data, (err, txHash) => {
-                        console.log('publish')
-                                
+                                console.log('publish')
+
                                 if (err) {
                                     console.log('发生错误', err)
                                 } else {
@@ -74,47 +71,6 @@
                                 }
                             });
                         }
-                    if (typeof accounts === 'undefined' || accounts.length === 0) {
-                        _showMessage(false, '请解锁 MetaMask');
-                    } else {
-                        console.log('转账金额:', charge)
-                        var value = web3api.toWei(charge)
-                        var Task = web3api.eth.contract(opentask_abi).at(opentask_address);
-                        let DET = web3api.eth.contract(det_abi).at(det_address)
-                        let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
-                        //                        生成不重复id
-                        console.log(id)
-                        let data = JSON.stringify({
-                            "title": self.title,
-                            "desc": self.desc
-                        })
-                        // TODO: 此处有BUG
-                        // 正确的逻辑是：查询“已授权额度”，然后在此基础上增加value这么多额度
-                        DET.approve(opentask_address, value, (err, txHash) => {
-                            if (err) {
-                                console.log("发生错误", err)
-                            } else {
-                                Task.publish(id, value, data, (err, txHash) => {
-                                    if (err) {
-                                        console.log('发生错误', err)
-                                    } else {
-                                        self.$dialog.alert({
-                                            title: '项目创建成功',
-                                            message: '项目哈希:' + txHash + "<br><br>项目id:" + id
-                                        }).then(() => {
-                                            self.$router.push({
-                                                "name": "detail",
-                                                'query': {
-                                                    'task_id': id
-                                                }
-                                            })
-                                        });
-                                    }
-                                });
-                            }
-
-                        })
-                    }
 
                     })
                 }
@@ -132,7 +88,7 @@
             } else {
                 console.log(false, '请安装 MetaMask 插件');
             }
-            console.log('11',ethereum)
+            console.log('11', ethereum)
         }
     }
 
