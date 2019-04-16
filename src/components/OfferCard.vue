@@ -18,7 +18,9 @@
             "offer"
         ],
         data() {
-            return {}
+            return {
+                
+            }
         },
         mounted(){
             let self = this

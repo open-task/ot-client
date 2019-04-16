@@ -17,6 +17,9 @@
         methods: {
             get_page: function() {
                 let self = this
+                if(self.finished){
+                    return
+                }
                 let page_count = self.page_count
                 let page_start = (self.page-1)*page_count
                 console.log(self.page,page_count,page_start)
@@ -30,6 +33,7 @@
                     if(!re.body.result){
                         self.page-=1
                         self.$dialog({message:"已加载全部内容"})
+                        self.finished = true
                     }else{
                     self.offer_list = re.body.result
                     }
@@ -40,7 +44,9 @@
             return {
                 offer_list: [],
                 page: 1,
-                page_count:10
+                page_count:10,
+                finished:false
+                
             }
         }
     }
