@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-
 import { task , web3api ,det,token_address,abi} from '@/assets/test'
 
 import VueResource from 'vue-resource'
@@ -12,15 +11,15 @@ Vue.use(Vant);
 Vue.use(VueResource);
 Vue.config.productionTip = false
 
+
 Vue.prototype.$task = task
 Vue.prototype.$web3api = web3api
 Vue.prototype.$det = det
 Vue.prototype.$token_address = token_address
 Vue.prototype.$abi = abi
-//var task,det
-//task = web3api.eth.contract(abi_).at(token_address);
 
-//let task = {a:"b"}
+
+
 
 new Vue({
     router,
