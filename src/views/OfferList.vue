@@ -1,14 +1,17 @@
 <template>
     <div class="offer-list">
+       <offer-header></offer-header>
+       
         <offer-card v-for="offer in offer_list" :offer='offer'></offer-card>
-        <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page' />
+        <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page'/>
     </div>
 </template>
 <script>
     import OfferCard from "@/components/OfferCard"
+     import OfferHeader from '@/components/OfferHeader'
     export default {
         components: {
-            OfferCard
+            OfferCard,OfferHeader
         },
         mounted() {
             let self = this

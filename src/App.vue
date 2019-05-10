@@ -1,19 +1,18 @@
 <template>
   <div id="app">
-   <offer-header></offer-header>
-   <br>
+  
     <router-view/>
   </div>
 </template>
 
 <script>
-    import OfferHeader from '@/components/OfferHeader'
+   
 export default{
     data(){
         return {}
     },
     components:{
-        OfferHeader
+        
     }
 }
 </script>

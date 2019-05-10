@@ -2,7 +2,7 @@
      devServer: {
          proxy:{
              '/v1': {
-             target: 'http://39.100.36.238'
+             target: 'http://47.92.64.129'
          },
          }
      }

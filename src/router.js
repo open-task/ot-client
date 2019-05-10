@@ -14,7 +14,26 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: OfferList
+        component:() => import('@/views/Home.vue'),
+    },
+      {
+      path: '/tasklist',
+      name: 'tasklist',
+      component: () => import('@/views/OfferList.vue')
+    },
+      {
+      path: '/talentmarket',
+      name: 'talentmarket',
+      component: () => import('@/views/TalentMarket.vue')
+    },{
+      path: '/talentmap',
+      name: 'talentmap',
+      component: () => import('@/views/TalentMap.vue')
+    },
+      {
+      path: '/submittalent',
+      name: 'submittalent',
+      component: () => import('@/views/SubmitTalent.vue')
     },
       {
       path: '/create',

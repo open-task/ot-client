@@ -1,5 +1,6 @@
 <template>
     <div class="create-offer">
+       <offer-header></offer-header>
         <van-cell-group>
             <van-field v-model="title" required clearable label="项目名称" placeholder="请输入项目名称" @click-icon="$toast('question')" />
 
@@ -17,7 +18,12 @@
 
 
 <script>
+     import OfferHeader from '@/components/OfferHeader'
+    
     export default {
+        components:{
+            OfferHeader
+        },
         data() {
             return {
                 title: "",
