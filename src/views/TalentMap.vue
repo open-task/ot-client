@@ -1,12 +1,12 @@
 <template>
     <div class="talentmap">
-        <offer-header title="人才市场" ></offer-header>
+        <offer-header title="人才市场"></offer-header>
         <router-link :to="{name:'submittalent'}">
-            <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" >提交我的技能</van-button>
+            <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;">提交我的技能</van-button>
         </router-link>
-       
-        
-        <div class="talent-tag" :key="index" v-for="(t,index) in talent_map">{{t.name}} <span class="red">{{t.amount}}</span></div>
+
+
+        <div class="talent-tag" :key="index" v-for="(t,index) in skill_map">{{t.skill}} <span class="red">{{t.providers}}</span></div>
     </div>
 </template>
 <script>
@@ -14,23 +14,7 @@
     export default {
         data() {
             return {
-                talent_map: [{
-                        name: "插画",
-                        amount: 5
-                    },
-                    {
-                        name: "插画",
-                        amount: 5
-                    },
-                    {
-                        name: "插画",
-                        amount: 5
-                    },
-                    {
-                        name: "插画",
-                        amount: 5
-                    },
-                ]
+                skill_map: []
 
             }
         },
@@ -39,11 +23,15 @@
         },
         mounted() {
             let self = this
+            self.$http.get("/backend/v1/skill/top").then(function(re) {
+                let skills = re.body
+                self.skill_map = skills
+            })
 
         },
-        methods:{
-            submit_talent:function(){
-                
+        methods: {
+            submit_talent: function() {
+
             }
         }
     }
@@ -52,8 +40,9 @@
 <style lang='scss'>
     .talentmap {
         font-size: 0px;
+
         .talent-tag {
-            height:40px;
+            height: 40px;
             line-height: 40px;
             border: 1px solid gray;
             border-radius: 4px;
@@ -62,6 +51,7 @@
             margin-right: 5px;
             font-size: 13px;
             background-color: white;
+
             .red {
                 color: red
             }

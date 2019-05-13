@@ -22,7 +22,7 @@ export default new Router({
       component: () => import('@/views/OfferList.vue')
     },
       {
-      path: '/talentmarket',
+      path: '/talentmarket/:skill',
       name: 'talentmarket',
       component: () => import('@/views/TalentMarket.vue')
     },{

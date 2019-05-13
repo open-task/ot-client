@@ -34,7 +34,6 @@ export default {
         },
         real_title:function(){
             let self = this
-            console.log(self)
             return self.title?self.title:"标题"
         }
     },

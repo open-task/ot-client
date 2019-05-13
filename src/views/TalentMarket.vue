@@ -1,10 +1,10 @@
 <template>
     <div class="talentmarket">
-       <offer-header></offer-header>
-       <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
-       
+        <offer-header></offer-header>
+        <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
+
         <div class="market_group">
-            <div class="telant" v-for="t in telant_list">
+            <div class="telant" v-for="t in skill_list">
                 <div class="left">
                     <avatar username="name(t.address)"></avatar>
 
@@ -31,35 +31,38 @@
             OfferHeader,
             Avatar
         },
-        
-        data(){
-            return{
-                telant_list:[
-                    {
-                        address:"0xnj12j3nnh31bhaadsj",
-                        last_login:"2019-5-8",
-                        request_times:10,
-                        accept_times:2,
-                        tasks:1,
-                        solved:1
-                    }
-                ]
+
+        data() {
+            return {
+                skill_list: [{
+                    address: "0xnj12j3nnh31bhaadsj",
+                    last_login: "2019-5-8",
+                    request_times: 10,
+                    accept_times: 2,
+                    tasks: 1,
+                    solved: 1
+                }]
             }
         },
-        mounted(){
+        mounted() {
             let self = this
-            self.$http.get("/backend/v1/skill/top").then(function(re){
-                console.log(re)
-                
+            let skill_name = self.$router.params.skill
+            self.$http.get("/backend/v1/skill/top").then(function(re) {
+                let skills = re.body
+                self.skill_list = skills
+
+
             })
         },
         methods: {
             name: function(str) {
                 return str.substring(2, 13)
             },
-            submit_talent:function(){
+            submit_talent: function() {
                 let self = this
-                self.$router.push({name:'submittalent'})
+                self.$router.push({
+                    name: 'submittalent'
+                })
             }
         }
     }
