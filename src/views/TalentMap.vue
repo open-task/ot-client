@@ -5,8 +5,10 @@
             <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;">提交我的技能</van-button>
         </router-link>
 
-
-        <div class="talent-tag" :key="index" v-for="(t,index) in skill_map">{{t.skill}} <span class="red">{{t.providers}}</span></div>
+    <router-link :to="{name:'talentmarket',params:{skill:t.id}}" v-for="(t,index) in skill_map">
+        <div  class="talent-tag" :key="index" >{{t.tag}} <span class="red">{{t.user_number}}</span></div>
+    </router-link>
+        
     </div>
 </template>
 <script>
@@ -23,9 +25,10 @@
         },
         mounted() {
             let self = this
-            self.$http.get("/backend/v1/skill/top").then(function(re) {
+            self.$http.get("/backend/v1/list_skills").then(function(re) {
                 let skills = re.body
                 self.skill_map = skills
+                console.log(re)
             })
 
         },
@@ -51,6 +54,7 @@
             margin-right: 5px;
             font-size: 13px;
             background-color: white;
+            color:black;
 
             .red {
                 color: red

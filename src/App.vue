@@ -21,4 +21,11 @@ export default{
         background: #F5F7FB;
         padding:10px;
     }
+    a:link,
+    a:visited,
+    a:hover,
+    a:active {
+        color: #FFFFFF;
+        text-decoration: none;
+    }
 </style>

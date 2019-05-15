@@ -14,8 +14,9 @@
                     <div class="address">用户:{{t.address}}</div>
 
                     <div class="intro">提交方案{{t.request_times}}次,已接受{{t.accept_times}}次</div>
+                    <div class="intro">email{{t.email}}</div>
                     <div class="intro">发布任务{{t.tasks}}次,已被解决{{t.solved}}次</div>
-                    <div class="intro">最近一次活动</div>
+                    <div class="intro">最近一次活动时间:{{t.update_time}}</div>
                 </div>
 
 
@@ -46,8 +47,10 @@
         },
         mounted() {
             let self = this
-            let skill_name = self.$router.params.skill
-            self.$http.get("/backend/v1/skill/top").then(function(re) {
+            console.log(self.$route.params)
+            let skill_id = self.$route.params.skill
+            self.$http.get(`/backend/v1/get_users?id=${skill_id}`,).then(function(re) {
+                console.log(re)
                 let skills = re.body
                 self.skill_list = skills
 
@@ -87,10 +90,11 @@
                     margin-left: 10px;
                     display: inline-block;
                     vertical-align: middle;
-
+    width:calc(100% - 60px);
                     .address {
-                        font-size: 15px;
+                        font-size: 13px;
                         margin-bottom: 10px;
+                            word-break: break-all;
                     }
 
                     .intro {
