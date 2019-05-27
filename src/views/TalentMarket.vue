@@ -1,10 +1,10 @@
 <template>
     <div class="talentmarket">
-        <offer-header></offer-header>
+        <offer-header title="用户列表"></offer-header>
         <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
 
         <div class="market_group">
-            <div class="telant" v-for="t in skill_list">
+            <div class="telant" v-for="t in user_list">
                 <div class="left">
                     <avatar username="name(t.address)"></avatar>
 
@@ -14,9 +14,12 @@
                     <div class="address">用户:{{t.address}}</div>
 
                     <div class="intro">提交方案{{t.request_times}}次,已接受{{t.accept_times}}次</div>
-                    <div class="intro">email{{t.email}}</div>
-                    <div class="intro">发布任务{{t.tasks}}次,已被解决{{t.solved}}次</div>
-                    <div class="intro">最近一次活动时间:{{t.update_time}}</div>
+                    <div class="intro">邮件地址:{{t.email}}</div>
+                    <div class="intro" v-if='t.mission_summary'>发布任务{{t.mission_summary.submit}}次,已被解决{{t.solved}}次</div>
+                    <div class="intro" v-if='t.mission_summary'>最近一次活动时间:{{t.mission_summary.last_active}}</div>
+                    <div class="intro">
+                        <span class="skill-tag" v-for='skill in t.skill'>{{skill}}</span>
+                    </div>
                 </div>
 
 
@@ -35,24 +38,17 @@
 
         data() {
             return {
-                skill_list: [{
-                    address: "0xnj12j3nnh31bhaadsj",
-                    last_login: "2019-5-8",
-                    request_times: 10,
-                    accept_times: 2,
-                    tasks: 1,
-                    solved: 1
-                }]
+                user_list: []
             }
         },
         mounted() {
             let self = this
             console.log(self.$route.params)
-            let skill_id = self.$route.params.skill
-            self.$http.get(`/backend/v1/get_users?id=${skill_id}`,).then(function(re) {
+            let skill_name = self.$route.params.skill
+            self.$http.post(`/skill/skills_get_users`,{skill:skill_name} ).then(function(re) {
                 console.log(re)
-                let skills = re.body
-                self.skill_list = skills
+                
+                self.user_list = re.body.user_list
 
 
             })
@@ -79,6 +75,7 @@
                 background-color: white;
                 border-radius: 5px;
                 font-size: 0px;
+                margin-bottom: 10px;
 
                 .left {
                     width: 50px;
@@ -90,17 +87,31 @@
                     margin-left: 10px;
                     display: inline-block;
                     vertical-align: middle;
-    width:calc(100% - 60px);
+                    width: calc(100% - 60px);
+
                     .address {
                         font-size: 13px;
                         margin-bottom: 10px;
-                            word-break: break-all;
+                        word-break: break-all;
                     }
 
                     .intro {
                         color: #35393F;
                         margin-bottom: 5px;
                         font-size: 13px;
+                        .skill-tag{
+                            background-color: RGBA(30, 25, 26, 1.00);
+                            color: white;
+                            margin-right: 5px;
+                            padding: 0px 10px;
+                            text-align: center;
+                            border-radius: 4px;
+                            display: inline-block;
+                            line-height: 25px;
+                            height: 25px;
+                            font-size: 12px;
+                            
+                        }
                     }
                 }
 
