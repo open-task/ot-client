@@ -5,8 +5,8 @@
             <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;">提交我的技能</van-button>
         </router-link>
 
-    <router-link :to="{name:'talentmarket',params:{skill:t.id}}" v-for="(t,index) in skill_map">
-        <div  class="talent-tag" :key="index" >{{t.tag}} <span class="red">{{t.user_number}}</span></div>
+    <router-link :to="{name:'talentmarket',params:{skill:t.name}}" v-for="(t,index) in skill_map">
+        <div  class="talent-tag" :key="index" >{{t.name}} <span class="red">{{t.count}}</span></div>
     </router-link>
         
     </div>
@@ -25,8 +25,8 @@
         },
         mounted() {
             let self = this
-            self.$http.get("/backend/v1/list_skills").then(function(re) {
-                let skills = re.body
+            self.$http.post("/skill/list_skills",{}).then(function(re) {
+                let skills = re.body.skills
                 self.skill_map = skills
                 console.log(re)
             })

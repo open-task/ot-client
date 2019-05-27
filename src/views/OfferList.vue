@@ -1,6 +1,6 @@
 <template>
     <div class="offer-list">
-       <offer-header></offer-header>
+       <offer-header title='用户列表'></offer-header>
        
         <offer-card v-for="offer in offer_list" :offer='offer'></offer-card>
         <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page'/>

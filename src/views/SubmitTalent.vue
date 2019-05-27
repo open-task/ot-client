@@ -5,7 +5,7 @@
         <p class='label'>请输入你的技能,每行一项</p>
         <van-field v-model="skills" type="textarea" placeholder="每行一项技能" rows="5" autosize />
 
-        <!--        <van-field v-model="email" placeholder="请输入你的邮件地址" />-->
+                <van-field v-model="email" placeholder="请输入你的邮件地址" />
         <van-button hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
 
     </div>
@@ -31,7 +31,6 @@
                 web3api = new Web3(web3.currentProvider);
                 accounts = web3api.eth.accounts
             } catch (e) {
-                console.log()
                 alert("请安装后打开MetaMask才可以进行继续的操作哦")
             }
 
@@ -47,14 +46,14 @@
             get_talent: function() {
                 let self = this
                 if (self.account) {
-                    self.$http.get(`/backend/v1/user/${self.address}/skill`).then(function(re) {
-                        let skills = re.body.map(function(e) {
-                            return e.skill
-                        })
-                        let s = skills.join("/n")
-                        self.skills = s
-                        console.log(s)
+                   console.log("add",self.account) 
+                    self.$http.post(`/skill/get_user_info`,{address:self.account}).then(function(re) {
                         console.log(re)
+                        let user_info = re.body.user_info
+                        
+                        let s = user_info.skill.join("\n")
+                        self.skills = s
+                        self.email = user_info.email
                     })
                 }
             },
@@ -68,8 +67,10 @@
                         return e
                     })
                     console.log(skills)
-                    self.$http.post(`/backend/v1/user/${self.address}/skill`, {
-                        skill: skills
+                    self.$http.post(`/skill/update_user_info`, {
+                        skill: skills,
+                        address:self.account,
+                        email:self.email
                     }).then(function(re) {
                         console.log(re)
                     })
