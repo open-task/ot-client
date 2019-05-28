@@ -13,9 +13,9 @@
                 <div class="right">
                     <div class="address">用户:{{t.address}}</div>
 
-                    <div class="intro">提交方案{{t.request_times}}次,已接受{{t.accept_times}}次</div>
+                    
                     <div class="intro">邮件地址:{{t.email}}</div>
-                    <div class="intro" v-if='t.mission_summary'>发布任务{{t.mission_summary.submit}}次,已被解决{{t.solved}}次</div>
+                    <div class="intro" >已解决任务{{t.solved}}次</div>
                     <div class="intro" v-if='t.mission_summary'>最近一次活动时间:{{t.mission_summary.last_active}}</div>
                     <div class="intro">
                         <span class="skill-tag" v-for='skill in t.skill'>{{skill}}</span>
