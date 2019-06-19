@@ -1,7 +1,8 @@
 <template>
     <div class="offer-detail">
+       <offer-header title="任务详情"></offer-header>
         <div class="offer-card">
-            <van-panel :title="title" status="状态">
+            <van-panel :title="title" :status="t_state">
                 <van-cell :title="content" />
                 <van-cell :title="reward+'DET'" :value="solution_amount+'个方案'" />
             </van-panel>
@@ -25,8 +26,11 @@
     </div>
 </template>
 <script>
-
+    import OfferHeader from '@/components/OfferHeader'
     export default {
+        components: {
+            OfferHeader,
+        },
         data() {
             return {
                 task_id: null,
@@ -39,7 +43,15 @@
                 solutions: [],
                 new_solution: "",
                 activeNames: [],
-                show_botton:false
+                show_botton: false,
+                task_state:"Unsolved"
+            }
+        },
+        computed:{
+            t_state:function(){
+                let self = this
+                let r = {'Unsolved':"未解决",'Solved':"已解决"}[self.task_state]
+                return r
             }
         },
         methods: {
@@ -74,7 +86,7 @@
             add_solution: async function() {
 
                 let self = this
-                
+
                 await ethereum.enable()
                 if (self.new_solution.replace(/^\s+|\s+$/g, '') == "") {
                     self.$dialog({
@@ -121,7 +133,7 @@
             self.task_id = task_id
             let web3api = self.$web3api
             let accounts = web3api.eth.accounts
-            
+
             self.web3api = web3api
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
@@ -130,12 +142,13 @@
                 "id": "11"
             }).then(function(re) {
                 let res = re.body.result
-                console.log(re.body.result)
-                if(accounts.indexOf(res.publisher)+1){
+                console.log(re.body)
+                if (accounts.indexOf(res.publisher) + 1) {
                     self.show_botton = true
                 }
                 self.id = res.mission_id
                 self.reward = web3api.fromWei(res.reward_wei)
+                self.task_state = res.status
                 let data_info = {}
                 let solutions = res.solutions
                 if (solutions) {
@@ -169,3 +182,9 @@
     }
 
 </script>
+<style lang='scss'>
+    .offer-detail {
+        
+    }
+
+</style>

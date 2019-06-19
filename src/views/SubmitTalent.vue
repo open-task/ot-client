@@ -73,6 +73,9 @@
                         email:self.email
                     }).then(function(re) {
                         console.log(re)
+                        if(re.body.state){
+                            self.$router.push({name:"talentmap"})
+                        }
                     })
                 }
             }

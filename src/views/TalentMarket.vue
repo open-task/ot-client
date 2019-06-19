@@ -1,7 +1,6 @@
 <template>
     <div class="talentmarket">
         <offer-header title="用户列表"></offer-header>
-        <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
 
         <div class="market_group">
             <div class="telant" v-for="t in user_list">
@@ -25,6 +24,8 @@
 
             </div>
         </div>
+        <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
+        
     </div>
 </template>
 <script>
@@ -110,6 +111,7 @@
                             line-height: 25px;
                             height: 25px;
                             font-size: 12px;
+                            margin-bottom: 5px;
                             
                         }
                     }

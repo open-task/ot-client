@@ -24,7 +24,6 @@
         },
         mounted(){
             let self = this
-            
             console.log(self.offer)
         },
         computed: {

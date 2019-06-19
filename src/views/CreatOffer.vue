@@ -1,6 +1,6 @@
 <template>
     <div class="create-offer">
-       <offer-header></offer-header>
+        <offer-header></offer-header>
         <van-cell-group>
             <van-field v-model="title" required clearable label="项目名称" placeholder="请输入项目名称" @click-icon="$toast('question')" />
 
@@ -18,10 +18,10 @@
 
 
 <script>
-     import OfferHeader from '@/components/OfferHeader'
-    
+    import OfferHeader from '@/components/OfferHeader'
+
     export default {
-        components:{
+        components: {
             OfferHeader
         },
         data() {
@@ -40,46 +40,53 @@
                 await ethereum.enable()
                 var accounts = web3api.eth.accounts;
 
+                if (self.title && self.desc && self.charge) {
+                    if (typeof accounts === 'undefined' || accounts.length === 0) {
+                        alert('请解锁 MetaMask 后刷新');
+                    } else {
+                        var value = self.$web3api.toWei(charge)
+                        let DET = self.$det
+                        let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
+                        //生成不重复id
+                        let data = JSON.stringify({
+                            "title": self.title,
+                            "desc": self.desc
+                        })
+                        DET.approve(self.$token_address, value, (err, txHash) => {
+                            console.log('approve')
+                            if (err) {
+                                console.log("发生错误", err)
+                            } else {
+                                self.$task.publish(id, value, data, (err, txHash) => {
+                                    console.log('publish')
 
-                if (typeof accounts === 'undefined' || accounts.length === 0) {
-                    alert('请解锁 MetaMask 后刷新');
+                                    if (err) {
+                                        console.log('发生错误', err)
+                                    } else {
+                                        self.$dialog.alert({
+                                            title: '项目创建成功',
+                                            message: '项目哈希:' + txHash + "<br><br>项目id:" + id
+                                        }).then(() => {
+                                            self.$router.push({
+                                                "name": "detail",
+                                                'query': {
+                                                    'task_id': id
+                                                }
+                                            })
+                                        });
+                                    }
+                                });
+                            }
+
+                        })
+                    }
                 } else {
-                    var value = self.$web3api.toWei(charge)
-                    let DET = self.$det
-                    let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
-                    //生成不重复id
-                    let data = JSON.stringify({
-                        "title": self.title,
-                        "desc": self.desc
-                    })
-                    DET.approve(self.$token_address, value, (err, txHash) => {
-                        console.log('approve')
-                        if (err) {
-                            console.log("发生错误", err)
-                        } else {
-                            self.$task.publish(id, value, data, (err, txHash) => {
-                                console.log('publish')
-
-                                if (err) {
-                                    console.log('发生错误', err)
-                                } else {
-                                    self.$dialog.alert({
-                                        title: '项目创建成功',
-                                        message: '项目哈希:' + txHash + "<br><br>项目id:" + id
-                                    }).then(() => {
-                                        self.$router.push({
-                                            "name": "detail",
-                                            'query': {
-                                                'task_id': id
-                                            }
-                                        })
-                                    });
-                                }
-                            });
-                        }
-
+                    self.$dialog.alert({
+                        title: '请填写内容',
+                        message: '内容都不可为空'
                     })
                 }
+
 
 
 

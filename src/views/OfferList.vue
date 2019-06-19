@@ -1,6 +1,6 @@
 <template>
     <div class="offer-list">
-       <offer-header title='用户列表'></offer-header>
+       <offer-header title='任务列表'></offer-header>
        
         <offer-card v-for="offer in offer_list" :offer='offer'></offer-card>
         <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page'/>
@@ -55,3 +55,14 @@
     }
 
 </script>
+<style lang='scss'>
+    .offer-list{
+        .van-cell__value{
+            color: #36277B !important
+        }
+        .van-button--danger{
+            background-color: #36277B;
+            border-color: #36277B;
+        }
+    }
+</style>

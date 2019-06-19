@@ -1,5 +1,6 @@
 <template>
     <div class="home">
+       
         <div class="task_info">
             发布任务<span class="red">3</span>次 解决任务<span class="red">5</span>次 获得赏金<span class="red">335.43</span> DET
         </div>
@@ -13,6 +14,7 @@
             <van-cell title="收支记录" icon="gem-o" />
             <van-cell title="设置" icon="setting-o" />
         </van-cell-group>
+        <img src="/img/上下版_黑色.png" alt="" class="logo">
     </div>
 </template>
 
@@ -46,6 +48,13 @@
                 margin: 0px 3px;
             }
 
+        }
+        .logo{
+            height:40px;
+            position: absolute;
+            bottom:100px;
+            left:50%;
+            margin-left:-37px;
         }
     }
 

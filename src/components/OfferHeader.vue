@@ -58,6 +58,17 @@ export default {
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         border-radius: 4px;
         margin-bottom:10px;
+        
+        color: white;
+        .van-nav-bar{
+            background-color: #36277B;
+        }
+        .van-nav-bar__text{
+            color: white;
+        }
+        .van-nav-bar .van-icon{
+            color:white;
+        }
     }
     .van-nav-bar__title{
         font-size:13px !important;
