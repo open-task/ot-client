@@ -17,11 +17,15 @@ export default{
 }
 </script>
 <style lang="scss">
+    @import './assets/noramlize.css';
+    
     @import './assets/addon.scss';
     
     html{
-        background: #F5F7FB;
-        padding:10px;
+        background: #FEFEFE;
+    }
+    p{
+        margin:unset;
     }
     a:link,
     a:visited,

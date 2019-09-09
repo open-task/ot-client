@@ -1,9 +1,15 @@
 <template>
-    <div class="submittalent">
+    <div class="submittalent create-offer">
         <offer-header></offer-header>
 
-        <p class='label'>请输入你的技能,每行一项</p>
-        <van-field v-model="skills" type="textarea" placeholder="每行一项技能" rows="5" autosize />
+       <div class="input-group">
+            <div class="title"><span>添加技能</span></div>
+            <textarea v-model='skill' name="" id="" cols="30" rows="5" disabled placeholder="请选择技能"></textarea>
+            <div class="select-skill">
+                <span class="skill" v-for='(skill,index) in skill_list' @click='add_skill(index)'>{{skill.name}}</span>
+            </div>
+        </div>
+        
 
                 <van-field v-model="email" placeholder="请输入你的邮件地址" />
         <van-button hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
@@ -18,7 +24,11 @@
             return {
                 account: "",
                 skills: '',
-                email: ""
+                email: "",
+                skill:"",
+                select_skill:[],
+                skill_list: []
+                
             }
         },
         components: {
@@ -33,16 +43,26 @@
             } catch (e) {
                 alert("请安装后打开MetaMask才可以进行继续的操作哦")
             }
-
+            console.log(accounts)
             if (accounts.length < 1) {
-                alert("请打开MetaMask才可以进行继续的操作哦")
+                console.log("请打开MetaMask才可以进行继续的操作哦")
             }
             self.account = accounts[0]
             console.log(self.account)
             self.get_talent()
+            self.$http.post("/skill/list_skills",{}).then(function(re){
+                self.skill_list = re.body.skills
+            })
             
         },
         methods: {
+            add_skill: function(index) {
+                let self = this
+                let skill = self.skill_list[index]
+                self.skill_list.splice(index,1)
+                self.select_skill.push(skill.name)
+                self.skill = self.select_skill.join(',')
+            },
             get_talent: function() {
                 let self = this
                 if (self.account) {
@@ -54,6 +74,7 @@
                         let s = user_info.skill.join("\n")
                         self.skills = s
                         self.email = user_info.email
+                        console.log(re)
                     })
                 }
             },
@@ -62,7 +83,7 @@
                 if (self.account) {
                     let user_id = self.account
                     console.log(self.skills)
-                    let skills = self.skills.split('\n')
+                    let skills = self.select_skill
                     skills = skills.filter(function(e) {
                         return e
                     })

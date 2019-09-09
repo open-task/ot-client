@@ -47,7 +47,7 @@
             click_search: function() {
                 let self = this
                 self.$http.post("/skill/list_skills", {
-                    q: self.search
+                    s: self.search
                 }).then(function(re) {
                     let skills = re.body.skills
                     self.skill_map = skills

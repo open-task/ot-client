@@ -58,7 +58,9 @@ export default {
         box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
         border-radius: 4px;
         margin-bottom:10px;
-        
+        .van-nav-bar{
+            background: linear-gradient(to right , #4A96F7, #7352F5);
+        }
         color: white;
         .van-nav-bar{
             background-color: #36277B;

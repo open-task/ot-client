@@ -21,7 +21,7 @@ export default new Router({
       name: 'tasklist',
       component: () => import('@/views/OfferList.vue')
     },
-      {
+    {
       path: '/talentmarket/:skill',
       name: 'talentmarket',
       component: () => import('@/views/TalentMarket.vue')
@@ -41,9 +41,14 @@ export default new Router({
       component: CreateOffer
     },
        {
-      path: '/detail',
+      path: '/detail/:id',
       name: 'detail',
       component: OfferDetail
+    },
+      {
+      path: '/history/:type',
+      name: 'history',
+      component:  () => import('@/views/TradeHistory.vue')
     },
      
     

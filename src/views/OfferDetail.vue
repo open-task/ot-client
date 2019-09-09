@@ -101,6 +101,7 @@
                 let data = JSON.stringify({
                     content: self.new_solution
                 })
+                console.log(Task)
                 Task.solve(solution_id, task_id, data, function(err, txHash) {
                     console.log(err)
                     console.log(txHash)
@@ -129,7 +130,8 @@
         async mounted() {
             let self = this
             await ethereum.enable()
-            let task_id = self.$route.query.task_id
+            console.log(self.$route)
+            let task_id = self.$route.params.id
             self.task_id = task_id
             let web3api = self.$web3api
             let accounts = web3api.eth.accounts
