@@ -23,6 +23,8 @@ export default{
     
     html{
         background: #FEFEFE;
+box-sizing: border-box;
+        min-width: 375px;
     }
     p{
         margin:unset;

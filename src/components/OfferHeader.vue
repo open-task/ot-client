@@ -26,7 +26,7 @@ export default {
         right_text:function(){
             let self = this
             let name = self.$route.name
-            if(['tasklist','detail'].indexOf(name)+1){
+            if(['tasklist'].indexOf(name)+1){
                 return "创建"
             }else{
                 return ''
@@ -39,7 +39,15 @@ export default {
     },
     methods:{
         onClickLeft:function(){
+            let self = this
+            console.log(self.$route)
+            if(self.$route.name=='tasklist'){
+                window.location.href = "/"
+                self.$router.push({name:'home'})
+            }else{
             this.$router.go(-1)
+                
+            }
         },
         onClickRight:function(){
             let self = this

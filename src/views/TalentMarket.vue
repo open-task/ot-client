@@ -3,7 +3,7 @@
         <offer-header title="用户列表"></offer-header>
 
         <div class="market_group">
-            <div class="telant" v-for="t in user_list">
+            <div class="telant" v-for="t in user_list" @click='go_self_intro(t.address)'>
                 <div class="left">
                     <avatar username="name(t.address)"></avatar>
 
@@ -22,6 +22,9 @@
                 </div>
 
 
+            </div>
+            <div class="no_body" v-if='!user_list.length'>
+                暂时还没有人提交这个技能
             </div>
         </div>
         <van-button plain hairline type="primary" style="margin-bottom:10px;width:100%;" @click="submit_talent">提交我的技能</van-button>
@@ -55,6 +58,15 @@
             })
         },
         methods: {
+            go_self_intro:function(address){
+                let self= this
+                self.$router.push({
+                    name:"userinfo",
+                    params:{
+                        id:address
+                    }
+                })
+            },
             name: function(str) {
                 return str.substring(2, 13)
             },
@@ -70,6 +82,16 @@
 </script>
 <style lang="scss">
     .talentmarket {
+        .no_body{
+            margin: 10px;
+            border: 1px dashed #B8BABD;
+            border-radius: 4px;
+            text-align: center;
+            height: 90px;
+            line-height: 90px;
+            font-size: 14px;
+            color: gray;
+        }
         .market_group {
             .telant {
                 padding: 10px;
@@ -100,6 +122,9 @@
                         color: #35393F;
                         margin-bottom: 5px;
                         font-size: 13px;
+                          white-space: nowrap;
+                        width:100%;
+                        overflow-x: scroll;
                         .skill-tag{
                             background-color: RGBA(30, 25, 26, 1.00);
                             color: white;

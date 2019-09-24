@@ -1,109 +1,123 @@
 <template>
     <div class="offer-list">
-      
-       <offer-header title='任务列表'></offer-header>
-       
-       <header-search @search='search'></header-search>
-       <div class="types">
-           <span>全部</span>
-           <span class='selected'>待解决</span>
-           <span>已提交</span>
-           <span>已解决</span>
-       </div>
-       <div class="tasks">
-        <offer-card v-for="offer in offer_list" :offer='offer'></offer-card>
-           
-       </div>
-       
-        <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page'/>
+
+        <offer-header title='任务列表'></offer-header>
+
+        <header-search @search='search'></header-search>
+        <div class="types">
+            <span :class="{selected:page_type=='all'}" @click='go_page("all")'>全部</span>
+            <span :class="{selected:page_type=='published'}" @click='go_page("published")'>待解决</span>
+            <span :class="{selected:page_type=='unsolved'}" @click='go_page("unsolved")'>已提交</span>
+            <span :class="{selected:page_type=='solved'}" @click='go_page("solved")'>已解决</span>
+        </div>
+        <div class="tasks">
+            <offer-card style='margin-bottom:5px' v-for="offer in offer_list" :offer='offer'></offer-card>
+
+        </div>
+
+        <van-pagination v-model="page" v-if='offer_list' :page-count="10" mode="simple" @change='get_page' />
     </div>
 </template>
 <script>
     import OfferCard from "@/components/OfferCard"
-     import OfferHeader from '@/components/OfferHeader'
-     import HeaderSearch from '@/components/HeaderSearch'
+    import OfferHeader from '@/components/OfferHeader'
+    import HeaderSearch from '@/components/HeaderSearch'
     export default {
         components: {
-            OfferCard,OfferHeader,HeaderSearch
+            OfferCard,
+            OfferHeader,
+            HeaderSearch
+        },
+        computed: {
+            page_type: function() {
+                console.log(this.$router)
+                return this.$route.params.type
+            }
         },
         mounted() {
             let self = this
-            self.get_page()
+                 self.get_page()
+
         },
         methods: {
-            search:function(c){
+            search: function(c) {
                 console.log(c)
             },
-            get_page: function() {
+            go_page(type) {
                 let self = this
-                if(self.finished){
-                    return
+                window.location.href = `/tasklist/${type}`
+
+            },
+            get_page() {
+                let self = this
+                let page = self.page
+                let type = self.$route.params.type
+                let f = {page:page}
+                if (type) {
+                    f["type"] = type
+                } else {
+                    f["type"] = ""
                 }
-                let page_count = self.page_count
-                let page_start = (self.page-1)*page_count
-                console.log(self.page,page_count,page_start)
-                self.$http.post("/v1/", {
-                    "jsonrpc": "2.0",
-                    "method": "GetAllPublished",
-                    "params": [page_start, page_count],
-                    "id": "11"
-                }).then(function(re) {
-                    console.log(re)
-                    if(!re.body.result){
-                        self.page-=1
-                        self.$dialog({message:"已加载全部内容"})
-                        self.finished = true
-                    }else{
-                    self.offer_list = re.body.result
-                    }
+                console.log(f)
+                self.$http.post("/skill/list_tasks", f).then(function(re) {
+                    self.offer_list = re.body.missions
                 })
             }
+
         },
         data() {
             return {
                 offer_list: [],
                 page: 1,
-                page_count:10,
-                finished:false
-                
+                page_count: 200,
+                finished: false,
+
             }
         }
     }
 
 </script>
 <style lang='scss'>
-    .offer-list{
+    .offer-list {
         background-color: #F2F2F2;
-        .types{
+
+        .types {
             background-color: white;
-            padding:0px 20px;
+            padding: 0px 20px;
             font-size: 0px;
             margin-bottom: 10px;
-            span{
+
+            span {
                 color: #979797;
                 display: inline-block;
                 line-height: 45px;
                 margin-right: 50px;
                 font-size: 15px;
                 border-bottom: 4px solid transparent;
-                &:last-child{
+
+                &:last-child {
                     margin-right: 0px;
                 }
-                &.selected{
+
+                &.selected {
                     color: #3c8ffb;
                     border-bottom-color: #3c8ffb;
                 }
             }
         }
-        .tasks{
+
+        .tasks {
             margin-bottom: 20px;
         }
-        .van-cell__value{
+
+        .van-cell__value {
             color: #36277B !important
         }
-        .van-button--danger{
+
+        .van-button--danger {
             background-color: #36277B;
             border-color: #36277B;
         }
     }
+
 </style>

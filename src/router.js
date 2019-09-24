@@ -17,9 +17,14 @@ export default new Router({
         component:() => import('@/views/Home.vue'),
     },
       {
-      path: '/tasklist',
+      path: '/tasklist/:type',
       name: 'tasklist',
       component: () => import('@/views/OfferList.vue')
+    },
+      {
+      path: '/userinfo/:id',
+      name: 'userinfo',
+      component: () => import('@/views/myInfo.vue')
     },
     {
       path: '/talentmarket/:skill',
