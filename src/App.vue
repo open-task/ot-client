@@ -13,7 +13,8 @@ export default{
     },
     components:{
         
-    }
+    },
+    mounted(){}
 }
 </script>
 <style lang="scss">

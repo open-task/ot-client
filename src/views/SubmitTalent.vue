@@ -4,7 +4,7 @@
 
         <div class="input-group">
             <div class="title"><span>添加技能</span></div>
-            
+
             <textarea v-model='skill' class='skill-area' name="" id="" cols="30" rows="5" disabled placeholder="请选择技能"></textarea>
             <div class="select-skill">
                 <span class="skill" v-for='(skill,index) in skill_list' @click='add_skill(index)'>{{skill.name}}</span>
@@ -33,21 +33,22 @@
                 skill: "",
                 select_skill: [],
                 skill_list: [],
-                new_skill:"",
+                new_skill: "",
 
             }
         },
         components: {
             OfferHeader,
         },
-        mounted() {
+        async mounted() {
             let self = this
             let web3api, accounts
+            await ethereum.enable()
             try {
                 web3api = new Web3(web3.currentProvider);
                 accounts = web3api.eth.accounts
             } catch (e) {
-                alert("使用当前钱包出错,请刷新重试")
+                alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
             }
             console.log(accounts)
             if (accounts.length < 1) {
@@ -55,7 +56,7 @@
             }
             self.account = accounts[0]
             console.log(self.account)
-            
+
             self.$http.post("/skill/list_skills", {}).then(function(re) {
                 console.log(re)
                 self.skill_list = re.body.skills
@@ -64,18 +65,27 @@
 
         },
         methods: {
-            add_new_skill:function(){
+            add_new_skill: function() {
                 let self = this
                 let skill = self.new_skill
-                self.select_skill.push(skill)
+                if (skill) {
+                    self.select_skill.push(skill)
                 self.skill = self.select_skill.join(',')
                 self.new_skill = ""
+                } else {
+                    self.$dialog.alert({
+                        title: '请输入内容',
+                        message: '不能提交空技能'
+                    })
+                }
+                
             },
             add_skill: function(index) {
                 let self = this
                 let skill = self.skill_list[index]
+                
                 self.skill_list.splice(index, 1)
-            self.select_skill.push(skill.name)
+                self.select_skill.push(skill.name)
                 self.skill = self.select_skill.join(',')
             },
             get_talent: function() {
@@ -86,18 +96,27 @@
                         address: self.account
                     }).then(function(re) {
                         console.log(re)
-                        let user_info = re.body.user_info
 
-                        let s = user_info.skill.join(",")
-                        self.skill = s
-                        self.select_skill = user_info.skill
-                        self.email = user_info.email
-                        self.skill_list = self.skill_list.filter(function(e){
-                            return !(self.select_skill.indexOf(e.name)+1)
-                        })
+                        let user_info = re.body.user_info
+                        if (user_info) {
+                            let s = user_info.skill.join(",")
+                            self.skill = s
+                            self.select_skill = user_info.skill
+                            self.email = user_info.email
+                            self.skill_list = self.skill_list.filter(function(e) {
+                                return !(self.select_skill.indexOf(e.name) + 1)
+                            })
+
+                        } else {
+                            self.skill = ""
+                            self.select_skill = []
+                            self.email = ""
+                            self.skill_list = self.skill_list
+                        }
+
                     })
-                }else{
-                    alert("请激活当前钱包")
+                } else {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
                 }
             },
             submit_talent: function() {
@@ -119,8 +138,8 @@
                         if (re.body.state) {
                             self.$router.push({
                                 name: "userinfo",
-                                params:{
-                                    id:self.account
+                                params: {
+                                    id: self.account
                                 }
                             })
                         }
@@ -138,26 +157,29 @@
             margin: unset;
             margin-bottom: 10px;
         }
-        .skill-area{
-            padding:10px  10px;
+
+        .skill-area {
+            padding: 10px 10px;
             box-sizing: border-box;
             border-radius: 4px;
             font-size: 16px !important;
         }
-        .input-group{
+
+        .input-group {
             padding: 10px 15px;
         }
 
         .van-field {
             margin-bottom: 10px;
         }
-        .new-skill{
+
+        .new-skill {
             margin-top: 10px;
-            
-            input{
+
+            input {
                 border: 1px solid gray;
                 border-radius: 4px;
-                width:calc(100% - 100px);
+                width: calc(100% - 100px);
                 margin-right: 10px;
                 height: 38px;
                 padding: 0px 5px;
@@ -165,7 +187,8 @@
                 font-size: 14px;
                 margin-top: 1px;
             }
-            .btn{
+
+            .btn {
                 width: 80px;
                 text-align: center;
                 display: inline-block;

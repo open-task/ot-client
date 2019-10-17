@@ -16,23 +16,29 @@
                 
                 <van-collapse v-model="activeNames">
                    
-                    <van-collapse-item :title="`方案ID: ${solution.solution_id} ${{'Accepted':'已接受','Unprocessed':'未处理','Reject':'已拒绝'}[solution.status]}`" :name="id" v-for='(solution,id) in solutions'>
+                    <van-collapse-item :title="`方案ID: ${solution.solution_id} ${{'Accepted':'已接受','Unprocessed':'未处理','Rejected':'已拒绝'}[solution.status]}`" :name="id" v-for='(solution,id) in solutions'>
                         {{solution.data.content}}
                         <br><br>
-                        <van-button v-if='show_botton&&task_state!="Solved"' style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution_id)">Accept</van-button>
-                        <van-button v-if='show_botton&&task_state!="Solved"' type="danger" size="small" @click="reject_solution(solution.solution_id)">Reject</van-button>
+                        <div v-if='show_botton' >
+                        
+                        <van-button v-if='solution.status=="Unprocessed"' style="margin-right:10px;" type="primary" size="small" @click="accept_solution(solution.solution_id)">Accept</van-button>
+                        <van-button v-if='solution.status=="Unprocessed"' type="danger" size="small" @click="reject_solution(solution.solution_id)">Reject</van-button>
+                        </div>
+                        
                     </van-collapse-item>
                 </van-collapse>
             </div>
         </div>
-        <van-cell-group v-if='!author'>
+        <van-cell-group v-if='task_type=="unsolved"'>
             <van-field v-model="new_solution" type='textarea' rows='6' placeholder="请在此处粘贴你要提交的内容" />
         </van-cell-group>
-        <div v-else style='text-align:center;margin-top:20px;color:#9CA4B5;font-size:12px;'>
+        <div v-if='task_type=="author"' style='text-align:center;margin-top:20px;color:#9CA4B5;font-size:12px;'>
             您是任务发起人,无法提交方案
         </div>
-        <van-button v-if='!author' type="primary" class="success-btn" @click="add_solution">提交解决方案</van-button>
-        
+        <div v-if='task_type=="solved"' style='text-align:center;margin-top:20px;color:#9CA4B5;font-size:12px;'>
+            当前任务已解决,无法提交方案
+        </div>
+        <van-button v-if='task_type=="unsolved"' type="primary" class="success-btn" @click="add_solution">提交解决方案</van-button>
     </div>
 </template>
 <script>
@@ -54,17 +60,39 @@
                 solutions: [],
                 new_solution: "",
                 activeNames: [],
-                show_botton: false,
+                
                 task_state:"Unsolved",
                 author:false,
             }
         },
         computed:{
+            show_botton:function(){
+                let self = this
+                if(!self.author){
+                    return false
+                }
+                if(self.task_state=="Solved"){
+                    return false
+                }
+                return true
+            },
             t_state:function(){
                 let self = this
                 console.log("123",self.task_state)
                 let r = {"Published":"待解决",'Unsolved':"已提交",'Solved':"已解决"}[self.task_state]
                 return r
+            },
+            task_type:function(){
+                let self = this
+                if(self.author){
+                    return 'author'
+                }else{
+                    if(self.task_state=='Solved'){
+                        return 'solved'
+                    }else{
+                        return 'unsolved'
+                    }
+                }
             }
         },
         methods: {
@@ -80,6 +108,8 @@
                         self.$dialog.alert({
                             title: "成功接受",
                             message: txHash
+                        }).then(function(){
+                            window.location.reload()
                         })
                     }
                 })
@@ -95,6 +125,8 @@
                         self.$dialog.alert({
                             title: "成功拒绝",
                             message: txHash
+                        }).then(function(){
+                            window.location.reload()
                         })
                     }
                 })
@@ -142,11 +174,11 @@
             let self = this
            
             await ethereum.enable()
-            console.log(self.$route)
             let task_id = self.$route.params.id
             self.task_id = task_id
             let web3api = self.$web3api
             let accounts = web3api.eth.accounts
+            console.log(accounts)
             self.web3api = web3api
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
@@ -155,7 +187,6 @@
                 "id": "11"
             }).then(function(re) {
                 let res = re.body.result
-                console.log(re.body)
                 if(re.body.result.block==0){
                     self.$dialog.alert({
                         title:"项目还在发行中",
@@ -164,14 +195,16 @@
                         self.$router.push({name:'tasklist'})
                     })
                 }
-                if (accounts.indexOf(res.publisher.toLowerCase()) + 1) {
-                    self.show_botton = true
+                let low_accounts = accounts.map(function(e){
+                    return e.toLowerCase()
+                })
+                if (low_accounts.indexOf(res.publisher.toLowerCase()) + 1) {
                     self.author = true
                 }
                 console.log(res)
                 self.id = res.mission_id
                 self.$http.post('/skill/get_task_info',{id:self.id}).then(function(re){
-//                    self.skills =re.body.task.skills
+                    self.skills =re.body.task.skills
                 })
                 self.reward = web3api.fromWei(res.reward_wei)
                 self.task_state = res.status

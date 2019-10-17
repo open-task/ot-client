@@ -14,10 +14,14 @@
             </router-link>
         </div>
 
+        <van-notice-bar :scrollable="true" @click='go_ad' mode="link">
+            超零三国风云起&nbsp;
+            英雄为棋天下局
+        </van-notice-bar>
         <div class="offer-list" @click='to_tasklist'>
 
-                <offer-card v-for="offer in task_list" :offer='offer'></offer-card>
-            
+            <offer-card v-for="offer in task_list" :offer='offer'></offer-card>
+
 
         </div>
         <div class="skills">
@@ -36,15 +40,16 @@
             <span>
                 <router-link to='/talentmap'>人才市场</router-link>
             </span>
-            <span @click='closed'>收支</span>
+            <!--            <span @click='closed'>收支</span>-->
             <span @click='closed'>设置</span>
-            <span ><a href="https://shimo.im/docs/X8tXk6cjGC9Gg9qg/ ">帮助</a></span>
+            <span><a href="https://shimo.im/docs/X8tXk6cjGC9Gg9qg/ ">帮助</a></span>
         </div>
-        <div class="commun">
-            <span class="btn"><img src="/img/聊天_ICON.png" alt="">加入社区</span>
-            https://gitter.im/Bountinet/commuunity
-        </div>
-
+        <a href="https://gitter.im/Bountinet/community">
+            <div class="commun">
+                <span class="btn"><img src="/img/聊天_ICON.png" alt="">加入社区</span>
+                https://gitter.im/Bountinet/community
+            </div>
+        </a>
 
 
     </div>
@@ -52,30 +57,42 @@
 
 <script>
     import OfferCard from "@/components/OfferCard"
+    import {
+        ImagePreview
+    } from 'vant'
     export default {
-        components:{
-           OfferCard 
+        components: {
+            OfferCard
         },
         name: 'home',
-        mounted(){
+        mounted() {
             let self = this
-            self.$http.post("/skill/list_tasks",{type:'published'}).then(function(re){
-                let ms =  re.body.missions.slice(0,2)
+            self.$http.post("/skill/list_tasks", {
+                type: 'all'
+            }).then(function(re) {
+                let ms = re.body.missions.slice(0, 2)
                 self.task_list = ms
             })
-            self.$http.post("/skill/list_skills",{}).then(function(re){
-            let ss = re.body.skills.slice(0,8)
-            self.skill_list = ss
-                
+            self.$http.post("/skill/list_skills", {}).then(function(re) {
+                let ss = re.body.skills.slice(0, 8)
+                self.skill_list = ss
+
             })
         },
         methods: {
+            go_ad: function() {
+                console.log(this)
+                ImagePreview(
+   ['http://tva1.sinaimg.cn/large/007X8olVly1g7qlrblmfij30u01fkb29.jpg'
+  ]
+);
+            },
             to_tasklist: function() {
                 let self = this
                 self.$router.push({
                     name: "tasklist",
-                    params:{
-                        "type":"all"
+                    params: {
+                        "type": "all"
                     }
                 })
             },
@@ -86,8 +103,8 @@
         data() {
             return {
                 task_list: [],
-                skill_list: [
-                ]
+                skill_list: [],
+                
 
             }
         }
@@ -102,6 +119,7 @@
     .home {
         .header {
             font-size: 0px;
+
             .cover {
                 width: 100%;
 
@@ -116,8 +134,9 @@
             padding: 0px 10px;
             color: #888888;
             background-color: white;
-    width:100%;
+            width: 100%;
             min-width: 375px;
+
             .btn {
                 background-color: #34BC81;
                 color: white;
@@ -145,11 +164,12 @@
 
             span {
                 font-size: 14px;
-                width: 20%;
+                width: 25%;
                 display: inline-block;
                 height: 35px;
                 line-height: 35px;
-text-align: center;
+                text-align: center;
+
                 a {
                     color: #888888
                 }
@@ -167,9 +187,10 @@ text-align: center;
 
         .skills {
             margin: 15px 10px;
+            margin-bottom: 65px;
 
             .skill {
-                   
+
                 width: 25%;
                 text-align: center;
                 display: inline-block;
@@ -205,9 +226,9 @@ text-align: center;
         }
 
         .offer-list {
-/*            margin-top: 10px;*/
-            /*            border-bottom: 1px solid #D5D5D5;*/
 
+            /*            margin-top: 10px;*/
+            /*            border-bottom: 1px solid #D5D5D5;*/
             .offer {
                 padding: 10px;
                 background-color: #F2F2F2;
