@@ -50,7 +50,41 @@ export default new Router({
       name: 'history',
       component:  () => import('@/views/TradeHistory.vue')
     },
-     
+    {
+      path: '/answerlist',
+      name: 'answerlist',
+      component:  () => import('@/views/answer/answer-list.vue')
+    },
+    {
+      path: '/answerdetail/:id',
+      name: 'answerdetail',
+      component:  () => import('@/views/answer/answer-detail.vue')
+    },
+    {
+      path: '/answersubmit/:id',
+      name: 'answerdanswersubmitetail',
+      component:  () => import('@/views/answer/answer-submit.vue')
+    },
+    {
+      path: '/answercreate',
+      name: 'answercreate',
+      component:  () => import('@/views/answer/answer-create.vue')
+    },
+    {
+      path: '/talentclassify',
+      name: 'talentclassify',
+      component:  () => import('@/views/talent-market/talent-classify.vue')
+    },
+    {
+      path: '/talentlist',
+      name: 'talentlist',
+      component:  () => import('@/views/talent-market/talent-list.vue')
+    },
+    {
+      path: '/talentdetail/:id',
+      name: 'talentdetail',
+      component:  () => import('@/views/talent-market/talent-detail.vue')
+    }
     
   ]
 })

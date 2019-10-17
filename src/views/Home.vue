@@ -1,7 +1,238 @@
 <template>
-    <div class="home">
+    <div class="home has-tabbar">
+        <div class="home-banner">
+            帮铁网
+        </div>
+        <div class="home-access">
+            <ul class="clearfix">
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <div class="home-nav">
+            <ul class="clearfix">
+                <li>
+                    <span class="home-nav-icon"></span>
+                    <span class="home-nav-text">Python</span>
+                </li>
+                <li>
+                    <span class="home-nav-icon"></span>
+                    <span class="home-nav-text">区块链</span>
+                </li>
+                <li>
+                    <span class="home-nav-icon"></span>
+                    <span class="home-nav-text">网页设计</span>
+                </li>
+                <li>
+                    <span class="home-nav-icon"></span>
+                    <span class="home-nav-text">UI设计</span>
+                </li>
+                <li>
+                    <span class="home-nav-icon"></span>
+                    <span class="home-nav-text">查看更多</span>
+                </li>
+            </ul>
+        </div>
 
-        <div class="header">
+        <div class="task-list list-scroller">
+            <van-list
+                v-model="list_loading"
+                :finished="list_finished"
+                finished-text="没有更多了"
+                :error.sync="list_error"
+                error-text="请求失败，点击重新加载"
+                @load="handleListLoad"
+            >
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师OpenTask工程师OpenTask工程师OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                                
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">100</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+                <van-cell>
+                    <template slot="title">
+                        <van-row type="flex" justify="end">
+                            <van-col span="18">
+                                <h3>OpenTask工程师</h3>
+                                <p class="t-gray">2019-08-14 20:00:00 待解决</p>
+                            </van-col>
+                            <van-col span="6">
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">DET</span>
+                                    <span class="pull-right t-warning">1.99</span> 
+                                </div>
+                                <div class="clearfix">
+                                    <span class="task-field pull-right t-gray">提交</span>
+                                    <span class="pull-right t-warning">3</span> 
+                                </div>
+                            </van-col>
+                        </van-row>
+                    </template>
+                    <template slot="right-icon">
+                        <van-button class="bt-btn" size="small">查看任务</van-button>
+                    </template>
+                </van-cell>
+            </van-list>
+        </div>
+        <bt-tabbar activeIndex="0"></bt-tabbar>
+        
+        <!-- <div class="header">
             <img src="/img/头部banner.png" alt="" class="cover">
         </div>
         <div class="skill-btn">
@@ -61,7 +292,7 @@
         <div class="commun">
             <span class="btn"><img src="/img/聊天_ICON.png" alt="">加入社区</span>
             https://gitter.im/Bountinet/commuunity
-        </div>
+        </div> -->
 
 
 
@@ -69,19 +300,17 @@
 </template>
 
 <script>
+    import BtTabbar from '@/components/BtTabbar';
     export default {
         name: 'home',
-        methods:{
-            to_tasklist:function(){
-                let self = this
-                self.$router.push({path:"/tasklist"})
-            },
-            closed:function(){
-                alert('该板块暂未开放')
-            }
+        components: {
+            BtTabbar
         },
         data() {
             return {
+                list_loading: false,
+                list_finished: false,
+                list_error: false,
                 task_list: [{
                     name: '平台推广',
                     time: "2019-01-01 20:01:34",
@@ -132,11 +361,108 @@
                 ]
 
             }
+        },
+        methods:{
+            to_tasklist:function(){
+                let self = this
+                self.$router.push({path:"/tasklist"})
+            },
+            closed:function(){
+                alert('该板块暂未开放')
+            },
+            handleListLoad() {
+                this.loading = true;
+                setTimeout(() => {
+                    //this.loading = false;
+                }, 1000)
+            }
         }
     }
 
 </script>
 <style lang='scss'>
+    .home {
+        font-size: 14px;
+
+        .home-banner {
+            padding: 12px;
+        }
+
+        .home-access {
+            padding: .2rem;
+            overflow: hidden;
+            background-color: #fff;
+            ul {
+                margin-right: -.2rem;
+                li {
+                    float: left;
+                    margin-right: .2rem;
+                    width: 3.45rem;
+                    height: 1.82rem;
+                    background-color: #fff;
+                    box-shadow:0px 12px 20px 0px rgba(0, 0, 0, 0.08);
+                    border-radius: .16rem;
+                }
+            }
+        }
+
+        .home-nav {
+            padding: .2rem .2rem .4rem;
+            overflow: hidden;
+            background-color: #fff;
+            ul {
+                margin-right: -.2rem;
+                li {
+                    float: left;
+                    margin-right: .2rem;
+                    width: 1.26rem;
+                    .home-nav-icon {
+                        display: block;
+                        width: 1.02rem;
+                        height: 1.02rem;
+                        position: relative;
+                        margin-left: .12rem;
+                        border-radius: 50%;
+                        box-shadow:0px 12px 20px 0px rgba(0, 0, 0, 0.08);
+                        margin-bottom: .2rem;
+                    }
+                    .home-nav-text {
+                        display: block;
+                        width: 100%;
+                        color: #999; 
+                        text-align: center;
+                    }
+                }
+            }
+        }
+
+        .task-list {
+            .van-cell {
+                align-items: center;
+                .van-cell__title {
+                    overflow: hidden;
+                }
+                h3 {
+                    margin: 0;
+                    font-size: 16px;
+                    font-weight: 600;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+                .task-field {
+                    margin: 0 5px;
+                }
+                .bt-btn {
+                    margin-left: 5px;
+                }
+            }
+        }
+    }
+    
+    
+
+
     .float {
         clear: both;
     }

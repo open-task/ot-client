@@ -6,6 +6,7 @@ import { task , web3api ,det,token_address,abi} from '@/assets/test'
 import VueResource from 'vue-resource'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import './styles/index.scss';
 
 Vue.use(Vant);
 Vue.use(VueResource);
