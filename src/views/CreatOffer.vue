@@ -8,7 +8,7 @@
         </div>
         <div class="input-group">
             <div class="title"><span>项目描述</span></div>
-            <textarea maxlength="200" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少,最多120字" ></textarea>
+            <textarea maxlength="200" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少"></textarea>
         </div>
         <div class="input-group">
             <div class="title"><span>项目技能</span></div>
@@ -18,7 +18,7 @@
             <div class="select-skill">
                 <span class="skill" v-for='(skill,index) in skill_list' @click='add_skill(index)'>{{skill}}</span>
             </div>
-             <div class="new-skill">
+            <div class="new-skill">
                 <input type="text" v-model='new_skill' placeholder="输入新技能">
                 <span class="btn" @click='add_new_skill'>提交</span>
             </div>
@@ -52,15 +52,23 @@
                 skill: "",
                 select_skill: [],
                 skill_list: [],
-                new_skill:""
+                new_skill: ""
             }
         },
         methods: {
-            add_new_skill:function(){
+            add_new_skill: function() {
                 let self = this
                 let skill = self.new_skill
-                self.select_skill.push(skill)
-                self.new_skill = ""
+                if (skill) {
+                    self.select_skill.push(skill)
+                    self.new_skill = ""
+                } else {
+                    self.$dialog.alert({
+                        title: '请输入内容',
+                        message: '不能提交空技能'
+                    })
+                }
+
             },
             remove_skill: function(index) {
                 let self = this
@@ -98,7 +106,7 @@
                             "desc": self.desc,
                             'skills': self.select_skill
                         })
-                        
+
                         DET.approve(self.$token_address, value, (err, txHash) => {
                             console.log('approve')
                             if (err) {
@@ -112,8 +120,11 @@
                                     if (err) {
                                         console.log('发生错误', err)
                                     } else {
-                                        self.$http.post("/skill/add_task",{skill:self.select_skill,id:id})
-//                                        将技能添加到技能列表
+                                        self.$http.post("/skill/add_task", {
+                                            skill: self.select_skill,
+                                            id: id
+                                        })
+                                        //                                        将技能添加到技能列表
                                         self.$dialog.alert({
                                             title: '项目提交成功',
                                             message: '<div class="zhe">项目哈希:' + txHash + "<br><br>项目id:" + id + "<br><br>等待写入区块</div>"
@@ -145,8 +156,9 @@
 
             }
         },
-        mounted() {
+        async mounted() {
             let self = this
+            await ethereum.enable()
             if (typeof web3 !== 'undefined') {
 
             } else {
@@ -171,13 +183,13 @@
         right: 0;
         padding: 10px 0px;
 
-        .new-skill{
+        .new-skill {
             margin-top: 10px;
-            
-            input{
+
+            input {
                 border: 1px solid gray;
                 border-radius: 4px;
-                width:calc(100% - 100px);
+                width: calc(100% - 100px);
                 margin-right: 10px;
                 height: 38px;
                 padding: 0px 5px;
@@ -185,7 +197,8 @@
                 font-size: 14px;
                 margin-top: 1px;
             }
-            .btn{
+
+            .btn {
                 width: 80px;
                 text-align: center;
                 display: inline-block;
@@ -199,6 +212,7 @@
                 cursor: pointer;
             }
         }
+
         .input-group {
             padding: 0px 15px;
             background-color: white;
@@ -293,8 +307,8 @@
 
         .det {
             position: absolute;
-            bottom: 16px;
-            right: 14px;
+            bottom: 14px;
+            right: 28px;
             color: #9CA4B5;
             font-size: 12px;
         }

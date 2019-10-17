@@ -41,6 +41,11 @@
         },
         methods: {
             search: function(c) {
+                let self = this
+                self.$http.post("/skill/search_task",{q:c}).then(function(re){
+                    self.offer_list = re.body.missions
+                    console.log(re)
+                })
                 console.log(c)
             },
             go_page(type) {

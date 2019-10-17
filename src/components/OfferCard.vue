@@ -120,7 +120,7 @@
                 float: left;
                 margin-right: 10px;
                 width: calc(100% - 80px);
-
+font-size: 12px;
                 .title {
                     margin-bottom: 10px;
                     font-weight: bold;
@@ -135,6 +135,7 @@
                     color: #979797;
                     display: inline-block;
                     margin-right: 10px;
+                    
                 }
 
                 .state {

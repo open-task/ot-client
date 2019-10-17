@@ -1,6 +1,7 @@
 <template>
     <div class="header-search">
-        <input type="search" class="search" placeholder="输入信息检索" v-model='info'>
+        <input type="search" class="search" placeholder="输入信息检索" v-model='info' @keyup.enter='submit'>
+        
     </div>
 </template>
 <script>
