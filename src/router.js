@@ -55,7 +55,11 @@ export default new Router({
       name: 'history',
       component:  () => import('@/views/TradeHistory.vue')
     },
-     
+    {
+      path: '/funding',
+      name: 'funding',
+      component:  () => import('@/views/notice/crowd-funding.vue')
+    },
     
   ]
 })

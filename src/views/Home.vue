@@ -2,7 +2,16 @@
     <div class="home">
 
         <div class="header">
-            <img src="/img/头部banner.png" alt="" class="cover">
+            <van-swipe :autoplay="3000" indicator-color="white">
+                <van-swipe-item>
+                    <img src="/img/banner.png" alt="" class="cover">
+                </van-swipe-item>
+                <van-swipe-item>
+                    <router-link to='/funding'>
+                        <img src="/img/banner02.png" alt="" class="cover">
+                    </router-link>
+                </van-swipe-item>
+            </van-swipe>
         </div>
         <div class="skill-btn">
             <router-link to='/create'>
