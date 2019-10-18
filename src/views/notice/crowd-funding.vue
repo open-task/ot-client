@@ -1,6 +1,6 @@
 <template>
     <div class="crowd-funding create-offer">
-        <offer-header title='超零三国'></offer-header>
+        <offer-header title='公告'></offer-header>
         <div class="input-group">
             <div class="title"><span>超零三国开始众筹了！！！</span></div>
             <div class="desc">发起方：超零三国</div>

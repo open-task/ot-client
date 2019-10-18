@@ -60,6 +60,10 @@ export default new Router({
       name: 'funding',
       component:  () => import('@/views/notice/crowd-funding.vue')
     },
-    
+    {
+      path: '/bount',
+      name: 'bount',
+      component:  () => import('@/views/notice/bount-test.vue')
+    },
   ]
 })

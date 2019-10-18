@@ -4,7 +4,9 @@
         <div class="header">
             <van-swipe :autoplay="3000" indicator-color="white">
                 <van-swipe-item>
-                    <img src="/img/banner.png" alt="" class="cover">
+                    <router-link to='/bount'>
+                        <img src="/img/banner.png" alt="" class="cover">
+                    </router-link>
                 </van-swipe-item>
                 <van-swipe-item>
                     <router-link to='/funding'>
