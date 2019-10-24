@@ -30,8 +30,9 @@
                 message: ''
             }
         },
-        mounted() {
+        async mounted() {
             let web3api, accounts
+            await ethereum.enable()
             try {
                 web3api = new Web3(web3.currentProvider);
                 accounts = web3api.eth.accounts
@@ -47,6 +48,13 @@
         },
         methods: {
             handleMsgSubmit() {
+                if( !this.account ) {
+                    this.$toast({
+                        message: '要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com',
+                        position: 'bottom'
+                    });
+                    return;
+                }
                 if( !this.message ) {
                     this.$toast({
                         message: '请输入留言',

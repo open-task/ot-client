@@ -46,6 +46,7 @@
                 <dl class="board-blk" v-for="item in msgList" :key="item.id">
                     <dt>{{item.address}}</dt>
                     <dd>{{item.content}}</dd>
+                    <dd class="board-blk-time">{{item.create_time}}</dd>
                 </dl>
             </van-list>
         </div>
@@ -203,6 +204,12 @@
                     margin: 0;
                     color: #555;
                     font-size: 14px;
+                }
+
+                .board-blk-time {
+                    color: #999;
+                    font-size: 12px;
+                    margin-top: 10px;
                 }
             }
         }
