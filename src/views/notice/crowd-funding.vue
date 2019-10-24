@@ -32,18 +32,63 @@
                 <p>申购需扫码加客服chole小姐姐微信</p>
             </div>
         </div>
+        <div class="msg-board">
+            <div class="msg-board-hd">
+                <router-link class="t-msg" to="/msg">写留言</router-link>
+                <span class="t-title">精选留言</span>
+            </div>
+            <van-list
+            v-model="loading"
+            :finished="finished"
+            finished-text="没有更多了"
+            @load="getMsgList"
+            >
+                <dl class="board-blk" v-for="item in msgList" :key="item.id">
+                    <dt>{{item.address}}</dt>
+                    <dd>{{item.content}}</dd>
+                </dl>
+            </van-list>
+        </div>
     </div>
 </template>
 
 <script>
-    import OfferHeader from '@/components/OfferHeader'
+    import OfferHeader from '@/components/OfferHeader';
     export default {
         components: {
             OfferHeader,
         },
+        created() {
+
+        },
         data() {
             return {
-                
+                msgList: [],
+                page: 1,
+                count: 10,
+                loading: false,
+                finished: false
+            }
+        },
+        methods: {
+            getMsgList() {
+                this.$http.post("/skill/get_messages", {
+                    page: this.page,
+                    count: this.count
+                }).then(res => {
+                    res = res.body;
+                    if( res.messages && res.messages.length ) {
+                        res.messages.forEach(d => {
+                            this.msgList.push(d);
+                        });
+                    }
+                    this.loading = false;
+                    this.page++;
+                    if( this.msgList.length >= res.count ) {
+                        this.finished = true;
+                    }
+
+                })
             }
         },
     }
@@ -115,6 +160,50 @@
                 color: #666;
                 text-align: center;
                 padding-top: 16px;
+            }
+        }
+
+        .msg-board {
+            background-color: #F2F2F2;
+            padding: 0 16px 30px;
+
+            .msg-board-hd {
+                height: 20px;
+                line-height: 20px;
+                padding: 16px 0;
+                font-size: 14px;
+
+                .t-msg {
+                    float: right;
+                    color: #4862E6;
+                    cursor: pointer;
+                }
+
+                .t-title {
+                    color: #777;
+                }
+
+            }
+
+            .board-blk {
+                margin: 0;
+                padding: 16px 0;
+
+                & + .board-blk {
+                    border-top: 1px solid #ececec;
+                }
+
+                dt {
+                    color: #999;
+                    margin-bottom: 10px;
+                    font-size: 12px;
+                }
+
+                dd {
+                    margin: 0;
+                    color: #555;
+                    font-size: 14px;
+                }
             }
         }
     }

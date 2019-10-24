@@ -61,6 +61,11 @@ export default new Router({
       component:  () => import('@/views/notice/crowd-funding.vue')
     },
     {
+      path: '/msg',
+      name: 'msg',
+      component:  () => import('@/views/notice/leave-msg.vue')
+    },
+    {
       path: '/bount',
       name: 'bount',
       component:  () => import('@/views/notice/bount-test.vue')
