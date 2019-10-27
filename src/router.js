@@ -65,6 +65,11 @@ export default new Router({
       name: 'msg',
       component:  () => import('@/views/notice/leave-msg.vue')
     },
+      {
+      path: '/gamecard',
+      name: 'gamecard',
+      component:  () => import('@/views/GameCard.vue')
+    },
     {
       path: '/bount',
       name: 'bount',

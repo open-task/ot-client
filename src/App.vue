@@ -1,35 +1,37 @@
 <template>
-  <div id="app">
-  
-    <router-view/>
-  </div>
+    <div id="app">
+
+        <router-view />
+    </div>
 </template>
 
 <script>
-   
-export default{
-    data(){
-        return {}
-    },
-    components:{
-        
-    },
-    mounted(){}
-}
+    export default {
+        data() {
+            return {}
+        },
+        components: {
+
+        },
+        mounted() {}
+    }
+
 </script>
 <style lang="scss">
     @import './assets/noramlize.css';
-    
+
     @import './assets/addon.scss';
-    
-    html{
-        background: #FEFEFE;
-box-sizing: border-box;
+
+    html {
+        background: #F2F2F2;
+        box-sizing: border-box;
         min-width: 375px;
     }
-    p{
-        margin:unset;
+
+    p {
+        margin: unset;
     }
+
     a:link,
     a:visited,
     a:hover,
@@ -37,4 +39,5 @@ box-sizing: border-box;
         color: #FFFFFF;
         text-decoration: none;
     }
+
 </style>
