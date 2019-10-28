@@ -47,6 +47,8 @@
                     <dt>{{item.address}}</dt>
                     <dd>{{item.content}}</dd>
                     <dd class="board-blk-time">{{item.create_time}}</dd>
+                    <dt v-if="item.reply" class="board-blk-reply">管理员</dt>
+                    <dd v-if="item.reply">{{item.reply}}</dd>
                 </dl>
             </van-list>
         </div>
@@ -209,7 +211,12 @@
                 .board-blk-time {
                     color: #999;
                     font-size: 12px;
-                    margin-top: 10px;
+                    margin: 10px 0;
+                }
+
+                .board-blk-reply {
+                    border-left: 2px solid #FAA201;
+                    padding-left: 5px;
                 }
             }
         }
