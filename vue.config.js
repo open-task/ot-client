@@ -6,7 +6,8 @@ module.exports = {
              target: 'https://bountinet.com/'
          },
              '/skill': {
-             target: 'https://bountinet.com/'
+             target: 'http://39.100.60.153/'
+//                  target: 'https://bountinet.com/'
          },
          }
      },
