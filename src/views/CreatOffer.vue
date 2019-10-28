@@ -90,8 +90,15 @@
                 let web3api = self.$web3api
 
                 await ethereum.enable()
-                var accounts = web3api.eth.accounts;
-                console.log(accounts)
+                // var accounts = web3api.eth.accounts;
+                // console.log(accounts)
+                let accounts;
+                try {
+                    web3api = new Web3(web3.currentProvider);
+                    accounts = web3api.eth.accounts
+                } catch (e) {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
+                }
                 if (self.title && self.desc && self.charge) {
                     if (typeof accounts === 'undefined' || accounts.length === 0) {
                         console.log('请解锁 MetaMask 后刷新')

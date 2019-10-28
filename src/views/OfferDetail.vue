@@ -174,8 +174,10 @@
             let self = this
             let task_id = self.$route.params.id
             self.task_id = task_id
-            let web3api = self.$web3api
-            self.web3api = web3api
+
+            //await ethereum.enable();
+            let web3api = self.$web3api;
+            self.web3api = web3api;
 
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
@@ -231,8 +233,8 @@
                 }
 
 
-                await ethereum.enable();
                 let accounts = web3api.eth.accounts;
+                console.log(accounts);
                 let low_accounts = accounts.map(function(e){
                     return e.toLowerCase()
                 })
@@ -241,6 +243,9 @@
                 }
 
             })
+
+            
+            
         }
     }
 
