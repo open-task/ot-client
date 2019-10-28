@@ -7,73 +7,85 @@ import OfferDetail from '@/views/OfferDetail.vue'
 
 Vue.use(Router)
 
-export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-        component:() => import('@/views/Home.vue'),
+let router = new Router({
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '/',
+            name: 'home',
+            component: () => import('@/views/Home.vue'),
     },
-      {
-      path: '/tasklist/:type',
-      name: 'tasklist',
-      component: () => import('@/views/OfferList.vue')
+        {
+            path: '/tasklist/:type',
+            name: 'tasklist',
+            component: () => import('@/views/OfferList.vue')
     },
-      {
-      path: '/userinfo/:id',
-      name: 'userinfo',
-      component: () => import('@/views/myInfo.vue')
+        {
+            path: '/userinfo/:id',
+            name: 'userinfo',
+            component: () => import('@/views/myInfo.vue')
     },
-    {
-      path: '/talentmarket/:skill',
-      name: 'talentmarket',
-      component: () => import('@/views/TalentMarket.vue')
-    },{
-      path: '/talentmap',
-      name: 'talentmap',
-      component: () => import('@/views/TalentMap.vue')
+        {
+            path: '/talentmarket/:skill',
+            name: 'talentmarket',
+            component: () => import('@/views/TalentMarket.vue')
+    }, {
+            path: '/talentmap',
+            name: 'talentmap',
+            component: () => import('@/views/TalentMap.vue')
     },
-      {
-      path: '/submittalent',
-      name: 'submittalent',
-      component: () => import('@/views/SubmitTalent.vue')
+        {
+            path: '/submittalent',
+            name: 'submittalent',
+            component: () => import('@/views/SubmitTalent.vue')
     },
-      {
-      path: '/create',
-      name: 'create',
-      component: CreateOffer
+        {
+            path: '/create',
+            name: 'create',
+            component: CreateOffer
     },
-       {
-      path: '/detail/:id',
-      name: 'detail',
-      component: OfferDetail
+        {
+            path: '/detail/:id',
+            name: 'detail',
+            component: OfferDetail
     },
-      {
-      path: '/history/:type',
-      name: 'history',
-      component:  () => import('@/views/TradeHistory.vue')
+        {
+            path: '/history/:type',
+            name: 'history',
+            component: () => import('@/views/TradeHistory.vue')
     },
-    {
-      path: '/funding',
-      name: 'funding',
-      component:  () => import('@/views/notice/crowd-funding.vue')
+        {
+            path: '/funding',
+            name: 'funding',
+            component: () => import('@/views/notice/crowd-funding.vue')
     },
-    {
-      path: '/msg',
-      name: 'msg',
-      component:  () => import('@/views/notice/leave-msg.vue')
+        {
+            path: '/msg',
+            name: 'msg',
+            component: () => import('@/views/notice/leave-msg.vue')
     },
-      {
-      path: '/gamecard',
-      name: 'gamecard',
-      component:  () => import('@/views/GameCard.vue')
+        {
+            path: '/gamecard',
+            name: 'gamecard',
+             meta: {
+                title: "求购人物卡"
+            },
+            component: () => import('@/views/GameCard.vue'),
+           
     },
-    {
-      path: '/bount',
-      name: 'bount',
-      component:  () => import('@/views/notice/bount-test.vue')
+        {
+            path: '/bount',
+            name: 'bount',
+            component: () => import('@/views/notice/bount-test.vue')
     },
   ]
 })
+router.beforeEach((to, from, next) => {
+  /* 路由发生变化修改页面title */
+  if (to.meta.title) {
+    document.title = to.meta.title
+  }
+  next()
+})
+export default  router
