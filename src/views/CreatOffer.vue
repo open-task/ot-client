@@ -156,14 +156,14 @@
 
             }
         },
-        async mounted() {
+        mounted() {
             let self = this
-            await ethereum.enable()
-            if (typeof web3 !== 'undefined') {
+            //await ethereum.enable()
+            // if (typeof web3 !== 'undefined') {
 
-            } else {
-                console.log(false, '请安装 MetaMask 插件');
-            }
+            // } else {
+            //     console.log(false, '请安装 MetaMask 插件');
+            // }
             self.$http.post("/skill/list_skills", {}).then(function(re) {
                 for (var index in re.body.skills) {
                     self.skill_list.push(re.body.skills[index].name)

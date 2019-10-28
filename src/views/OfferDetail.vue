@@ -172,20 +172,18 @@
         },
         async mounted() {
             let self = this
-           
-            await ethereum.enable()
             let task_id = self.$route.params.id
             self.task_id = task_id
             let web3api = self.$web3api
-            let accounts = web3api.eth.accounts
-            console.log(accounts)
             self.web3api = web3api
+
             self.$http.post("/v1/", {
                 "jsonrpc": "2.0",
                 "method": "GetMissionInfo",
                 "params": [task_id],
                 "id": "11"
             }).then(function(re) {
+                console.log(re);
                 let res = re.body.result
                 if(re.body.result.block==0){
                     self.$dialog.alert({
@@ -195,18 +193,13 @@
                         self.$router.push({name:'tasklist'})
                     })
                 }
-                let low_accounts = accounts.map(function(e){
-                    return e.toLowerCase()
-                })
-                if (low_accounts.indexOf(res.publisher.toLowerCase()) + 1) {
-                    self.author = true
-                }
-                console.log(res)
+                
                 self.id = res.mission_id
                 self.$http.post('/skill/get_task_info',{id:self.id}).then(function(re){
                     self.skills =re.body.task.skills
                 })
-                self.reward = web3api.fromWei(res.reward_wei)
+                //self.reward = web3api.fromWei(res.reward_wei)
+                self.reward = res.reward_det;
                 self.task_state = res.status
                 let data_info = {}
                 let solutions = res.solutions
@@ -235,6 +228,16 @@
                 } catch {
                     self.title = "未命名",
                         self.content = res.data
+                }
+
+
+                await ethereum.enable();
+                let accounts = web3api.eth.accounts;
+                let low_accounts = accounts.map(function(e){
+                    return e.toLowerCase()
+                })
+                if (low_accounts.indexOf(res.publisher.toLowerCase()) + 1) {
+                    self.author = true
                 }
 
             })
