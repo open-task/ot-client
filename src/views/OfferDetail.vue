@@ -134,8 +134,13 @@
             add_solution: async function() {
 
                 let self = this
-
-                await ethereum.enable()
+                if( window.ethereum ) {
+                    await ethereum.enable()
+                }else {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com");
+                    return;
+                }
+                
                 if (self.new_solution.replace(/^\s+|\s+$/g, '') == "") {
                     self.$dialog({
                         message: "请勿提交空的内容"
@@ -170,7 +175,7 @@
 
             }
         },
-        async mounted() {
+        mounted() {
             let self = this
             let task_id = self.$route.params.id
             self.task_id = task_id
