@@ -28,6 +28,13 @@
         min-width: 375px;
     }
 
+    @media screen and (min-width: 640px) {
+        html {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+    }
+
     p {
         margin: unset;
     }
