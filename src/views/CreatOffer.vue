@@ -179,6 +179,7 @@
 
 </script>
 <style lang='scss'>
+    
     .create-offer {
         background-color: #F2F2F2;
         position: absolute;
@@ -296,6 +297,14 @@
 
 
             }
+        }
+    }
+
+    @media screen and (min-width: 640px) {
+        .create-offer {
+            max-width: 640px;
+            left: 50%;
+            margin-left: -320px;
         }
     }
 

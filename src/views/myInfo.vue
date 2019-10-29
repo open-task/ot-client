@@ -41,7 +41,7 @@
     export default {
         data() {
             return {
-                account: "",
+                account:  this.$route.params.id,
                 skills: '',
                 email: "",
                 skill: "",
@@ -82,9 +82,9 @@
             },
             get_talent: function() {
                 let self = this
-                let address = self.$route.params.id
+                // let address = self.$route.params.id
                     self.$http.post(`/skill/get_user_info`, {
-                        address: address
+                        address: this.account
                     }).then(function(re) {
                         let user_info = re.body.user_info
                         self.email = user_info.email

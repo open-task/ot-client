@@ -43,26 +43,28 @@
         async mounted() {
             let self = this
             let web3api, accounts
-            await ethereum.enable()
-            try {
+            if( window.ethereum ) {
                 web3api = new Web3(web3.currentProvider);
-                accounts = web3api.eth.accounts
-            } catch (e) {
-                alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
-            }
-            console.log(accounts)
-            if (accounts.length < 1) {
-                console.log("请打开MetaMask才可以进行继续的操作哦")
-            }
-            self.account = accounts[0]
-            console.log(self.account)
+                try {
+                    await ethereum.enable()
+                    accounts = web3api.eth.accounts
+                } catch (e) {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
+                }
 
-            self.$http.post("/skill/list_skills", {}).then(function(re) {
-                console.log(re)
-                self.skill_list = re.body.skills
-                self.get_talent()
-            })
+                console.log(accounts)
+                if (accounts.length < 1) {
+                    console.log("请打开MetaMask才可以进行继续的操作哦")
+                }
+                self.account = accounts[0]
+                console.log(self.account)
 
+                self.$http.post("/skill/list_skills", {}).then(function(re) {
+                    console.log(re)
+                    self.skill_list = re.body.skills
+                    self.get_talent()
+                })
+            }
         },
         methods: {
             add_new_skill: function() {
@@ -144,6 +146,9 @@
                             })
                         }
                     })
+
+                }else {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
                 }
             }
         }
