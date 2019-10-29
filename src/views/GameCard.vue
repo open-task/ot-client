@@ -9,7 +9,7 @@
                     <option value="超零总裁">超零总裁</option>
                     <option value="超零三体">超零三体</option>
                 </select>
-                <img src="../assets/img/选择.png" alt="">
+<!--                <img src="../assets/img/选择.png" alt="">-->
 
 
             </div>
@@ -19,22 +19,28 @@
             </div>
             <div class="line">
                 <label for="">币种</label>
-                <div class="content">
-                    <input type="text" placeholder="请输入金额" v-model='info.coin_name'>
-                </div>
+                <select name="" id="" v-model='info.coin_name'>
+                    <option value="sero">sero</option>
+                    <option value="积德币(sero)">积德币(sero)</option>
+                    <option value="纪念币(sero)">纪念币(sero)</option>
+                    <option value="DET(以太坊)">DET(以太坊)</option>
+                    <option value="GAMC(以太坊)">GAMC(以太坊)</option>
+                </select>
+               
             </div>
             <div class="line">
                 <label for="">金额</label>
                 <input type="text" placeholder="请输入金额" v-model='info.amount'>
             </div>
             <div class="line">
-                <label for="">联系方式</label>
+                <label for="">联系渠道</label>
                 <select name="" id="" v-model='info.contact_name'>
                     <option value="微信">微信</option>
-                    <option value="支付宝">支付宝</option>
+                    <option value="QQ">QQ</option>
+                    <option value="手机号">手机号</option>
                     <option value="其他">其他</option>
                 </select>
-                <img src="../assets/img/选择.png" alt="">
+<!--                <img src="../assets/img/选择.png" alt="">-->
 
             </div>
             <div class="line">
@@ -113,7 +119,7 @@
                 info: {
                     game_name: "超零三国",
                     role_name: "",
-                    coin_name: "SERO",
+                    coin_name: "sero",
                     amount: 0,
                     contact_name: "微信",
                     contact: ""
@@ -153,6 +159,7 @@
 </script>
 <style lang="scss">
     .gamecard {
+        max-width: 750px;
         background: #F2F2F2;
 
         .info-list {
