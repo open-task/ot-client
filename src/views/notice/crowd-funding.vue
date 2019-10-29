@@ -30,6 +30,7 @@
             <div class="code">
                 <img src="/img/chole.png" alt="" class="chole-code">
                 <p>申购需扫码加客服chole小姐姐微信</p>
+                <p><van-button class="btn-tocard" type="primary" to="gamecard" block>求购人物卡</van-button></p>
             </div>
         </div>
         <div class="msg-board">
@@ -163,6 +164,14 @@
                 color: #666;
                 text-align: center;
                 padding-top: 16px;
+            }
+
+            .btn-tocard {
+                background: linear-gradient(90deg,rgba(75,151,249,1),rgba(116,82,245,1));
+                border-radius: 6px;
+                border: none;
+                width: 50%;
+                margin: 0 auto;
             }
         }
 
