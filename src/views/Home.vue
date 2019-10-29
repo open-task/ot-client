@@ -301,4 +301,20 @@
         }
     }
 
+    @media screen and (min-width: 640px) {
+        .home .menu,
+        .home .commun {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .home .commun {
+            padding: 0;
+
+            .btn {
+                margin-left: 10px;
+            }
+        }
+    }
+
 </style>
