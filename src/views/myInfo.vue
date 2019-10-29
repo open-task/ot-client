@@ -57,18 +57,18 @@
         mounted() {
             let self = this
             let web3api, accounts
-            try {
-                web3api = new Web3(web3.currentProvider);
-                accounts = web3api.eth.accounts
-            } catch (e) {
-                alert("请安装后打开MetaMask才可以进行继续的操作哦")
-            }
-            console.log(accounts)
-            if (accounts.length < 1) {
-                console.log("请打开MetaMask才可以进行继续的操作哦")
-            }
-            self.account = accounts[0]
-            console.log(self.account)
+            // try {
+            //     web3api = new Web3(web3.currentProvider);
+            //     accounts = web3api.eth.accounts
+            // } catch (e) {
+            //     alert("请安装后打开MetaMask才可以进行继续的操作哦")
+            // }
+            // console.log(accounts)
+            // if (accounts.length < 1) {
+            //     console.log("请打开MetaMask才可以进行继续的操作哦")
+            // }
+            // self.account = accounts[0]
+            // console.log(self.account)
             self.get_talent()
 
 

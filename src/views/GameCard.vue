@@ -1,6 +1,7 @@
 <template>
     <div class="gamecard">
-        <div class="header">求购人物卡</div>
+        <!-- <div class="header">求购人物卡</div> -->
+        <offer-header title='求购人物卡'></offer-header>
         <div class="selector">
             <div class="line">
                 <label for="">游戏</label>
@@ -111,8 +112,11 @@
     </div>
 </template>
 <script>
+    import OfferHeader from '@/components/OfferHeader';
     export default {
-
+        components: {
+            OfferHeader,
+        },
         data() {
             return {
                 other_contact: "",
