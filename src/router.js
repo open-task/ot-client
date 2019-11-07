@@ -17,7 +17,7 @@ let router = new Router({
             component: () => import('@/views/Home.vue'),
     },
         {
-            path: '/tasklist/:type',
+            path: '/tasklist',
             name: 'tasklist',
             component: () => import('@/views/OfferList.vue')
     },
@@ -79,6 +79,42 @@ let router = new Router({
             name: 'bount',
             component: () => import('@/views/notice/bount-test.vue')
     },
+    {
+      path: '/answerlist',
+      name: 'answerlist',
+      component:  () => import('@/views/answer/answer-list.vue')
+    },
+    {
+      path: '/answerdetail/:id',
+      name: 'answerdetail',
+      component:  () => import('@/views/answer/answer-detail.vue')
+    },
+    {
+      path: '/answersubmit/:id',
+      name: 'answerdanswersubmitetail',
+      component:  () => import('@/views/answer/answer-submit.vue')
+    },
+    {
+      path: '/answercreate',
+      name: 'answercreate',
+      component:  () => import('@/views/answer/answer-create.vue')
+    },
+    {
+      path: '/talentclassify',
+      name: 'talentclassify',
+      component:  () => import('@/views/talent-market/talent-classify.vue')
+    },
+    {
+      path: '/talentlist',
+      name: 'talentlist',
+      component:  () => import('@/views/talent-market/talent-list.vue')
+    },
+    {
+      path: '/talentdetail/:id',
+      name: 'talentdetail',
+      component:  () => import('@/views/talent-market/talent-detail.vue')
+    }
+
   ]
 })
 router.beforeEach((to, from, next) => {
