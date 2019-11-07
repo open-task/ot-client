@@ -8,7 +8,7 @@
         </div>
         <div class="input-group">
             <div class="title"><span>项目描述</span></div>
-            <textarea maxlength="200" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少"></textarea>
+            <textarea maxlength="1000" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少"></textarea>
         </div>
         <div class="input-group">
             <div class="title"><span>项目技能</span></div>
