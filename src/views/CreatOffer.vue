@@ -8,7 +8,7 @@
         </div>
         <div class="input-group">
             <div class="title"><span>项目描述</span></div>
-            <textarea maxlength="200" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少"></textarea>
+            <textarea maxlength="1000" v-model="desc" name="" id="" cols="30" rows="10" placeholder="请输入项目具体描述,需要什么样的服务,工期大约多少"></textarea>
         </div>
         <div class="input-group">
             <div class="title"><span>项目技能</span></div>
@@ -89,7 +89,12 @@
                 let charge = self.charge
                 let web3api = self.$web3api
 
-                await ethereum.enable()
+                if( window.ethereum ) {
+                    await ethereum.enable()
+                }else {
+                    alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com");
+                    return;
+                }
                 var accounts = web3api.eth.accounts;
                 console.log(accounts)
                 if (self.title && self.desc && self.charge) {
@@ -156,14 +161,14 @@
 
             }
         },
-        async mounted() {
+        mounted() {
             let self = this
-            await ethereum.enable()
-            if (typeof web3 !== 'undefined') {
+            //await ethereum.enable()
+            // if (typeof web3 !== 'undefined') {
 
-            } else {
-                console.log(false, '请安装 MetaMask 插件');
-            }
+            // } else {
+            //     console.log(false, '请安装 MetaMask 插件');
+            // }
             self.$http.post("/skill/list_skills", {}).then(function(re) {
                 for (var index in re.body.skills) {
                     self.skill_list.push(re.body.skills[index].name)
@@ -174,6 +179,7 @@
 
 </script>
 <style lang='scss'>
+    
     .create-offer {
         background-color: #F2F2F2;
         position: absolute;
@@ -291,6 +297,14 @@
 
 
             }
+        }
+    }
+
+    @media screen and (min-width: 640px) {
+        .create-offer {
+            max-width: 640px;
+            left: 50%;
+            margin-left: -320px;
         }
     }
 

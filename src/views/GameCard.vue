@@ -1,6 +1,7 @@
 <template>
     <div class="gamecard">
-        <div class="header">求购人物卡</div>
+        <div class="header" v-if="!isSys"><van-button class="btn-home" icon="arrow-left" to="/">首页</van-button>求购人物卡</div>
+        <offer-header title='求购人物卡' v-if="isSys"></offer-header>
         <div class="selector">
             <div class="line">
                 <label for="">游戏</label>
@@ -53,6 +54,7 @@
             <div class="contact">
                 <img src="../assets/img/qrcode.png" alt="">
                 <div class='txt'>购买咨询请联系客服小姐姐</div>
+                <div v-if="!isSys"><router-link to="/" class="to-home">去往帮铁网</router-link></div>
             </div>
 
         </div>
@@ -111,10 +113,14 @@
     </div>
 </template>
 <script>
+    import OfferHeader from '@/components/OfferHeader';
     export default {
-
+        components: {
+            OfferHeader,
+        },
         data() {
             return {
+                isSys: !!this.$route.query.isSys,
                 other_contact: "",
                 info: {
                     game_name: "超零三国",
@@ -184,6 +190,7 @@ display:flex;
         }
 
         .header {
+            position: relative;
             height: 45px;
             line-height: 45px;
             text-align: center;
@@ -191,6 +198,15 @@ display:flex;
             color: white;
             font-weight: 500;
             background: linear-gradient(90deg, rgba(75, 151, 249, 1), rgba(116, 82, 245, 1));
+
+            .btn-home {
+                position: absolute;
+                left: 0;
+                background: none;
+                border: none;
+                color: #fff;
+                font-size: 14px;
+            }
         }
 
         .selector {
@@ -273,6 +289,11 @@ display:flex;
                 .txt {
                     margin-bottom: 20px;
 
+                }
+
+                .to-home {
+                    color: #3C8FFB;
+                    font-size: 14px;
                 }
             }
         }

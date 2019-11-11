@@ -26,8 +26,7 @@
         </div>
 
         <van-notice-bar :scrollable="true" @click='go_ad' mode="link">
-            超零三国风云起&nbsp;
-            英雄为棋天下局
+            SERO平台全网唯一，商机无限！！！
         </van-notice-bar>
         <div class="offer-list" @click='to_tasklist'>
 
@@ -297,6 +296,22 @@
                     margin-top: 5px;
 
                 }
+            }
+        }
+    }
+
+    @media screen and (min-width: 640px) {
+        .home .menu,
+        .home .commun {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .home .commun {
+            padding: 0;
+
+            .btn {
+                margin-left: 10px;
             }
         }
     }

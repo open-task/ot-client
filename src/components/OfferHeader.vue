@@ -45,8 +45,7 @@ export default {
                 window.location.href = "/"
                 self.$router.push({name:'home'})
             }else{
-            this.$router.go(-1)
-                
+                this.$router.go(-1)
             }
         },
         onClickRight:function(){
