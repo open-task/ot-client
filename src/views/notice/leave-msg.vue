@@ -71,7 +71,6 @@
                     this.msgLoading = false;
                     if( res.state ) {
                         this.$router.push('funding');
-                        console.log(3224324)
                     }
                 }).catch(err => {
                     this.msgLoading = false;

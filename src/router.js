@@ -15,11 +15,16 @@ let router = new Router({
             path: '/',
             name: 'home',
             component: () => import('@/views/Home.vue'),
-    },
+      },
         {
             path: '/tasklist',
             name: 'tasklist',
-            component: () => import('@/views/OfferList.vue')
+            component: () => import('@/views/task/task-list.vue')
+    },
+        {
+          path: '/taskcreate',
+          name: 'taskcreate',
+          component: () => import('@/views/task/task-create.vue')
     },
         {
             path: '/userinfo/:id',
@@ -102,17 +107,42 @@ let router = new Router({
     {
       path: '/talentclassify',
       name: 'talentclassify',
-      component:  () => import('@/views/talent-market/talent-classify.vue')
+      component:  () => import('@/views/talent/talent-classify.vue')
     },
     {
-      path: '/talentlist',
+      path: '/talentcreate',
+      name: 'talentcreate',
+      component:  () => import('@/views/talent/talent-create.vue')
+    },
+    {
+      path: '/talentlist/:type',
       name: 'talentlist',
-      component:  () => import('@/views/talent-market/talent-list.vue')
+      component:  () => import('@/views/talent/talent-list.vue')
     },
     {
       path: '/talentdetail/:id',
       name: 'talentdetail',
-      component:  () => import('@/views/talent-market/talent-detail.vue')
+      component:  () => import('@/views/talent/talent-detail.vue')
+    },
+    {
+      path: '/personal',
+      name: 'personal',
+      component:  () => import('@/views/personal/my-info.vue')
+    },
+    {
+      path: '/aboutus',
+      name: 'personal',
+      component:  () => import('@/views/personal/about-us.vue')
+    },
+    {
+      path: '/budget',
+      name: 'budget',
+      component:  () => import('@/views/personal/my-budget.vue')
+    },
+    {
+      path: '/budgetlist/:type',
+      name: 'budgetlist',
+      component:  () => import('@/views/personal/budget-list.vue')
     }
 
   ]

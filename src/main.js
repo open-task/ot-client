@@ -7,6 +7,7 @@ import VueResource from 'vue-resource'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import './styles/index.scss';
+import httpPost from '@/utils/http-post';
 
 Vue.use(Vant);
 Vue.use(VueResource);
@@ -18,6 +19,7 @@ Vue.prototype.$web3api = web3api
 Vue.prototype.$det = det
 Vue.prototype.$token_address = token_address
 Vue.prototype.$abi = abi
+Vue.prototype.$post = httpPost;
 
 
 

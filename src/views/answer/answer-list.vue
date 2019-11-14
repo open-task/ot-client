@@ -18,57 +18,44 @@
                 <van-dropdown-item v-model="order_state" :options="order_state_options" />
             </van-dropdown-menu>
         </div>
-        <div class="answer-list list-scroller">
+        <div class="answer-list bt-flex-scroller">
             <van-list
-                v-model="list_loading"
-                :finished="list_finished"
+                v-model="loading"
+                :finished="finished"
                 finished-text="没有更多了"
-                :error.sync="list_error"
-                error-text="请求失败，点击重新加载"
-                @load="handleListLoad"
+                @load="getAnswerList"
             >
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
+                <van-panel class="bt-card">
+                    <div class="van-cell van-panel__header" slot="header">
+                        <span class="det-bg">100 DET</span>
+                        <div class="van-cell__title">
+                            <span>标题标题标题标题标题标题标题标题</span>
+                        </div>
+                        <div class="van-cell__value van-panel__header-value">
+                            <img class="answer-a" src="/img/ans-icon.png" alt="答">
+                        </div>
+                    </div>
                     <div class="bt-card-footer clearfix" slot="footer">
                         <span class="pull-right">待回答</span>
                         <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
                     </div>
                 </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
+                <van-panel class="bt-card">
+                    <div class="van-cell van-panel__header" slot="header">
+                        <span class="det-bg">3 DET</span>
+                        <div class="van-cell__title">
+                            <span>标题标题标题标题标题标题标题标题</span>
+                        </div>
+                        <div class="van-cell__value van-panel__header-value">
+                            <img class="answer-a" src="/img/ans-icon.png" alt="答">
+                        </div>
+                    </div>
                     <div class="bt-card-footer clearfix" slot="footer">
                         <span class="pull-right">待回答</span>
                         <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
                     </div>
                 </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
-                <van-panel class="bt-card" title="标题标题标题标题标题标题标题标题" status="1">
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
+                
             </van-list>
         </div>
         <bt-tabbar activeIndex="2"></bt-tabbar>
@@ -84,6 +71,8 @@
         },
         data() {
             return {
+                loading: false,
+                finished: false,
                 searchText: '',
                 order_type: 0,
                 order_type_options: [
@@ -105,32 +94,58 @@
                     { text: '全部', value: 0 },
                     { text: '待回答', value: 1 },
                     { text: '已回答', value: 2 }
-                ],
-                list_loading: false,
-                list_finished: false,
-                list_error: false
+                ]
             }
         },
         methods: {
-            handleSearch(e) {
-                console.log(e.target.value)
-            },
-            handleCancel() {
+            getAnswerList() {
 
             },
-            handleListLoad() {
-                this.loading = true;
-                setTimeout(() => {
-                    //this.loading = false;
-                }, 1000)
+            handleSearch(e) {
+                console.log(e.target.value)
             }
-            
         },
     }
 </script>
 
 <style lang="scss" scoped>
     .answer-list {
+        .bt-card {
+            border-top-right-radius: 0;
+        }
+        .van-panel__header {
+            position: relative;
+            padding-top: .4rem;
 
+            .answer-a {
+                display: inline-block;
+                width: .98rem;
+                height: .98rem;
+                margin-top: 10px;
+            }
+
+            .det-bg {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 1.6rem;
+                height: .41rem;
+                line-height: .42rem;
+                background-image: url('/img/det-icon.png');
+                background-repeat: no-repeat;
+                background-size: 100% auto;
+                padding-left: .6rem;
+                padding-right: 2px;
+                box-sizing: border-box;
+                color: #fff;
+                font-size: 12px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                text-align: right;
+            }
+
+        }
+        
     }
 </style>

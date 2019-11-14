@@ -36,7 +36,7 @@
                 <van-dropdown-item v-model="order_state" :options="order_state_options" />
             </van-dropdown-menu>
         </div>
-        <div class="task-list list-scroller">
+        <div class="task-list bt-flex-scroller">
             <van-list
                 v-model="list_loading"
                 :finished="list_finished"

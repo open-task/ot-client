@@ -50,9 +50,9 @@ body, html {
     font-size: 14px;
 }
 
-.list-scroller {
+.bt-flex-scroller {
     width: 100%;
-    padding-top: 8px;
+    padding-top: 10px;
     flex: 1;
     overflow-x: hidden;
     overflow-y: auto;
@@ -140,9 +140,20 @@ body, html {
     background: linear-gradient(90deg,rgba(75,151,249,1),rgba(116,82,245,1));
 }
 
+.bt-tag, .bt-tag-default {
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
 .bt-tag {
     color: #4862E6;
     background:rgba(242,244,252,1);
+    
+}
+
+.bt-tag-default {
+    background-color: #f1f1f1;
+    color: #999;
 }
 
 .bt-dropdown-menu {
@@ -164,6 +175,44 @@ body, html {
 
         &:first-child:before {
             display: none;
+        }
+    }
+}
+
+.bt-cell-icon {
+    width: .36rem;
+    height: auto;
+    margin-right: .36rem;
+    vertical-align: middle;
+}
+
+.task-list {
+    padding-bottom: 10px;
+    
+    .van-cell {
+        align-items: center;
+        .van-cell__title {
+            overflow: hidden;
+        }
+        h3 {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
+        .task-field {
+            margin: 0 5px;
+        }
+        .bt-btn {
+            margin-left: 5px;
+        }
+
+        p {
+            .t-gray {
+                margin-right: 10px;
+            }
         }
     }
 }

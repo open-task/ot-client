@@ -1,6 +1,6 @@
 <template>
     <div class="layout-vertical">
-        <div class="answer-info-wrapper list-scroller">
+        <div class="answer-info-wrapper bt-flex-scroller">
             <div class="answer-info">
                 <van-panel class="bt-card" title="后端MD5加密，如何保证KEY存放的安全性问题！求经验人士指点！">
                     <div class="bt-card-default">
