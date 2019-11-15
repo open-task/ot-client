@@ -79,6 +79,11 @@ let router = new Router({
             name: 'bount',
             component: () => import('@/views/notice/bount-test.vue')
     },
+         {
+            path: '/paimai',
+            name: 'auction',
+            component: () => import('@/views/auction.vue')
+    },
   ]
 })
 router.beforeEach((to, from, next) => {
