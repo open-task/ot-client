@@ -102,11 +102,12 @@
         },
         methods: {
             go_back: function() {
-                if (window.history.length > 1) {
-                    this.$router.back()
-                } else {
-                    this.$router.push('/')
-                }
+                this.$router.push('/')
+                // if (window.history.length > 1) {
+                //     this.$router.back()
+                // } else {
+                //     this.$router.push('/')
+                // }
 
             },
             get_coin: function() {

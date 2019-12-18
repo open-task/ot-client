@@ -28,7 +28,7 @@
                 </van-row>
             </div>
             <div class="code">
-                <p style="padding:0; margin-bottom:16px;"><van-button class="btn-tocard" type="primary" to="gamecard?isSys=1" block>求购人物卡</van-button></p>
+                <p style="padding:0; margin-bottom:16px;"><van-button class="btn-tocard" type="primary" @click='to_name("gamecard")' block>求购人物卡</van-button></p>
                 <img src="/img/chole.png" alt="" class="chole-code">
                 <p>申购需扫码加客服chole小姐姐微信</p>
             </div>
@@ -75,6 +75,10 @@
             }
         },
         methods: {
+            to_name:function(name){
+                let self = this
+                self.$router.push({name:name,query:{isSys:1}})
+            },
             getMsgList() {
                 this.$http.post("/skill/get_messages", {
                     page: this.page,

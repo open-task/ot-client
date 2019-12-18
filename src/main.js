@@ -11,6 +11,11 @@ Vue.use(Vant);
 Vue.use(VueResource);
 Vue.config.productionTip = false
 
+import filters from '@/filters'
+Object.keys(filters).forEach(key => {
+    Vue.filter(key, filters[key])
+})
+Vue.prototype.$filters = filters; //在模板中使用
 
 Vue.prototype.$task = task
 Vue.prototype.$web3api = web3api

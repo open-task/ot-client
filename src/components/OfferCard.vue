@@ -1,13 +1,12 @@
 <template>
     <div class="offer-card">
-        <div class="task" @click='go_detail(offer.mission_id)'>
+        <div class="task" @click='go_detail(offer.missionId)'>
             <div class="desc">
-                <div class="title">{{title}}</div>
-                <div class="content">{{time}}</div>
+                <div class="title">{{offer.title}}</div>
+                <div class="content">{{offer.timestamp|dateFormat}}</div>
                 <div class="state">{{slove_type}}</div>
 
             </div>
-            <!--            <img src="/img/进入_ICON.png" alt="" class="go">-->
             <div class="info">
                 <div class="charge" style='margin-bottom:10px;'>
                     <span>{{reward}}</span> DET
@@ -36,6 +35,7 @@
         },
         mounted() {
             let self = this
+            console.log(self.offer)
         },
         methods: {
             go_detail: function(id) {
@@ -51,15 +51,8 @@
         computed: {
             slove_type: function() {
                 let self = this
-                if(self.offer.solved){
-                    return "已解决"
-                }else{
-                    if(self.offer.solution_num){
-                        return "已提交"
-                    }else{
-                        return "待解决"
-                    }
-                }
+                return {'success':"已解决",'published':"未提交"}[self.offer.task_state]
+                
                 
             },
             reward:function(){
@@ -75,23 +68,13 @@
                 let amount = offer.solution_num
                 return amount
             },
-            title: function() {
-                let self = this
-                let title = ""
-                try {
-                    title = JSON.parse(self.offer.context)['title']
-                } catch {
-                    title = "未命名"
-                }
-                return title
-            },
+            
             time: function() {
                 let self = this
                 let time = ""
 
-                time = self.offer.txtime
-                time = time.slice(0, time.length - 10)
-
+                time = self.offer.timestamp
+//                time = time.slice(0, time.length - 10)
                 return time
             },
             content: function() {

@@ -89,14 +89,13 @@
                 let charge = self.charge
                 let web3api = self.$web3api
 
-                if( window.ethereum ) {
+                if (window.ethereum) {
                     await ethereum.enable()
-                }else {
+                } else {
                     alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com");
                     return;
                 }
                 var accounts = web3api.eth.accounts;
-                console.log(accounts)
                 if (self.title && self.desc && self.charge) {
                     if (typeof accounts === 'undefined' || accounts.length === 0) {
                         console.log('请解锁 MetaMask 后刷新')
@@ -106,10 +105,16 @@
                         let DET = self.$det
                         let id = parseInt(Date.parse(new Date())) + "" + parseInt(Math.random() * 10000)
                         //生成不重复id
+
+
+
                         let data = JSON.stringify({
+
                             "title": self.title,
                             "desc": self.desc,
-                            'skills': self.select_skill
+                            'skills': self.select_skill,
+                            "fn_type":'task'
+                            
                         })
 
                         DET.approve(self.$token_address, value, (err, txHash) => {
@@ -120,27 +125,31 @@
                                 console.log("approve成功")
                                 console.log("即将publish", id, value, data)
                                 self.$task.publish(id, value, data, (err, txHash) => {
-                                    console.log('publish')
-
                                     if (err) {
                                         console.log('发生错误', err)
                                     } else {
                                         self.$http.post("/skill/add_task", {
                                             skill: self.select_skill,
-                                            id: id
+                                            id: id,
+                                            author: accounts[0],
+                                            reward: value,
+                                            title: self.title,
+                                            desc: self.desc,
+                                            skills: self.select_skill
+                                        }).then(function() {
+                                            self.$dialog.alert({
+                                                title: '项目提交成功',
+                                                message: '<div class="zhe">项目哈希:' + txHash + "<br><br>项目id:" + id + "<br><br>等待写入区块</div>"
+                                            }).then(() => {
+                                                self.$router.push({
+                                                    "name": "tasklist",
+                                                    'params': {
+                                                        'type': 'published'
+                                                    }
+                                                })
+                                            });
                                         })
-                                        //                                        将技能添加到技能列表
-                                        self.$dialog.alert({
-                                            title: '项目提交成功',
-                                            message: '<div class="zhe">项目哈希:' + txHash + "<br><br>项目id:" + id + "<br><br>等待写入区块</div>"
-                                        }).then(() => {
-                                            self.$router.push({
-                                                "name": "tasklist",
-                                                'params': {
-                                                    'type': 'published'
-                                                }
-                                            })
-                                        });
+//                                        将技能添加到技能列表
                                     }
                                 });
                             }
@@ -163,12 +172,7 @@
         },
         mounted() {
             let self = this
-            //await ethereum.enable()
-            // if (typeof web3 !== 'undefined') {
-
-            // } else {
-            //     console.log(false, '请安装 MetaMask 插件');
-            // }
+           
             self.$http.post("/skill/list_skills", {}).then(function(re) {
                 for (var index in re.body.skills) {
                     self.skill_list.push(re.body.skills[index].name)
@@ -179,7 +183,6 @@
 
 </script>
 <style lang='scss'>
-    
     .create-offer {
         background-color: #F2F2F2;
         position: absolute;
