@@ -145,7 +145,6 @@
                 })
             },
             add_solution: async function() {
-
                 let self = this
                 if (window.ethereum) {
                     await ethereum.enable()

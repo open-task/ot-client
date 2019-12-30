@@ -84,6 +84,11 @@ let router = new Router({
             name: 'auction',
             component: () => import('@/views/auction.vue')
     },
+        {
+            path: '/temp',
+            name: 'auction',
+            component: () => import('@/views/temp.vue')
+    },
   ]
 })
 router.beforeEach((to, from, next) => {
