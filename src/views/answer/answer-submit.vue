@@ -7,12 +7,12 @@
                 placeholder="请输入问题回复"
                 rows="6"
                 autosize
+                maxlength="300"
             />
         </van-panel>
         <div class="bt-footer-wrapper">
             <van-button class="bt-btn" size="large" block>提 交</van-button>
         </div>
-
     </div>
 </template>
 

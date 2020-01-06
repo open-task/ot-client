@@ -27,6 +27,16 @@ let router = new Router({
           component: () => import('@/views/task/task-create.vue')
     },
         {
+          path: '/taskdetail/:id',
+          name: 'taskdetail',
+          component: () => import('@/views/task/task-detail.vue')
+    },
+        {
+          path: '/tasksolution/:id',
+          name: 'tasksolution',
+          component: () => import('@/views/task/task-solution-submit.vue')
+    },
+        {
             path: '/userinfo/:id',
             name: 'userinfo',
             component: () => import('@/views/myInfo.vue')

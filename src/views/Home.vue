@@ -23,7 +23,7 @@
                 <img class="bt-cell-icon" src="/img/adv-icon.png" alt="通知">
             </template>
             <van-tag plain round color="#7452F5" class="notice-tag">通知</van-tag>
-            SERO平台全网唯一，商机无限！！！
+            SERO平台币名全网唯一，商机无限！！！
         </van-notice-bar>
         <div class="home-access">
             <ul class="clearfix">

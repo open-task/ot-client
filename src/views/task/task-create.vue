@@ -18,6 +18,7 @@
                     placeholder="请输入项目具体描述，需要什么样的服务，工期大约多少？"
                     rows="6"
                     autosize
+                    maxlength="1000"
                 />
             </van-panel>
             <van-panel class="bt-card" title="项目技能">

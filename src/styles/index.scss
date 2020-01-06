@@ -104,6 +104,12 @@ body, html {
         word-break: break-all;
         position: relative;
         line-height: 22px;
+        color: #666;
+
+        .bt-card-desc-publisher {
+            color: #999;
+            font-size: 12px;
+        }
 
         & + .bt-card-default:before {
             position: absolute;
