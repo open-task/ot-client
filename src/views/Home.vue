@@ -38,7 +38,7 @@
                     </router-link>
                 </li>
                 <li>
-                    <router-link to='/talentlist'>
+                    <router-link to='/talentclassify'>
                         <img src="/img/bt-access03.png" alt="人才技能列表">
                     </router-link>
                 </li>
@@ -196,6 +196,9 @@
 
             this.$post('/skill/list_tasks', { type: 'all' }).then( res => {
                 if( res.missions && res.missions.length ) {
+                    if( res.missions.length > 8 ) {
+                        res.missions = res.missions.slice(0, 8) ;
+                    }
                     this.taskList = res.missions.slice(0, 8).map( d => getTaskData(d) );
                 }
             })
@@ -214,7 +217,7 @@
                             position: 'bottom'
                         });
                     }else {
-                        this.$router.push({ path: '/detail', params: { id } });
+                        this.$router.push({ name: 'detail', params: { id } });
                     }
                 })
             },

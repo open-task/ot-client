@@ -14,7 +14,7 @@
                 <van-field
                     v-model="desc"
                     type="textarea"
-                    placeholder="请输入问题回复"
+                    placeholder="请输入问题内容描述"
                     rows="6"
                     autosize
                 />
@@ -25,16 +25,22 @@
                 type="number"
                 placeholder="请输入您要悬赏的数额" 
                 label="赏金"
-            />
+                clearable
+                class="det-field"
+                label-width="48px"
+            >
+                <span class="t-warning" slot="right-icon">DET</span>
+            </van-field>
         </div>
         
         <div class="bt-footer-wrapper" style="margin-top: 30px;">
-            <van-button class="bt-btn" size="large" block>创建问答</van-button>
+            <van-button class="bt-btn" size="large" block @click="submitAnswer">创建问答</van-button>
         </div>
     </div>
 </template>
 
 <script>
+    import getId from '@/utils/get-uniqueId';
     export default {
         data() {
             return {
@@ -43,7 +49,76 @@
                 charge: ""
             }
         },
-        mounted() {
+
+        methods: {
+            submitAnswer() {
+                if( !this.title ) {
+                    this.$toast({
+                        message: '请输入问题标题',
+                        position: 'bottom'
+                    });
+                    return;
+                }
+                if( !this.desc ) {
+                    this.$toast({
+                        message: '请输入问题回复',
+                        position: 'bottom'
+                    });
+                    return;
+                }
+                if( !this.charge ) {
+                    this.$toast({
+                        message: '请输入问题悬赏的数额',
+                        position: 'bottom'
+                    });
+                    return;
+                }
+
+                let charge = this.$web3api.toWei(this.charge);
+                let id = getId();
+
+                this.$post("/question/new_question", {
+                    address: this.$web3api.eth.accounts[0],
+                    title: this.title,
+                    content: this.desc,
+                    reward: this.charge,
+                    missionId: id
+                }).then(res => {
+
+                    this.$det.approve( this.$token_address, charge, (err, txHash) => {
+                        if( !err ) {
+                            let _data = JSON.stringify({
+                                title: this.title,
+                                desc: this.desc,
+                                fn_type: "question"
+                            })
+                            this.$task.publish( id, charge, _data, (err, txHash) => {
+                                if( !err ) {
+                                    this.$toast({
+                                        message: '创建成功',
+                                        position: 'bottom',
+                                        onClose: () => {
+                                            this.$router.push({ name: 'answerlist' });
+                                        }
+                                    }); 
+                                }else {
+                                    this.$toast({
+                                        message: '创建失败，请稍后重试',
+                                        position: 'bottom'
+                                    });  
+                                }
+                            })
+
+                        }else {
+                            this.$toast({
+                                message: '系统有误，请稍后重试',
+                                position: 'bottom'
+                            });  
+                        }
+                    })
+                
+                })
+            }
         }
     }
 </script>

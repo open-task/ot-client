@@ -158,18 +158,22 @@
                 this.$det.approve( this.$token_address, charge, (err, txHash) => {
                     if( !err ) {
                         let id = getId();
-                        this.$task.publish( id, value, data, (err, txHash) => {
+                        this.$task.publish( id, charge, data, (err, txHash) => {
                             if( !err ) {
                                 this.$post("/skill/add_task", {
-                                    skill: this.selectSkills,
-                                    id: id
-                                }).then( res => {
-
+                                    missionId: id,
+                                    skill: data.skills,
+                                    title: data.title,
+                                    desc: data.desc,
+                                    reward: charge
                                 })
 
                                 this.$toast({
                                     message: '创建成功',
-                                    position: 'bottom'
+                                    position: 'bottom',
+                                    onClose: () => {
+                                        this.$router.push({ name: 'tasklist' });
+                                    }
                                 }); 
 
                             }else {

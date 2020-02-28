@@ -160,17 +160,26 @@
                     return;
                 }
 
-                this.$post(`/skill/update_user_info`, {
+                this.$post("/skill/update_user_info", {
                     skill: this.setSkills(),
                     address: this.account,
                     email: this.email
                 }).then( res => {
-                    this.$toast({
-                        message: '创建成功',
-                        position: 'bottom'
-                    }).then(() => {
-
-                    })
+                    if( res.state ) {
+                        this.$toast({
+                            message: '提交成功',
+                            position: 'bottom',
+                            onClose: () => {
+                                this.$router.push({ name: 'talentclassify' });
+                            }
+                        })
+                    }else {
+                        this.$toast({
+                            message: '提交失败，请稍后重试',
+                            position: 'bottom'
+                        });
+                    }
+                    
                 })
             }
 

@@ -17,10 +17,11 @@
 </template>
 
 <script>
+    import getId from '@/utils/get-uniqueId';
     export default {
         data() {
             return {
-                id: this.$route.params.id,
+                taskId: this.$route.params.id,
                 message: ''
             }
         },
@@ -33,14 +34,14 @@
                     });
                     return;
                 }
-
-                this.$task.solve(solution_id, task_id, data, (err, txHash) => {
+                const _data = JSON.stringify({ content: this.message })
+                this.$task.solve(getId(), this.taskId, _data, (err, txHash) => {
                     if( !err ) {
                         this.$toast({
                             message: '提交成功',
                             position: 'bottom'
                         }).then(() => {
-                            this.$router.push({ path: '/taskdetail', params: { id: this.id } })
+                            this.$router.push({ name: 'taskdetail', params: { id: this.taskId } })
                         })
                     }else {
                         this.$toast({

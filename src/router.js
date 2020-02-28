@@ -95,6 +95,11 @@ let router = new Router({
             component: () => import('@/views/notice/bount-test.vue')
     },
     {
+      path: '/noticelist',
+      name: 'noticelist',
+      component: () => import('@/views/notice/notice-list.vue')
+    },
+    {
       path: '/answerlist',
       name: 'answerlist',
       component:  () => import('@/views/answer/answer-list.vue')

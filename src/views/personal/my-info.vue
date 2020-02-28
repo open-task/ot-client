@@ -91,7 +91,7 @@
                 </template>
             </van-cell>
         </van-cell-group>
-        <bt-tabbar activeIndex="3"></bt-tabbar>
+        <bt-tabbar activeIndex="4"></bt-tabbar>
     </div>
 </template>
 

@@ -25,37 +25,22 @@
                 finished-text="没有更多了"
                 @load="getAnswerList"
             >
-                <van-panel class="bt-card">
+                <van-panel class="bt-card" v-for="a in answerList" :key="a.missionId" @click="handleAnsClick(a.missionId)">
                     <div class="van-cell van-panel__header" slot="header">
-                        <span class="det-bg">100 DET</span>
+                        <span class="det-bg">{{a.reward}} DET</span>
                         <div class="van-cell__title">
-                            <span>标题标题标题标题标题标题标题标题</span>
+                            <span>{{a.title}}</span>
                         </div>
                         <div class="van-cell__value van-panel__header-value">
                             <img class="answer-a" src="/img/ans-icon.png" alt="答">
                         </div>
                     </div>
                     <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
+                        <span class="pull-right" :class="{'t-primary': a.question_state == 'published', 't-gray':  a.question_state != 'published'}">{{ a.question_state == 'published' ? '待回答' : '已回答'}}</span>
+                        <div class="pull-left"><span class="t-warning">{{a.answer_amount}}</span>参与了回复</div>
                     </div>
                 </van-panel>
-                <van-panel class="bt-card">
-                    <div class="van-cell van-panel__header" slot="header">
-                        <span class="det-bg">3 DET</span>
-                        <div class="van-cell__title">
-                            <span>标题标题标题标题标题标题标题标题</span>
-                        </div>
-                        <div class="van-cell__value van-panel__header-value">
-                            <img class="answer-a" src="/img/ans-icon.png" alt="答">
-                        </div>
-                    </div>
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right">待回答</span>
-                        <div class="pull-left"><span class="t-warning">3</span>参与了回复</div>
-                    </div>
-                </van-panel>
-                
+
             </van-list>
         </div>
         <bt-tabbar activeIndex="2"></bt-tabbar>
@@ -71,8 +56,12 @@
         },
         data() {
             return {
+                answerList: [],
+                page: 1,
+                pageSize: 10,
                 loading: false,
                 finished: false,
+
                 searchText: '',
                 order_type: 0,
                 order_type_options: [
@@ -99,10 +88,47 @@
         },
         methods: {
             getAnswerList() {
-
+                this.$post("/question/get_question_list", {
+                    page: this.page,
+                    page_size: this.pageSize
+                }).then(res => {
+                    if( res.question && res.question.length ) {
+                        res.question.forEach(d => {
+                            this.answerList.push(d);
+                        });
+                    }
+                    this.loading = false;
+                    this.page++;
+                    if( this.answerList.length >= res.count ) {
+                        this.finished = true;
+                    }
+                })
             },
             handleSearch(e) {
                 console.log(e.target.value)
+            },
+
+            handleCancel() {
+
+            },
+
+            handleAnsClick(id) {
+                this.$post("/question/get_question", {
+                    question_id: id
+                }).then(res => {
+                    if( res.state ) {
+                        if( res.question ) {
+                            window.sessionStorage.removeItem('DATA_ANSWER')
+                            window.sessionStorage.setItem('DATA_ANSWER', JSON.stringify(res.question))
+                            this.$router.push({ name: 'answerdetail', params: { id } });
+                        }
+                    }else {
+                        this.$toast({
+                            message: '项目还在发行中，请稍后重试',
+                            position: 'bottom'
+                        });
+                    }
+                })
             }
         },
     }

@@ -127,7 +127,7 @@
                             position: 'bottom'
                         });
                     }else {
-                        this.$router.push({ path: '/detail', params: { id } });
+                        this.$router.push({ name: 'detail', params: { id } });
                     }
                 })
             },
