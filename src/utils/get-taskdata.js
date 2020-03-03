@@ -13,16 +13,17 @@ export default function getTaskData(data) {
     //     type = 'warning';
     //     text = '已提交';
     // }
-    if( data.question_state != 'published' ) {
+    if( data.task_state == 'success' ) {
         type = 'gray';
         text = '已解决';
-    }else if( !!data.answer_amount ) {
+    }else if( data.task_state == 'published' ) {
+        type = 'primary';
+        text = '待解决';
+    }else {
         type = 'warning';
         text = '已提交';
     }
-    type = 'primary';
-    text = '待解决';
-    
+
     return {
         ...data,
         // title: context.title,

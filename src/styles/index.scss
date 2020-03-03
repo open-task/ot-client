@@ -220,8 +220,10 @@ body, html {
         }
 
         p {
-            .t-gray {
-                margin-right: 10px;
+            .t-time {
+                display: inline-block;
+                line-height: top;
+                min-width: 150px;
             }
         }
     }

@@ -51,14 +51,14 @@
                 if( !this.account ) {
                     this.$toast({
                         message: '要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.message ) {
                     this.$toast({
                         message: '请输入留言',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }

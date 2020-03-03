@@ -116,7 +116,7 @@
                 if( !err ) {
                     this.$toast({
                         message: '操作成功',
-                        position: 'bottom'
+                        position: 'middle'
                     }); 
                 }else {
                     window.location.reload();

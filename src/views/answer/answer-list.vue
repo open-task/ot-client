@@ -125,7 +125,7 @@
                     }else {
                         this.$toast({
                             message: '项目还在发行中，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }
                 })

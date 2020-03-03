@@ -3,71 +3,30 @@
         <van-cell-group>
             <van-cell class="personal-cell">
                 <div>
-                    <span class="t-warning">总收入</span>
-                    <span class="budget-sum"><i class="t-warning">6000</i> DET</span>
+                    <span :class="tClass">{{ isIncome ? '总收入' : '总支出' }}</span>
+                    <span class="budget-sum"><i :class="tClass">{{total}}</i> DET</span>
                 </div>
                 <template slot="title">
                     <img class="personal-link-icon" src="/img/budget-icon.png" alt="">
-                    <span>收入详情</span>
+                    <span>{{ isIncome ? '收入' : '支出' }}详情</span>
                 </template>
             </van-cell>
         </van-cell-group>
         <div class="task-list">
-            <van-cell is-link>
+            <van-cell is-link v-for="task in budgetList" :key="task.missionId" @click="handleTaskClick(task.missionId)">
                 <template slot="title">
                     <van-row type="flex" justify="end">
                         <van-col span="18">
-                            <h3>OpenTask工程师</h3>
-                            <p class="t-gray">2019-08-14 20:00:00 <span class="t-warning">收入</span></p>
+                            <h3>{{task.title}}</h3>
+                            <p><span class="t-gray t-time">{{task.time}}</span></p>
                         </van-col>
                         <van-col span="6">
                             <div class="clearfix">
                                 <span class="task-field pull-right t-gray">DET</span>
-                                <span class="pull-right t-warning">1.99</span> 
+                                <span class="pull-right" :class="tClass">{{ isIncome ? '+' : '-' }}{{task.reward}}</span> 
                             </div>
                             <div class="clearfix">
-                                <span class="task-field pull-right t-gray">提交</span>
-                                <span class="pull-right t-warning">3</span> 
-                            </div>
-                        </van-col>
-                    </van-row>
-                </template>
-            </van-cell>
-            <van-cell is-link>
-                <template slot="title">
-                    <van-row type="flex" justify="end">
-                        <van-col span="18">
-                            <h3>OpenTask工程师</h3>
-                            <p class="t-gray">2019-08-14 20:00:00 <span class="t-warning">收入</span></p>
-                        </van-col>
-                        <van-col span="6">
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">DET</span>
-                                <span class="pull-right t-warning">1.99</span> 
-                            </div>
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">提交</span>
-                                <span class="pull-right t-warning">3</span> 
-                            </div>
-                        </van-col>
-                    </van-row>
-                </template>
-            </van-cell>
-            <van-cell is-link>
-                <template slot="title">
-                    <van-row type="flex" justify="end">
-                        <van-col span="18">
-                            <h3>OpenTask工程师</h3>
-                            <p class="t-gray">2019-08-14 20:00:00 <span class="t-warning">收入</span></p>
-                        </van-col>
-                        <van-col span="6">
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">DET</span>
-                                <span class="pull-right t-warning">1.99</span> 
-                            </div>
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">提交</span>
-                                <span class="pull-right t-warning">3</span> 
+                                <span class="task-field pull-right" :class="tClass">{{ isIncome ? '收入' : '支出' }}</span>
                             </div>
                         </van-col>
                     </van-row>
@@ -79,8 +38,63 @@
 </template>
 
 <script>
+    import getTaskData from '@/utils/get-taskdata';
     export default {
-        
+        data() {
+            return {
+                budgetType: this.$route.params.type,
+                total: this.$route.params.total,
+                budgetList: []
+            }
+        },
+
+        computed: {
+            isIncome() {
+                return this.budgetType == 'income'
+            },
+
+            tClass() {
+                return {
+                    't-warning': this.isIncome, 
+                    't-primary': !this.isIncome
+                }
+            }
+
+        },
+
+        mounted() {
+          this.getBudgeList();
+        },
+
+        methods: {
+            getBudgeList() {
+                this.$post('/skill/get_user_order', {
+                    address: this.account
+                }).then( ({ state, income = [], paid = [] }) => {
+                    if( state ) {
+                        this.budgetList = (this.budgetType == 'income' ? income : paid).map( d => getTaskData(d) );
+                    }
+                } )
+            },
+
+            handleTaskClick(id) {
+                this.$post('/v1/', {
+                    "jsonrpc": "2.0",
+                    "method": "GetMissionInfo",
+                    "params": [id],
+                    "id": "11"
+                }).then( res => {
+                    if( !res.result.block ) {
+                        this.$toast({
+                            message: '项目还在发行中，请稍后重试',
+                            position: 'middle'
+                        });
+                    }else {
+                        this.$router.push({ name: 'detail', params: { id } });
+                    }
+                })
+            },
+        }
     }
 </script>
 
@@ -98,7 +112,7 @@
     .personal-link-icon {
         width: .36rem;
         height: auto;
-        margin-right: .36rem;
+        margin-right: .2rem;
         vertical-align: middle;
         margin-top: -2px;
     }

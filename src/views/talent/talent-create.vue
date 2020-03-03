@@ -3,7 +3,7 @@
         <div class="bt-flex-scroller">
             <van-panel class="bt-card" title="自我介绍">
                 <van-field
-                    v-model="title"
+                    v-model="self_intro "
                     type="textarea"
                     placeholder="请输入自我介绍"
                     rows="3"
@@ -35,7 +35,7 @@
             </van-panel>
             <van-panel class="bt-card" title="时间标价">
                 <van-field
-                    v-model="desc"
+                    v-model="price"
                     type="textarea"
                     placeholder="请输入例如：周一 上午9:00-11:00 每小时100DET"
                     rows="6"
@@ -61,8 +61,8 @@
     export default {
         data() {
             return {
-                title: '',
-                desc: '',
+                self_intro : '',
+                price: '',
                 email: '',
                 skillValue: '',
                 selectSkills: [],
@@ -110,7 +110,7 @@
                 if( this.selectSkills.indexOf(s) > -1 ) {
                     this.$toast({
                         message: '已添加过该技能',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return true;
                 }
@@ -148,14 +148,14 @@
                 if( !this.email ) {
                     this.$toast({
                         message: '请输入您的邮箱地址',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.selectSkills.length ) {
                     this.$toast({
                         message: '请输入您所会的技能',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
@@ -163,12 +163,14 @@
                 this.$post("/skill/update_user_info", {
                     skill: this.setSkills(),
                     address: this.account,
-                    email: this.email
+                    email: this.email,
+                    self_intro : this.self_intro,
+                    price: this.price
                 }).then( res => {
                     if( res.state ) {
                         this.$toast({
                             message: '提交成功',
-                            position: 'bottom',
+                            position: 'middle',
                             onClose: () => {
                                 this.$router.push({ name: 'talentclassify' });
                             }
@@ -176,7 +178,7 @@
                     }else {
                         this.$toast({
                             message: '提交失败，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }
                     

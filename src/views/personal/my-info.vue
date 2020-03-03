@@ -3,23 +3,23 @@
         <div class="personal-card" style="margin-top:10px;">
             <span class="personal-account-icon"></span>
             <div class="personal-account">
-                <p><span class="account">Account</span><br>fsfsfsf23432423cxcfdsff</p>
+                <p><span class="account">Account</span><br><span class="code">{{account}}</span></p>
             </div>
             <van-button type="default" size="small">点击复制</van-button>
         </div>
         <div class="personal-card">
             <van-row class="personal-row" type="flex" justify="space-between">
                 <van-col span="11">
-                    <div class="personal-budget budget-income">
+                    <div class="personal-budget budget-income" @click="toBudgeList('income')">
                         <h3><span class="budget-icon"></span>收入</h3>
-                        <p class="personal-budget-sum">1000DET</p>
+                        <p class="personal-budget-sum">{{reward}} DET</p>
                         <p>总收入</p>
                     </div>
                 </van-col>
                 <van-col span="11">
-                    <div class="personal-budget budget-pay">
+                    <div class="personal-budget budget-pay" @click="toBudgeList('paid')">
                         <h3><span class="budget-icon"></span>支出</h3>
-                        <p class="personal-budget-sum">1000DET</p>
+                        <p class="personal-budget-sum">{{paid}} DET</p>
                         <p>总支出</p>
                     </div>
                 </van-col>
@@ -33,15 +33,15 @@
                 <van-row class="myinfo-row">
                     <van-col span="12">
                         <p class="myinfo-row-t">发布任务</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{task_count}}个</p>
                     </van-col>
                     <van-col span="12">
                         <p class="myinfo-row-t">提交方案</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{solution_count}}个</p>
                     </van-col>
                     <van-col span="12">
                         <p class="myinfo-row-t">接收方案</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{solution_accept_count}}个</p>
                     </van-col>
                 </van-row>
             </div>
@@ -54,25 +54,25 @@
                 <van-row class="myinfo-row">
                     <van-col span="12">
                         <p class="myinfo-row-t">发布问答</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{question_count}}个</p>
                     </van-col>
                     <van-col span="12">
                         <p class="myinfo-row-t">解答问题</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{answer_count}}个</p>
                     </van-col>
                     <van-col span="12">
                         <p class="myinfo-row-t">接受答案</p>
-                        <p class="myinfo-row-s">1个</p>
+                        <p class="myinfo-row-s">{{answer_accept_count}}个</p>
                     </van-col>
                 </van-row>
             </div>
         </div>
-        <div class="bt-pannel">
+        <div class="bt-pannel" v-if="skills && skills.length">
             <div class="bt-pannel-hd">
                 <h3>我的技能</h3>
             </div>
             <div class="bt-pannel-bd">
-                <van-tag class="bt-tag-default">区块链</van-tag><van-tag class="bt-tag-default">UI / UE</van-tag><van-tag class="bt-tag-default">手绘</van-tag><van-tag class="bt-tag-default">标签</van-tag><van-tag class="bt-tag-default">视觉设计</van-tag>
+                <van-tag class="bt-tag-default" v-for="s in skills" :key="s">{{s}}</van-tag>
             </div>
         </div>
         <van-cell-group>
@@ -103,8 +103,46 @@
         },
         data() {
             return {
+                account: this.$web3api.eth.accounts[0],
+                reward: 0,
+                paid: 0,
+                task_count: 0,
+                solution_count: 0,
+                solution_accept_count: 0,
+                answer_count: 0,
+                question_count: 0,
+                answer_accept_count: 0,
+                skills: []
             }
         },
+        mounted() {
+            this.getUserinfo();
+        },
+        
+        methods: {
+            getUserinfo() {
+                this.$post('/skill/get_user_info', {
+                    address: this.account
+                }).then( res => {
+                    if( res.state ) {
+                        const _info = res.user_info;
+                        this.reward = _info.reward;
+                        this.paid = _info.paid;
+                        this.task_count = _info.task.task_count;
+                        this.solution_count = _info.task.solution_count;
+                        this.solution_accept_count = _info.task.solution_accept_count;
+                        this.answer_count = _info.question.answer_count;
+                        this.question_count = _info.question.question_count;
+                        this.answer_accept_count = _info.question.answer_accept_count;
+                        this.skills = _info.skill
+                    }
+                } )
+            },
+
+            toBudgeList(type) {
+                this.$router.push({ path: `/budgetlist/${type}/${ type == 'income' ? this.reward : this.paid }` });
+            }
+        }
     }
 </script>
 
@@ -132,9 +170,15 @@
             padding: 0 16px;
             color: #666;
             font-size: 16px;
+            overflow: hidden;
+            overflow-wrap: break-word;
 
             .account {
                 color: #7453F5;
+            }
+
+            .code {
+                font-size: 12px;
             }
         }
 

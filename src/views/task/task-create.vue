@@ -92,7 +92,7 @@
                 if( this.selectSkills.indexOf(s) > -1 ) {
                     this.$toast({
                         message: '已添加过该技能',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return true;
                 }
@@ -130,21 +130,21 @@
                 if( !this.title ) {
                     this.$toast({
                         message: '请输入项目名称',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.desc ) {
                     this.$toast({
                         message: '请输入项目描述',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.charge ) {
                     this.$toast({
                         message: '请输入项目悬赏的数额',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
@@ -170,7 +170,7 @@
 
                                 this.$toast({
                                     message: '创建成功',
-                                    position: 'bottom',
+                                    position: 'middle',
                                     onClose: () => {
                                         this.$router.push({ name: 'tasklist' });
                                     }
@@ -179,14 +179,14 @@
                             }else {
                                 this.$toast({
                                     message: '创建失败，请稍后重试',
-                                    position: 'bottom'
+                                    position: 'middle'
                                 });  
                             }
                         })
                     }else {
                         this.$toast({
                             message: '系统有误，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });  
                     }
                 })

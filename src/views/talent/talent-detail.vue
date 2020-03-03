@@ -3,7 +3,7 @@
         <div class="bt-flex-scroller">
             <van-panel class="bt-card" title="自我介绍">
                 <div class="bt-card-default">
-                    <p>我清华大学毕业13年，300多套上线作品，设计经验千经百战，总有一款风格让你心动！不管你是初创团队，还是大型企业，我收费价格不会比市场上高，让你花很少的钱，享受到高端的设计</p>
+                    <p>{{self_intro}}</p>
                 </div>
             </van-panel>
             <van-panel class="bt-card" title="项目技能">
@@ -13,7 +13,7 @@
             </van-panel>
             <van-panel class="bt-card" title="时间标价">
                 <div class="bt-card-default">
-                    <p>我清华大学毕业13年，300多套上线作品，设计经验千经百战，总有一款风格让你心动！不管你是初创团队，还是大型企业，我收费价格不会比市场上高，让你花很少的钱，享受到高端的设计</p>
+                    <p>{{price}}</p>
                 </div>
             </van-panel>
             <van-panel class="bt-card no-header">
@@ -41,7 +41,8 @@
         data() {
             return {
                 account: this.$route.params.id,
-                desc: '',
+                self_intro: '',
+                price: '',
                 charge: '',
                 email: '',
                 skills: []
@@ -55,6 +56,8 @@
                 this.$post(`/skill/get_user_info`, {
                     address: this.account
                 }).then( res => {
+                    this.self_intro  = res.user_info.self_intro;
+                    this.price = res.user_info.price;
                     this.email = res.user_info.email;
                     this.skills = res.user_info.skill;
                 } )

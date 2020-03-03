@@ -55,21 +55,21 @@
                 if( !this.title ) {
                     this.$toast({
                         message: '请输入问题标题',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.desc ) {
                     this.$toast({
                         message: '请输入问题回复',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
                 if( !this.charge ) {
                     this.$toast({
                         message: '请输入问题悬赏的数额',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
@@ -96,7 +96,7 @@
                                 if( !err ) {
                                     this.$toast({
                                         message: '创建成功',
-                                        position: 'bottom',
+                                        position: 'middle',
                                         onClose: () => {
                                             this.$router.push({ name: 'answerlist' });
                                         }
@@ -104,7 +104,7 @@
                                 }else {
                                     this.$toast({
                                         message: '创建失败，请稍后重试',
-                                        position: 'bottom'
+                                        position: 'middle'
                                     });  
                                 }
                             })
@@ -112,7 +112,7 @@
                         }else {
                             this.$toast({
                                 message: '系统有误，请稍后重试',
-                                position: 'bottom'
+                                position: 'middle'
                             });  
                         }
                     })

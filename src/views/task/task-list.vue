@@ -12,24 +12,26 @@
         </div>
         <div class="order-hd">
             <van-dropdown-menu class="bt-dropdown-menu">
-                <van-dropdown-item v-model="order_type" :options="order_type_options" />
-                <van-dropdown-item v-model="order_price" :options="order_price_options" />
-                <van-dropdown-item v-model="order_state" :options="order_state_options" />
+                <van-dropdown-item v-model="sort_type" :options="order_type_options" @change="handleChange"/>
+                <van-dropdown-item v-model="sort_price" :options="order_price_options" @change="handleChange"/>
+                <van-dropdown-item v-model="task_state" :options="order_state_options" @change="handleChange"/>
             </van-dropdown-menu>
         </div>
         <div class="task-list bt-flex-scroller">
             <van-list
                 v-model="loading"
                 :finished="finished"
+                :immediate-check="false"
                 finished-text="没有更多了"
                 @load="getTaskList"
+                ref="taskLisk"
             >
-                <van-cell is-link v-for="task in taskList" :key="task.mission_id" @click="handleTaskClick(task.mission_id)">
+                <van-cell is-link v-for="task in taskList" :key="task.missionId" @click="handleTaskClick(task.missionId)">
                     <template slot="title">
                         <van-row type="flex" justify="end">
                             <van-col span="18">
                                 <h3>{{task.title}}</h3>
-                                <p><span class="t-gray">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">待解决</span></p>
+                                <p><span class="t-gray t-time">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">{{task.text}}</span></p>
                             </van-col>
                             <van-col span="6">
                                 <div class="clearfix">
@@ -67,45 +69,67 @@
                 finished: false,
 
                 searchText: '',
-                order_type: 0,
+                sort_type: 0,
                 order_type_options: [
                     { text: '默认排序', value: 0 },
-                    { text: '时间优先', value: 1 },
-                    { text: '价格优先', value: 2 },
+                    { text: '时间优先', value: 'timestamp' },
+                    { text: '价格优先', value: 'price' },
                 ],
-                order_price: 0,
+                sort_price: 0,
                 order_price_options: [
                     { text: '价格不限', value: 0 },
-                    { text: '10 DET及一下', value: 1 },
-                    { text: '10-50 DET', value: 2 },
-                    { text: '50-200 DET', value: 3 },
-                    { text: '200-500 DET', value: 4 },
-                    { text: '500-1000 DET', value: 5 },
-                    { text: '1000 DET及以上', value: 6 }
+                    { text: '10 DET及以下', value: '0-10' },
+                    { text: '10-50 DET', value: '10-50'},
+                    { text: '50-200 DET', value: '50-200' },
+                    { text: '200-500 DET', value: '200-500' },
+                    { text: '500-1000 DET', value: '500-1000' },
+                    { text: '1000 DET及以上', value: '1000-10000000' }
                 ],
-                order_state: 0,
+                task_state: 0,
                 order_state_options: [
                     { text: '全部', value: 0 },
-                    { text: '待解决', value: 1 },
-                    { text: '已提交', value: 2 },
-                    { text: '已解决', value: 3 }
+                    { text: '待解决', value: 'published' },
+                    { text: '已提交', value: 'updated' },
+                    { text: '已解决', value: 'success' }
                 ]
 
             }
         },
 
+        mounted() {
+            this.getTaskList();
+        },
+
         methods: {
+            handleChange() {
+                this.page = 1;
+                this.taskList = [];
+                this.getTaskList();
+                this.$refs.taskLisk.scroller.scrollTop = 0;
+                this.finished = true;
+            },
             getTaskList() {
-                this.$post("/skill/list_tasks", {
-                    page: this.page,
-                    count: this.count,
-                    type: 'all'
-                }).then(res => {
+                this.loading = true;
+                this.$post("/skill/list_tasks", 
+                    Object.assign(
+                        {
+                            page: this.page,
+                            count: this.count,
+                        },
+                        !!this.sort_type ?
+                            { sort_type: this.sort_type } : null,
+                        !!this.sort_price ?
+                            { sort_price: this.sort_price } : null,
+                        !!this.task_state ?
+                            { task_state: this.task_state } : null
+                    )
+                ).then(res => {
                     if( res.missions && res.missions.length ) {
                         res.missions.forEach(d => {
                             this.taskList.push( getTaskData(d) );
                         });
                     }
+
                     this.loading = false;
                     this.page++;
                     if( this.taskList.length >= res.count ) {
@@ -124,7 +148,7 @@
                     if( !res.result.block ) {
                         this.$toast({
                             message: '项目还在发行中，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }else {
                         this.$router.push({ name: 'detail', params: { id } });
@@ -139,26 +163,6 @@
                     console.log(re)
                 })
                 console.log(c)
-            },
-            go_page(type) {
-                let self = this
-                window.location.href = `/tasklist/${type}`
-
-            },
-            get_page() {
-                let self = this
-                let page = self.page
-                let type = self.$route.params.type
-                let f = {page:page}
-                if (type) {
-                    f["type"] = type
-                } else {
-                    f["type"] = ""
-                }
-                console.log(f)
-                self.$http.post("/skill/list_tasks", f).then(function(re) {
-                    self.offer_list = re.body.missions
-                })
             },
 
             handleSearch(e) {

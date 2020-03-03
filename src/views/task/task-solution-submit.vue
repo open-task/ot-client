@@ -30,7 +30,7 @@
                 if( !this.message ) {
                     this.$toast({
                         message: '请输入解决方案',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
@@ -39,14 +39,14 @@
                     if( !err ) {
                         this.$toast({
                             message: '提交成功',
-                            position: 'bottom'
+                            position: 'middle'
                         }).then(() => {
                             this.$router.push({ name: 'taskdetail', params: { id: this.taskId } })
                         })
                     }else {
                         this.$toast({
                             message: '系统有误，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }
                 })

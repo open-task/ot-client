@@ -155,7 +155,7 @@ let router = new Router({
       component:  () => import('@/views/personal/my-budget.vue')
     },
     {
-      path: '/budgetlist/:type',
+      path: '/budgetlist/:type/:total',
       name: 'budgetlist',
       component:  () => import('@/views/personal/budget-list.vue')
     }

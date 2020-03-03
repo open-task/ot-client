@@ -79,12 +79,12 @@
             </ul>
         </div>
         <div class="task-list bt-flex-scroller">
-            <van-cell v-for="task in taskList" :key="task.mission_id">
+            <van-cell v-for="task in taskList" :key="task.missionId">
                 <template slot="title">
                     <van-row type="flex" justify="end">
                         <van-col span="18">
                             <h3>{{task.title}}</h3>
-                            <p><span class="t-gray">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">待解决</span></p>
+                            <p><span class="t-gray t-time">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">{{task.text}}</span></p>
                         </van-col>
                         <van-col span="6">
                             <div class="clearfix">
@@ -99,7 +99,7 @@
                     </van-row>
                 </template>
                 <template slot="right-icon">
-                    <van-button class="bt-btn" size="small" @click="handleTaskClick(task.mission_id)">查看</van-button>
+                    <van-button class="bt-btn" size="small" @click="handleTaskClick(task.missionId)">查看</van-button>
                 </template>
             </van-cell>
         </div>
@@ -194,12 +194,12 @@
 
             // })
 
-            this.$post('/skill/list_tasks', { type: 'all' }).then( res => {
+            this.$post('/skill/list_tasks', {
+                page: 1,
+                count: 8,
+            }).then( res => {
                 if( res.missions && res.missions.length ) {
-                    if( res.missions.length > 8 ) {
-                        res.missions = res.missions.slice(0, 8) ;
-                    }
-                    this.taskList = res.missions.slice(0, 8).map( d => getTaskData(d) );
+                    this.taskList = res.missions.map( d => getTaskData(d) );
                 }
             })
         },
@@ -214,7 +214,7 @@
                     if( !res.result.block ) {
                         this.$toast({
                             message: '项目还在发行中，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }else {
                         this.$router.push({ name: 'detail', params: { id } });

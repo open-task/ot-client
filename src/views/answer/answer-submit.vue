@@ -29,7 +29,7 @@
                 if( !this.message ) {
                     this.$toast({
                         message: '请输入问题回复',
-                        position: 'bottom'
+                        position: 'middle'
                     });
                     return;
                 }
@@ -50,7 +50,7 @@
                             if( !err ) {
                                 this.$toast({
                                     message: '提交成功',
-                                    position: 'bottom',
+                                    position: 'middle',
                                     onClose: () => {
                                         window.sessionStorage.removeItem('DATA_ANSWER')
                                         this.$router.push({ name: 'answerdetail', params: { id: this.missionId } });
@@ -59,14 +59,14 @@
                             }else {
                                 this.$toast({
                                     message: '系统有误，请稍后重试',
-                                    position: 'bottom'
+                                    position: 'middle'
                                 });
                             }
                         })
                     }else {
                         this.$toast({
                             message: '提交失败，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }
                 })

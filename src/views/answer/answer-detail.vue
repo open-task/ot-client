@@ -99,7 +99,7 @@
                     }else {
                         this.$toast({
                             message: '项目还在发行中，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         });
                     }
                 })
@@ -110,7 +110,7 @@
                     if( !err ) {
                         this.$toast({
                             message: '操作成功',
-                            position: 'bottom'
+                            position: 'middle'
                         }).then(() => {
                             window.location.reload();
                         })
@@ -118,7 +118,7 @@
                     }else {
                         this.$toast({
                             message: '操作失败，请稍后重试',
-                            position: 'bottom'
+                            position: 'middle'
                         })
                     }
                 })
