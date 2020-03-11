@@ -76,7 +76,7 @@
             </div>
         </div>
         <van-cell-group>
-            <van-cell class="personal-cell" is-link>
+            <van-cell class="personal-cell" is-link to="/bount">
                 <template slot="title">
                     <img class="personal-link-icon" src="/img/help-icon.png" alt="">
                     <span>帮助</span>
@@ -103,7 +103,7 @@
         },
         data() {
             return {
-                account: this.$web3api.eth.accounts[0],
+                account: this.$account,
                 reward: 0,
                 paid: 0,
                 task_count: 0,
@@ -141,6 +141,20 @@
 
             toBudgeList(type) {
                 this.$router.push({ path: `/budgetlist/${type}/${ type == 'income' ? this.reward : this.paid }` });
+            },
+
+            handleClip() {
+                if( imToken ) {
+                    imToken.callAPI('native.setClipboard', this.$account);
+                    this.$toast({
+                        message: '已复制'
+                    });
+                }else {
+                    this.$toast({
+                        message: '复制失败'
+                    });
+                }
+                
             }
         }
     }

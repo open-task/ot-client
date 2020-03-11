@@ -172,7 +172,7 @@
                                     message: '创建成功',
                                     position: 'middle',
                                     onClose: () => {
-                                        this.$router.push({ name: 'tasklist' });
+                                        this.$router.push({ path: '/tasklist' });
                                     }
                                 }); 
 

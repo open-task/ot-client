@@ -1,6 +1,5 @@
 <template>
     <div class="bount-test create-offer">
-        <offer-header title='公告'></offer-header>
         <div class="input-group">
             <div class="title"><span>Bountinet 内测系统正式上线了！</span></div>
             <div class="desc">Bountinet 内测系统正式上线了！欢迎各界技术大咖来内测使用！以下内容是Bountinet系统使用说明书。</div>
@@ -74,22 +73,14 @@
     </div>
 </template>
 
-<script>
-    import OfferHeader from '@/components/OfferHeader'
-    export default {
-        components: {
-            OfferHeader,
-        },
-        data() {
-            return {
-                
-            }
-        },
-    }
-</script>
-
 <style lang="scss" scoped>
     .bount-test {
+        padding-top: 30px;
+
+        .title {
+            font-size: 16px;
+        }
+        
         .input-group{
             padding: 10px 15px;
             .desc {

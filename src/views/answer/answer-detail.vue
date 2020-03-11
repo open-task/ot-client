@@ -26,7 +26,7 @@
                             <van-button class="bt-btn" size="small" v-if="address ==  account && question_state == 'published'" @click="handleSolution(a.id)">接受</van-button>
                             <span class="t-primary" v-if="a.answer_state == 'accept'">已接受</span>
                         </span>
-                        <div class="pull-left"><span class="t-gray">{{a.create_time}}</span></div>
+                        <div class="pull-left"><span class="t-gray t-12">{{a.create_time}}</span></div>
                     </div>
                 </van-panel>
             </van-list>   
@@ -44,22 +44,19 @@
         data() {
             return {
                 missionId: this.$route.params.id,
-                account: this.$web3api.eth.accounts[0],
+                account: this.$account,
                 address: '',
                 title: '',
                 content: '',
                 create_time: '',
                 question_state: '',
                 answersList: [],
-                page: 1,
-                pageSize: 10,
                 loading: false,
                 finished: true
             }
         },
 
         mounted() {
-            console.log( this.$web3api.eth.accounts[0] )
             let sessionData = window.sessionStorage.getItem('DATA_ANSWER');
             sessionData = sessionData && JSON.parse(sessionData);
             if( sessionData && sessionData.missionId === this.missionId  ) {
@@ -81,6 +78,9 @@
                 this.question_state = data.question_state;
                 let ret;
                 data.answers.forEach((d, i) => {
+                    if( d.create_time ) {
+                        d.create_time = timestampToDate(d.create_time);
+                    }
                     if( d.answer_state === 'accept' ) {
                         ret = d;
                         data.answers.splice(i, 1);

@@ -25,6 +25,12 @@
                 message: ''
             }
         },
+        mounted() {
+            window.onpopstate = (state) => {
+                this.$router.push({ path: `/taskdetail/${this.taskId}`});
+                window.onpopstate = null;
+            }
+        },
         methods: {
             handleSubmit() {
                 if( !this.message ) {
@@ -39,9 +45,10 @@
                     if( !err ) {
                         this.$toast({
                             message: '提交成功',
-                            position: 'middle'
-                        }).then(() => {
-                            this.$router.push({ name: 'taskdetail', params: { id: this.taskId } })
+                            position: 'middle',
+                            onClose: () => {
+                                this.$router.replace({ path: `/taskdetail/${this.taskId}`});
+                            }
                         })
                     }else {
                         this.$toast({
@@ -51,7 +58,7 @@
                     }
                 })
             }
-        },
+        }
     }
 </script>
 

@@ -10,13 +10,13 @@
                 />
             </form>
         </div>
-        <div class="order-hd">
+        <!-- <div class="order-hd">
             <van-dropdown-menu>
                 <van-dropdown-item v-model="order_type" :options="order_type_options" />
                 <van-dropdown-item v-model="order_price" :options="order_price_options" />
                 <van-dropdown-item v-model="order_state" :options="order_state_options" />
             </van-dropdown-menu>
-        </div>
+        </div> -->
         <div class="talent-list bt-flex-scroller">
             <van-list
                 v-model="loading"

@@ -37,7 +37,7 @@
                 this.$post("/question/answer", {
                     missionId: this.missionId,
                     content: this.message,
-                    author: this.$web3api.eth.accounts[0],
+                    author: this.$account,
                 }).then(res => {
                     if( res.answer_id ) {
                         const _data = JSON.stringify({ 
@@ -52,8 +52,8 @@
                                     message: '提交成功',
                                     position: 'middle',
                                     onClose: () => {
-                                        window.sessionStorage.removeItem('DATA_ANSWER')
-                                        this.$router.push({ name: 'answerdetail', params: { id: this.missionId } });
+                                        window.sessionStorage.removeItem('DATA_ANSWER');
+                                        this.$router.push({ path: `/answerdetail/${this.missionId}` });
                                     }
                                 })
                             }else {

@@ -696,10 +696,10 @@
   resolved "https://registry.yarnpkg.com/@types/q/-/q-1.5.1.tgz#48fd98c1561fe718b61733daed46ff115b496e18"
   integrity sha512-eqz8c/0kwNi/OEHQfvIuJVLTst3in0e7uTKeuY+WL/zfKn0xVujOTp42bS/vUUokhK5P2BppLd9JXMOMHcgbjA==
 
-"@vant/icons@1.1.14":
-  version "1.1.14"
-  resolved "https://registry.yarnpkg.com/@vant/icons/-/icons-1.1.14.tgz#76dfb7be055f98875d703af59a6216539c32a8cd"
-  integrity sha512-KfH33dwTHZY1NDU2hTEwCUAcbkNuqvrY36hedVhWFZbQfGPV1Aywg3v/txh7+7NsACi5IOd4MD9S2ymFB7dUAg==
+"@vant/icons@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@vant/icons/-/icons-1.2.1.tgz#309fecb97a4989866f045ce676b545c454701c8f"
+  integrity sha512-5ivsKQR4ySbdBW5UPoQDVqO6rdc1um3rvq/0VL+ZSA7Y3MdBQ3E4/NL0hoAY5/sZZeYfIDKEP21gpjUzdeEDQQ==
 
 "@vue/babel-helper-vue-jsx-merge-props@^1.0.0":
   version "1.0.0"
@@ -4525,6 +4525,11 @@ loader-utils@^1.0.1, loader-utils@^1.0.2, loader-utils@^1.1.0:
     emojis-list "^2.0.0"
     json5 "^1.0.1"
 
+loadsh@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/loadsh/-/loadsh-0.0.4.tgz#5314babd12bb13315dde024a4ca70758c5489d2d"
+  integrity sha512-U+wLL8InpfRalWrr+0SuhWgGt10M4OyAk6G8xCYo2rwpiHtxZkWiFpjei0vO463ghW8LPCdhqQxXlMy2qicAEw==
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -7580,13 +7585,13 @@ validate-npm-package-license@^3.0.1:
     spdx-correct "^3.0.0"
     spdx-expression-parse "^3.0.0"
 
-vant@2.2.2:
-  version "2.2.2"
-  resolved "https://registry.yarnpkg.com/vant/-/vant-2.2.2.tgz#615802ffdcf290abd0b60eb392964c1ae5713d4d"
-  integrity sha512-PBtXf9BX4u+1znITgpv4A6g7aTS74zrovgRFLvlJ6iZnArCNfWZKznE5HQ2XETAeK4QcNy5YhhiAljTYYLV56w==
+vant@^2.2.9:
+  version "2.5.4"
+  resolved "https://registry.yarnpkg.com/vant/-/vant-2.5.4.tgz#3c1044253a0483f885a5f46dd01a8f50ad46737b"
+  integrity sha512-eIeXrzsEP5cNbMkskFwxu3i6kkzS2pR7/fF0pFoTXhl/oYRdkXUt46RnRQtazz/BNHVBf2j3dVnwLTIBPRGstQ==
   dependencies:
     "@babel/runtime" "7.x"
-    "@vant/icons" "1.1.14"
+    "@vant/icons" "1.2.1"
     "@vue/babel-helper-vue-jsx-merge-props" "^1.0.0"
     vue-lazyload "1.2.3"
 

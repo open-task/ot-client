@@ -6,12 +6,13 @@
                     v-model="searchText"
                     placeholder="请输入技能检索"
                     shape="round"
-                    @search="handleSearch"
+                    @input="handleSearch"
+                    @clear="getSkills"
                 />
             </form>
         </div>
         <div class="talent-list bt-flex-scroller">
-            <van-cell-group>
+            <van-cell-group v-show="skills && skills.length">
                 <van-cell size="large" is-link v-for="s in skills" :key="s.id" :to="`/talentlist/${s.name}`">
                     <div slot="title">
                         <h3>{{s.name}}</h3>
@@ -27,6 +28,7 @@
                     </div>
                 </van-cell>
             </van-cell-group>
+            <bt-noresult v-show="!skills || !skills.length" />
         </div>
         <div class="bt-footer-wrapper">
             <van-button class="bt-btn" size="large" block to="/talentcreate">提交我的技能</van-button>
@@ -35,26 +37,32 @@
 </template>
 
 <script>
+    import BtNoresult from '@/components/BtNoresult';
     export default {
+        components: {
+            BtNoresult
+        },
         data() {
             return {
                 searchText: '',
-                skills: []
+                skills: [],
+                handleSearch: null
             }
         },
         mounted() {
             this.getSkills();
+            this.handleSearch = this.$throttle( this.getSkills, 300 )
+            
         },
         methods: {
-            getSkills(text) {
-                this.$post("/skill/list_skills", !!text ? { s: text } : {} ).then( res => {
+            getSkills() {
+                this.$post("/skill/list_skills", { s: this.searchText || '' }).then( res => {
                     if( res.skills && res.skills.length ) {
                         this.skills = res.skills.filter( s => !!s.name );
+                    }else {
+                        this.skills = [];
                     }
                 })
-            },
-            handleSearch() {
-                this.getSkills( this.searchText );
             }
         },
     }

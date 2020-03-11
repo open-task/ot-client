@@ -4,9 +4,10 @@
             <form action="/">
                 <van-search
                     v-model="searchText"
-                    placeholder="请输入任务和ID检索"
+                    placeholder="请输入任务检索"
                     shape="round"
-                    @search="handleSearch"
+                    @input="handleSearch"
+                    @clear="handleChange"
                 />
             </form>
         </div>
@@ -19,6 +20,7 @@
         </div>
         <div class="task-list bt-flex-scroller">
             <van-list
+                v-show="taskList && taskList.length"
                 v-model="loading"
                 :finished="finished"
                 :immediate-check="false"
@@ -26,28 +28,9 @@
                 @load="getTaskList"
                 ref="taskLisk"
             >
-                <van-cell is-link v-for="task in taskList" :key="task.missionId" @click="handleTaskClick(task.missionId)">
-                    <template slot="title">
-                        <van-row type="flex" justify="end">
-                            <van-col span="18">
-                                <h3>{{task.title}}</h3>
-                                <p><span class="t-gray t-time">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">{{task.text}}</span></p>
-                            </van-col>
-                            <van-col span="6">
-                                <div class="clearfix">
-                                    <span class="task-field pull-right t-gray">DET</span>
-                                    <span class="pull-right t-warning">{{task.reward}}</span> 
-                                </div>
-                                <div class="clearfix">
-                                    <span class="task-field pull-right t-gray">提交</span>
-                                    <span class="pull-right t-warning">{{task.solution_num}}</span> 
-                                </div>
-                            </van-col>
-                        </van-row>
-                    </template>
-                </van-cell>
-            
+                <task-cell v-for="task in taskList" :key="task.missionId" :task="task" />
             </van-list>
+            <bt-noresult v-show="!taskList || !taskList.length" />
         </div>
         <bt-tabbar activeIndex="1"></bt-tabbar>
     </div>
@@ -55,10 +38,14 @@
 
 <script>
     import BtTabbar from '@/components/BtTabbar';
+    import TaskCell from '@/components/TaskCell';
+    import BtNoresult from '@/components/BtNoresult';
     import getTaskData from '@/utils/get-taskdata';
     export default {
         components: {
-            BtTabbar
+            BtTabbar,
+            BtNoresult,
+            TaskCell
         },
         data() {
             return {
@@ -67,6 +54,7 @@
                 count: 10,
                 loading: false,
                 finished: false,
+                handleSearch: null,
 
                 searchText: '',
                 sort_type: 0,
@@ -97,15 +85,16 @@
         },
 
         mounted() {
+            this.handleSearch = this.$throttle( this.handleChange, 300 );
             this.getTaskList();
         },
 
         methods: {
             handleChange() {
+                this.$refs.taskLisk.scroller.scrollTop = 0;
                 this.page = 1;
                 this.taskList = [];
                 this.getTaskList();
-                this.$refs.taskLisk.scroller.scrollTop = 0;
                 this.finished = true;
             },
             getTaskList() {
@@ -115,9 +104,10 @@
                         {
                             page: this.page,
                             count: this.count,
+                            q: this.searchText
                         },
                         !!this.sort_type ?
-                            { sort_type: this.sort_type } : null,
+                            { sort_type: this.sort_type } : { sort_type: 'timestamp' },
                         !!this.sort_price ?
                             { sort_price: this.sort_price } : null,
                         !!this.task_state ?
@@ -139,34 +129,7 @@
             },
 
             handleTaskClick(id) {
-                this.$post('/v1/', {
-                    "jsonrpc": "2.0",
-                    "method": "GetMissionInfo",
-                    "params": [id],
-                    "id": "11"
-                }).then( res => {
-                    if( !res.result.block ) {
-                        this.$toast({
-                            message: '项目还在发行中，请稍后重试',
-                            position: 'middle'
-                        });
-                    }else {
-                        this.$router.push({ name: 'detail', params: { id } });
-                    }
-                })
-            },
-
-            search: function(c) {
-                let self = this
-                self.$http.post("/skill/search_task",{q:c}).then(function(re){
-                    self.offer_list = re.body.missions
-                    console.log(re)
-                })
-                console.log(c)
-            },
-
-            handleSearch(e) {
-                console.log(e.target.value)
+                
             }
 
         }

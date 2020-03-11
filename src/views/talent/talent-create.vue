@@ -67,7 +67,7 @@
                 skillValue: '',
                 selectSkills: [],
                 skills: [],
-                account: this.$web3api.eth.accounts[0]
+                account: this.$account
                 //'0xAC83AC647EE14D631d5ab237Dade127D754d9953' 
             }
         },
@@ -172,7 +172,7 @@
                             message: '提交成功',
                             position: 'middle',
                             onClose: () => {
-                                this.$router.push({ name: 'talentclassify' });
+                                this.$router.push({ path: '/talentclassify' });
                             }
                         })
                     }else {

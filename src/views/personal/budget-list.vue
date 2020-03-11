@@ -12,34 +12,22 @@
                 </template>
             </van-cell>
         </van-cell-group>
-        <div class="task-list">
-            <van-cell is-link v-for="task in budgetList" :key="task.missionId" @click="handleTaskClick(task.missionId)">
-                <template slot="title">
-                    <van-row type="flex" justify="end">
-                        <van-col span="18">
-                            <h3>{{task.title}}</h3>
-                            <p><span class="t-gray t-time">{{task.time}}</span></p>
-                        </van-col>
-                        <van-col span="6">
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">DET</span>
-                                <span class="pull-right" :class="tClass">{{ isIncome ? '+' : '-' }}{{task.reward}}</span> 
-                            </div>
-                            <div class="clearfix">
-                                <span class="task-field pull-right" :class="tClass">{{ isIncome ? '收入' : '支出' }}</span>
-                            </div>
-                        </van-col>
-                    </van-row>
-                </template>
-            </van-cell>
+        <div class="task-list" v-show="budgetList && budgetList.length">
+            <task-cell v-for="task in budgetList" :key="task.missionId" :task="task" />
         </div>
-
+        <bt-noresult v-show="!budgetList || !budgetList.length" text="暂无收支记录"/>
     </div>
 </template>
 
 <script>
+    import TaskCell from '@/components/TaskCell';
+    import BtNoresult from '@/components/BtNoresult';
     import getTaskData from '@/utils/get-taskdata';
     export default {
+        components: {
+            BtNoresult,
+            TaskCell
+        },
         data() {
             return {
                 budgetType: this.$route.params.type,
@@ -75,25 +63,7 @@
                         this.budgetList = (this.budgetType == 'income' ? income : paid).map( d => getTaskData(d) );
                     }
                 } )
-            },
-
-            handleTaskClick(id) {
-                this.$post('/v1/', {
-                    "jsonrpc": "2.0",
-                    "method": "GetMissionInfo",
-                    "params": [id],
-                    "id": "11"
-                }).then( res => {
-                    if( !res.result.block ) {
-                        this.$toast({
-                            message: '项目还在发行中，请稍后重试',
-                            position: 'middle'
-                        });
-                    }else {
-                        this.$router.push({ name: 'detail', params: { id } });
-                    }
-                })
-            },
+            }
         }
     }
 </script>

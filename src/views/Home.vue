@@ -79,29 +79,7 @@
             </ul>
         </div>
         <div class="task-list bt-flex-scroller">
-            <van-cell v-for="task in taskList" :key="task.missionId">
-                <template slot="title">
-                    <van-row type="flex" justify="end">
-                        <van-col span="18">
-                            <h3>{{task.title}}</h3>
-                            <p><span class="t-gray t-time">{{task.time}}</span><span :class="{ ['t-' + task.type] : true }">{{task.text}}</span></p>
-                        </van-col>
-                        <van-col span="6">
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">DET</span>
-                                <span class="pull-right t-warning">{{task.reward}}</span> 
-                            </div>
-                            <div class="clearfix">
-                                <span class="task-field pull-right t-gray">提交</span>
-                                <span class="pull-right t-warning">{{task.solution_num}}</span> 
-                            </div>
-                        </van-col>
-                    </van-row>
-                </template>
-                <template slot="right-icon">
-                    <van-button class="bt-btn" size="small" @click="handleTaskClick(task.missionId)">查看</van-button>
-                </template>
-            </van-cell>
+            <task-cell v-for="task in taskList" :key="task.missionId" :task="task" :isLink="false" />
         </div>
         <bt-tabbar activeIndex="0"></bt-tabbar>
         
@@ -167,11 +145,13 @@
     import OfferCard from "@/components/OfferCard"
     import {ImagePreview} from 'vant'
     import BtTabbar from '@/components/BtTabbar';
+    import TaskCell from '@/components/TaskCell';
     import getTaskData from '@/utils/get-taskdata';
     export default {
         components: {
             OfferCard,
-            BtTabbar
+            BtTabbar,
+            TaskCell
         },
         name: 'home',
         data() {
@@ -204,23 +184,6 @@
             })
         },
         methods: {
-            handleTaskClick(id) {
-                this.$post('/v1/', {
-                    "jsonrpc": "2.0",
-                    "method": "GetMissionInfo",
-                    "params": [id],
-                    "id": "11"
-                }).then( res => {
-                    if( !res.result.block ) {
-                        this.$toast({
-                            message: '项目还在发行中，请稍后重试',
-                            position: 'middle'
-                        });
-                    }else {
-                        this.$router.push({ name: 'detail', params: { id } });
-                    }
-                })
-            },
 
             to_tasklist:function(){
                 let self = this

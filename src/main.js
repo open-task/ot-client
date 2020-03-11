@@ -1,32 +1,33 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import { task , web3api ,det,token_address,abi} from '@/assets/test'
+//import { task , web3api ,det,token_address,abi} from '@/assets/test'
+import getWeb3apiConfit from '@/assets/test'
 
 import VueResource from 'vue-resource'
 import Vant from 'vant';
 import 'vant/lib/index.css';
 import './styles/index.scss';
-import httpPost from '@/utils/http-post';
+import $post from '@/utils/http-post';
+import {throttle} from 'loadsh';
 
 Vue.use(Vant);
 Vue.use(VueResource);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+getWeb3apiConfit()
+.then(data => {
+    Object.assign(Vue.prototype, data, { $post, $throttle: throttle });
+    new Vue({
+        router,
+        render: h => h(App),
+    }).$mount('#app')
+})
+.catch(() => {
+
+})
 
 
-Vue.prototype.$task = task
-Vue.prototype.$web3api = web3api
-Vue.prototype.$det = det
-Vue.prototype.$token_address = token_address
-Vue.prototype.$abi = abi
-Vue.prototype.$post = httpPost;
 
-
-
-
-new Vue({
-    router,
-    render: h => h(App),
-}).$mount('#app')
 
 

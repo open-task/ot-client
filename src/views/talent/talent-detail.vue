@@ -18,20 +18,20 @@
             </van-panel>
             <van-panel class="bt-card no-header">
                 <div class="bt-card-default">
-                    <van-row>
-                        <van-col span="12">发布任务<span class="t-warning">3</span>个</van-col>
-                        <van-col span="12">解决任务<span class="t-primary">1</span>个</van-col>
+                    <van-row style="margin-bottom: 10px;">
+                        <van-col span="12">提交方案<span class="t-warning"> {{solution_count}} </span>个</van-col>
+                        <van-col span="12">解决任务<span class="t-primary"> {{solution_accept_count}} </span>个</van-col>
                     </van-row>
                     <van-row>
-                        <van-col span="12">提交回答<span class="t-warning">4</span>个</van-col>
-                        <van-col span="12">解决回答<span class="t-primary">3</span>个</van-col>
+                        <van-col span="12">提交回答<span class="t-warning"> {{answer_count}} </span>个</van-col>
+                        <van-col span="12">解决回答<span class="t-primary"> {{answer_accept_count}} </span>个</van-col>
                     </van-row>
                 </div>
             </van-panel>
             <van-cell style="margin-top: 10px;" title="邮箱地址" :value="email" />
         </div>
         <div class="bt-footer-wrapper">
-            <van-button class="bt-btn" size="large" block @click="handleClickBack">返 回</van-button>
+            <van-button class="bt-btn" size="large" block @click="toBack">返 回</van-button>
         </div>
     </div>
 </template>
@@ -41,11 +41,14 @@
         data() {
             return {
                 account: this.$route.params.id,
-                self_intro: '',
-                price: '',
-                charge: '',
+                self_intro: '暂未填写自我介绍',
+                price: '暂未填写时间标价',
                 email: '',
-                skills: []
+                skills: [],
+                solution_count: 0,
+                solution_accept_count: 0,
+                answer_count: 0,
+                answer_accept_count: 0
             }
         },
         mounted() {
@@ -56,14 +59,21 @@
                 this.$post(`/skill/get_user_info`, {
                     address: this.account
                 }).then( res => {
-                    this.self_intro  = res.user_info.self_intro;
-                    this.price = res.user_info.price;
-                    this.email = res.user_info.email;
-                    this.skills = res.user_info.skill;
+                    let _info = res.user_info;
+                    if( _info ) {
+                        _info.self_intro && ( this.self_intro = _info.self_intro );
+                        _info.price && ( this.price =  _info.price );
+                        this.email = _info.email;
+                        this.skills = _info.skill;
+                        this.solution_count = _info.task.solution_count;
+                        this.solution_accept_count = _info.task.solution_accept_count;
+                        this.answer_count = _info.question.answer_count;
+                        this.answer_accept_count = _info.question.answer_accept_count;
+                    }
                 } )
             },
 
-            handleClickBack() {
+            toBack() {
                 this.$router.go(-1);
             }
         },

@@ -141,6 +141,7 @@
             border-radius: 50%;
             overflow: hidden;
             background-color: #fff;
+            border-top: 1px solid #ebedf0;
 
             img {
                 display: block;

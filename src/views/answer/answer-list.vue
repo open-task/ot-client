@@ -4,26 +4,29 @@
             <form action="/">
                 <van-search
                     v-model="searchText"
-                    placeholder="请输入问答和ID检索"
+                    placeholder="请输入问答检索"
                     shape="round"
-                    @search="handleSearch"
-                    @cancel="handleCancel"
+                    @input="handleSearch"
+                    @clear="getAnswerList"
                 />
             </form>
         </div>
         <div class="order-hd">
             <van-dropdown-menu>
-                <van-dropdown-item v-model="order_type" :options="order_type_options" />
-                <van-dropdown-item v-model="order_price" :options="order_price_options" />
-                <van-dropdown-item v-model="order_state" :options="order_state_options" />
+                <van-dropdown-item v-model="sort_type" :options="order_type_options" @change="handleChange"/>
+                <van-dropdown-item v-model="sort_price" :options="order_price_options" @change="handleChange"/>
+                <van-dropdown-item v-model="task_state" :options="order_state_options" @change="handleChange"/>
             </van-dropdown-menu>
         </div>
         <div class="answer-list bt-flex-scroller">
             <van-list
+                v-show="answerList && answerList.length"
                 v-model="loading"
                 :finished="finished"
+                :immediate-check="false"
                 finished-text="没有更多了"
                 @load="getAnswerList"
+                ref="answerLisk"
             >
                 <van-panel class="bt-card" v-for="a in answerList" :key="a.missionId" @click="handleAnsClick(a.missionId)">
                     <div class="van-cell van-panel__header" slot="header">
@@ -40,8 +43,8 @@
                         <div class="pull-left"><span class="t-warning">{{a.answer_amount}}</span>参与了回复</div>
                     </div>
                 </van-panel>
-
             </van-list>
+            <bt-noresult v-show="!answerList || !taskanswerListList.length" />
         </div>
         <bt-tabbar activeIndex="2"></bt-tabbar>
         
@@ -50,48 +53,73 @@
 
 <script>
     import BtTabbar from '@/components/BtTabbar';
+    import BtNoresult from '@/components/BtNoresult';
     export default {
         components: {
-            BtTabbar
+            BtTabbar,
+            BtNoresult
         },
         data() {
             return {
                 answerList: [],
                 page: 1,
-                pageSize: 10,
+                count: 10,
                 loading: false,
                 finished: false,
+                handleSearch: null,
 
                 searchText: '',
-                order_type: 0,
+                sort_type: 0,
                 order_type_options: [
                     { text: '默认排序', value: 0 },
                     { text: '时间优先', value: 1 },
                     { text: '价格优先', value: 2 },
                 ],
-                order_price: 0,
+                sort_price: 0,
                 order_price_options: [
                     { text: '价格不限', value: 0 },
-                    { text: '5 DET及一下', value: 1 },
-                    { text: '5-50 DET', value: 2 },
-                    { text: '50-200 DET', value: 3 },
-                    { text: '200-300 DET', value: 4 },
-                    { text: '300 DET及以上', value: 5 }
+                    { text: '5 DET及一下', value: '0-5' },
+                    { text: '5-50 DET', value: '5-50' },
+                    { text: '50-200 DET', value: '50-200' },
+                    { text: '200-300 DET', value: '200-300' },
+                    { text: '300 DET及以上', value: '300-10000000' }
                 ],
-                order_state: 0,
+                task_state: 0,
                 order_state_options: [
                     { text: '全部', value: 0 },
-                    { text: '待回答', value: 1 },
-                    { text: '已回答', value: 2 }
+                    { text: '待回答', value: 'published' },
+                    { text: '已回答', value: 'success' }
                 ]
             }
         },
+        mounted() {
+            this.handleSearch = this.$throttle( this.handleChange, 300 );
+            this.getAnswerList();
+        },
         methods: {
+            handleChange() {
+                this.$refs.answerLisk.scroller.scrollTop = 0;
+                this.page = 1;
+                this.answerList = [];
+                this.getAnswerList();
+                this.finished = true;
+            },
             getAnswerList() {
-                this.$post("/question/get_question_list", {
-                    page: this.page,
-                    page_size: this.pageSize
-                }).then(res => {
+                this.$post("/question/get_question_list", 
+                    Object.assign(
+                        {
+                            page: this.page,
+                            count: this.count,
+                            q: this.searchText
+                        },
+                        !!this.sort_type ?
+                            { sort_type: this.sort_type } : { sort_type: 'timestamp' },
+                        !!this.sort_price ?
+                            { sort_price: this.sort_price } : null,
+                        !!this.task_state ?
+                            { task_state: this.task_state } : null
+                    )
+                ).then(res => {
                     if( res.question && res.question.length ) {
                         res.question.forEach(d => {
                             this.answerList.push(d);
@@ -104,13 +132,6 @@
                     }
                 })
             },
-            handleSearch(e) {
-                console.log(e.target.value)
-            },
-
-            handleCancel() {
-
-            },
 
             handleAnsClick(id) {
                 this.$post("/question/get_question", {
@@ -120,7 +141,7 @@
                         if( res.question ) {
                             window.sessionStorage.removeItem('DATA_ANSWER')
                             window.sessionStorage.setItem('DATA_ANSWER', JSON.stringify(res.question))
-                            this.$router.push({ name: 'answerdetail', params: { id } });
+                            this.$router.push({ path: `/answerdetail/${id}` });
                         }
                     }else {
                         this.$toast({

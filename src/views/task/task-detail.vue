@@ -15,14 +15,14 @@
                 <van-col span="12"><span class="t-warning">{{reward}}</span>DET</van-col>
                 <van-col span="12"><span :class="getTaskColor">{{statusTextEm[taskStatus]}}</span></van-col>
             </van-row>
-            <van-panel class="bt-card" title="方案列表">
-            </van-panel>
+
+            <van-panel class="bt-card" title="方案列表"></van-panel>
 
             <van-collapse v-model="solutionActive" style="margin-bottom:10px;" v-if="solutions && solutions.length">
                 <van-collapse-item v-for="item in solutions" :name="item.id" :key="item.id">
                     <div slot="title" class="clearfix">
-                        <h3 class="task-detail-collapse-h3" :class="{'rejected': taskStatus == 'Solved' && item.status == 'Rejected'}">
-                            <span class="t-primary pull-right" v-if="taskStatus == 'Solved' && item.status == 'Accepted'">已接受</span>
+                        <h3 class="task-detail-collapse-h3" :class="{'rejected': taskStatus == 'success' && item.status == 'Rejected'}">
+                            <span class="t-primary pull-right" v-if="taskStatus == 'success' && item.status == 'Accepted'">已接受</span>
                             方案ID：{{item.id}}
                         </h3>
                     </div>
@@ -35,16 +35,21 @@
                     </div>
                 </van-collapse-item>
             </van-collapse>
+            <bt-noresult v-show="!solutions || !solutions.length" text="暂无方案列表" />
         </div>
         <div class="bt-footer-wrapper">
-            <van-button v-if="isShowSubmit" class="bt-btn" size="large" block :to="`/tasksolution/${missionId}`">提交我的解决方案</van-button>
+            <van-button v-if="isShowSubmit" class="bt-btn" size="large" block @click="toTasksolution">提交我的解决方案</van-button>
             <van-button v-else class="bt-btn" size="large" block @click="toBack">返 回</van-button>
         </div>
     </div>
 </template>
 
 <script>
+    import BtNoresult from '@/components/BtNoresult';
     export default {
+        components: {
+            BtNoresult
+        },
         data() {
             return {
                 missionId: this.$route.params.id,
@@ -55,61 +60,73 @@
                 skills: [],
                 taskStatus: '',
                 reward: '',
-                account: this.$web3api.eth.accounts[0],
+                account: this.$account,
                 solutions: [],
                 statusTextEm: {
-                    'Published': '待解决',
-                    'Unsolved': '已提交',
-                    'Solved': '已解决'
+                    'published': '待解决',
+                    'updated': '已提交',
+                    'success': '已解决'
                 }
             }
         },
         computed: {
             getTaskColor() {
                 return {
-                    't-primary': this.taskStatus == 'Published',
-                    't-warning': this.taskStatus == 'Unsolved',
-                    't-gray': this.taskStatus == 'Solved'
+                    't-primary': this.taskStatus == 'published',
+                    't-warning': this.taskStatus == 'updated',
+                    't-gray': this.taskStatus == 'success'
                 }
             },
 
             isShowSubmit() {
                 let hasSumit = this.solutions.some( s => s.solver == this.account );
-                return this.publisher != this.account && this.taskStatus != 'Solved' && !hasSumit;
+                return this.publisher != this.account && this.taskStatus != 'success' && !hasSumit;
             }
         },
         mounted() {
-            console.log(this.account)
-            this.getTaskInfo();
+            let sessionData = window.sessionStorage.getItem('DATA_TASK');
+            sessionData = sessionData && JSON.parse(sessionData);
+            if( sessionData && sessionData.missionId === this.missionId  ) {
+                this.initTaskData( sessionData );
+            }else {
+                this.getTaskInfo();   
+            }
         },
         methods: {
-            getTaskInfo() {
-                this.$post('/v1/', {
-                    "jsonrpc": "2.0",
-                    "method": "GetMissionInfo",
-                    "params": [this.missionId],
-                    "id": "11"
-                }).then( res => {
-                    res = res.result;
-                    if( res ) {
-                        let data = JSON.parse(res.data);
-                        this.title = data.title;
-                        this.publisher = res.publisher;
-                        this.desc = data.desc;
-                        this.skills = data.skills;
-                        this.taskStatus = res.status;
-                        this.reward = res.reward_det;
-                        this.solutions = res.solutions.map(s => {
-                            let _sd = JSON.parse(s.data); 
-                            return {
-                                id: s.solution_id,
-                                status: s.status,
-                                content: _sd.content,
-                                solver: s.solver
-                            }
-                        })
+            initTaskData(data) {
+                this.title = data.title;
+                this.publisher = data.author;
+                this.desc = data.desc;
+                this.skills = data.skill;
+                this.taskStatus = data.task_state;
+                this.reward = this.$web3api.fromWei(data.reward);
+                this.solutions = data.solutions.map(s => {
+                    let _sd = JSON.parse(s.data); 
+                    return {
+                        id: s.solution_id,
+                        status: s.status,
+                        content: _sd.content,
+                        solver: s.solver
                     }
                 })
+            },
+
+            getTaskInfo() {
+                this.$post("/skill/get_task_info", {
+                    id: this.missionId
+                }).then(res => {
+                    if( res.state ) {
+                        if( res.task ) {
+                            this.initTaskData( {...res.task, solutions: res.solutions} );
+                        }
+                    }else {
+                        this.$toast({
+                            message: '项目还在发行中，请稍后重试',
+                            position: 'middle'
+                        });
+                    }
+                })
+
             },
 
             handleSolutionCallback(err) {
@@ -135,6 +152,10 @@
                 }
             },
 
+            toTasksolution() {
+                this.$router.replace({ path: `/tasksolution/${this.missionId}` });
+            },
+
             toBack() {
                 this.$router.go(-1);
             }
@@ -150,6 +171,7 @@
 
         .task-detail-row {
             background-color: #fff;
+            margin-bottom: 10px;
 
             .van-col {
                 height: 1rem;

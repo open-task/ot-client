@@ -78,7 +78,7 @@
                 let id = getId();
 
                 this.$post("/question/new_question", {
-                    address: this.$web3api.eth.accounts[0],
+                    address: this.$account,
                     title: this.title,
                     content: this.desc,
                     reward: this.charge,
@@ -98,7 +98,7 @@
                                         message: '创建成功',
                                         position: 'middle',
                                         onClose: () => {
-                                            this.$router.push({ name: 'answerlist' });
+                                            this.$router.push({ path: '/answerlist' });
                                         }
                                     }); 
                                 }else {

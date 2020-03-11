@@ -70,7 +70,7 @@
                     res = res.body;
                     this.msgLoading = false;
                     if( res.state ) {
-                        this.$router.push('funding');
+                        this.$router.push({ path: '/funding' });
                     }
                 }).catch(err => {
                     this.msgLoading = false;
