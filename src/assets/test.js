@@ -7,12 +7,13 @@ import { Dialog, Toast } from 'vant';
 // let det_address = '0x04B703784D3d82B5d5E4C103d0bDb80169653f48'
 //kovan
 
-let token_address = '0x6333f40a315E080f366EF126c5BFf1dd121E918C'
-let det_address = '0x6ffF60A882CE1Cd793dC14261Eec0f0d6A470E21'
+// 测试
+// let token_address = '0x6333f40a315E080f366EF126c5BFf1dd121E918C'
+// let det_address = '0x6ffF60A882CE1Cd793dC14261Eec0f0d6A470E21'
 
 //正式
-// let token_address = '0xf2880b0C2E61F831e3d53da1e2dF9505840E92Ac'
-// let det_address = '0xF72DA6E99b864e26e3a386F2Cc6022882eCB1125'
+let token_address = '0xf2880b0C2E61F831e3d53da1e2dF9505840E92Ac'
+let det_address = '0xF72DA6E99b864e26e3a386F2Cc6022882eCB1125'
 
 let { ethereum } = window;
 let web3 = ethereum && new Web3(ethereum);
