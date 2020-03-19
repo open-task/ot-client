@@ -25,14 +25,29 @@
     html {
         background: #F2F2F2;
         box-sizing: border-box;
-        min-width: 375px;
     }
 
-    @media screen and (min-width: 640px) {
-        html {
-            max-width: 640px;
+    @media screen and (min-width: 480px) {
+        #app {
+            // position: relative;
+            max-width: 480px;
             margin: 0 auto;
+
+            .layout-vertical, 
+            .bt-tabbar-fixed, 
+            .bt-home-popup, 
+            .page-error, 
+            .van-dropdown-item--down {
+                width: 480px;
+                left: 50%;
+                margin-left: -240px;
+            }
         }
+
+        html {
+            font-size: 60px !important;
+        }
+        
     }
 
     p {

@@ -1,34 +1,37 @@
-import Vue from 'vue'
-import App from './App.vue'
-import router from './router'
-import { task , web3api ,det,token_address,abi} from '@/assets/test'
-
-import VueResource from 'vue-resource'
+import Vue from 'vue';
+import router from './router/index';
+import App from './App.vue';
+import VueResource from 'vue-resource';
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import './styles/index.scss';
+import $post from '@/utils/http-post';
+import {throttle} from 'loadsh';
+import filters from '@/filters';
+import { getWeb3Data } from '@/assets/test';
 
 Vue.use(Vant);
 Vue.use(VueResource);
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
 
-import filters from '@/filters'
 Object.keys(filters).forEach(key => {
     Vue.filter(key, filters[key])
 })
 Vue.prototype.$filters = filters; //在模板中使用
-
-Vue.prototype.$task = task
-Vue.prototype.$web3api = web3api
-Vue.prototype.$det = det
-Vue.prototype.$token_address = token_address
-Vue.prototype.$abi = abi
-
-
-
-
+Vue.prototype.$post = $post;
+Vue.prototype.$throttle = throttle;
+Object.assign(Vue.prototype, getWeb3Data());
 new Vue({
     router,
     render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');
+
+
+
+
+
+
+
+
 
 

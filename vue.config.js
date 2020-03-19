@@ -1,7 +1,7 @@
 const path = require('path');
 module.exports = {
-    devServer: {
-        proxy: {
+     devServer: {
+        proxy:{
             '/v1': {
                 target: 'https://bountinet.com/'
             },
@@ -12,8 +12,9 @@ module.exports = {
             '/question': {
                 target: 'http://39.100.60.153/'
                 // target: 'https://bountinet.com/'
-            },
+            }
         }
     },
     filenameHashing: true
 }
+

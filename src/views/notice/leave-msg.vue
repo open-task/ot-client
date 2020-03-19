@@ -1,6 +1,5 @@
 <template>
-    <div class="leave-msg create-offer">
-        <offer-header title='留言'></offer-header>
+    <div class="leave-msg">
         <div class="input-group">
             <div class="title"><span>留言</span></div>
             <van-field
@@ -30,48 +29,29 @@
                 message: ''
             }
         },
-        async mounted() {
-            let web3api, accounts
-            await ethereum.enable()
-            try {
-                web3api = new Web3(web3.currentProvider);
-                accounts = web3api.eth.accounts
-            } catch (e) {
-                alert("要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com")
-            }
-            console.log(accounts)
-            if (accounts.length < 1) {
-                console.log("请打开MetaMask才可以进行继续的操作哦")
-            }
-            this.account = accounts[0]
-            console.log(this.account)
-        },
         methods: {
             handleMsgSubmit() {
-                if( !this.account ) {
+                if( !this.$account ) {
                     this.$toast({
-                        message: '要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com',
-                        position: 'bottom'
+                        message: '要体验完整功能，请安装metamask，或者使用imtoken2.0打开 bountinet.com'
                     });
                     return;
                 }
                 if( !this.message ) {
                     this.$toast({
-                        message: '请输入留言',
-                        position: 'bottom'
+                        message: '请输入留言'
                     });
                     return;
                 }
                 this.msgLoading = true;
                 this.$http.post("/skill/leave_message", {
                     content: this.message,
-                    address: this.account
+                    address: this.$account
                 }).then(res => {
                     res = res.body;
                     this.msgLoading = false;
                     if( res.state ) {
-                        this.$router.push('funding');
-                        console.log(3224324)
+                        this.$router.push({ path: '/funding' });
                     }
                 }).catch(err => {
                     this.msgLoading = false;
@@ -83,6 +63,11 @@
 
 <style lang="scss" scoped>
     .leave-msg {
+        font-size: 14px;
+        .title {
+            font-size: 16px;
+            padding: 15px 0;
+        }
         .input-group{
             padding: 10px 15px;
 

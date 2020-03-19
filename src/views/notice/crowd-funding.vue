@@ -1,6 +1,5 @@
 <template>
-    <div class="crowd-funding create-offer">
-        <offer-header title='公告'></offer-header>
+    <div class="crowd-funding">
         <div class="input-group">
             <div class="title"><span>超零三国开始众筹了！！！</span></div>
             <div class="desc">发起方：超零三国</div>
@@ -28,7 +27,7 @@
                 </van-row>
             </div>
             <div class="code">
-                <p style="padding:0; margin-bottom:16px;"><van-button class="btn-tocard" type="primary" @click='to_name("gamecard")' block>求购人物卡</van-button></p>
+                <p style="padding:0; margin-bottom:16px;"><van-button class="btn-tocard" type="primary" block to="/gamecard?isSys=1">求购人物卡</van-button></p>
                 <img src="/img/chole.png" alt="" class="chole-code">
                 <p>申购需扫码加客服chole小姐姐微信</p>
             </div>
@@ -57,14 +56,7 @@
 </template>
 
 <script>
-    import OfferHeader from '@/components/OfferHeader';
     export default {
-        components: {
-            OfferHeader,
-        },
-        created() {
-
-        },
         data() {
             return {
                 msgList: [],
@@ -75,10 +67,6 @@
             }
         },
         methods: {
-            to_name:function(name){
-                let self = this
-                self.$router.push({name:name,query:{isSys:1}})
-            },
             getMsgList() {
                 this.$http.post("/skill/get_messages", {
                     page: this.page,
@@ -104,6 +92,13 @@
 
 <style lang="scss" scoped>
     .crowd-funding {
+        font-size: 14px;
+        padding-top: 30px;
+        background-color: #fff;
+
+        .title {
+            font-size: 16px;
+        }
         .input-group{
             padding: 10px 15px;
             .desc {
