@@ -30,7 +30,7 @@
             >
                 <van-panel class="bt-card" v-for="a in answerList" :key="a.missionId" @click="handleAnsClick(a.missionId)">
                     <div class="van-cell van-panel__header" slot="header">
-                        <span class="bt-det">{{ a.reward |  ldm_thousand}} DET</span>
+                        <span class="bt-det"><span class="bt-det-num">{{ a.reward }}</span><i>DET</i></span>
                         <div class="van-cell__title">
                             <span>{{a.title}}</span>
                         </div>

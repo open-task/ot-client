@@ -204,24 +204,35 @@ body, html {
 }
 
 .bt-det {
+    display: flex;
     position: absolute;
     right: 0;
     top: 0;
     width: 1.6rem;
     height: .41rem;
     line-height: .42rem;
-    background-image: url('/img/det-icon.png');
-    background-repeat: no-repeat;
-    background-size: 100% auto;
     padding-left: .6rem;
-    padding-right: 2px;
     box-sizing: border-box;
     color: #fff;
     font-size: 12px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    text-align: right;
+    overflow: hidden; 
+    padding-right: 2px;
+    background-image: url('/img/det-icon.png');
+    background-repeat: no-repeat;
+    background-size: 100% auto;
+    
+    .bt-det-num {
+        flex: 1;
+        overflow: hidden;
+        overflow-wrap: break-word;
+        text-align: right;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+    i {
+        padding-left: 2px;
+        font-style: normal;
+    }
 }
 
 .bt-det-row {
