@@ -37,7 +37,7 @@
                         <p>发布任务<span class="t-warning">{{t.task.task_count}}</span>次 已被解决<span class="t-primary">{{t.task.task_sloved}}</span>次</p>
                         <p>提交方案<span class="t-warning">{{t.task.solution_count}}</span>次 已被接受<span class="t-primary">{{t.task.solution_accept_count}}</span>次</p>
                         <p>发布问题<span class="t-warning">{{t.question.question_count}}</span>次 回答问题<span class="t-primary">{{t.question.answer_count}}</span>次</p>
-                        <p class="t-gray">邮箱：{{t.email}}</p>
+                        <p class="t-gray" v-if="!!t.email">邮箱：{{t.email}}</p>
                         <p class="t-gray">最近活跃：{{t.time}}</p>
                     </div>
                 </van-cell>
@@ -134,7 +134,7 @@
     }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
     .talent-list {
         .talent-list-icon {
             display: inline-block;

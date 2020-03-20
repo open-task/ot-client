@@ -3,7 +3,7 @@
         <div class="personal-card" style="margin-top:10px;">
             <span class="personal-account-icon"></span>
             <div class="personal-account">
-                <p><span class="account">Account</span><br><span class="code">{{$account}}</span></p>
+                <p><span class="account">Account</span><br><span class="code" id="copyCode">{{$account}}</span></p>
             </div>
             <van-button type="default" size="small" @click="handleClip">点击复制</van-button>
         </div>
@@ -146,9 +146,24 @@
                 if( !!window.imToken ) {
                     window.imToken.callAPI('native.setClipboard', this.$account);
                 }else {
-                    this.$toast({
-                        message: '复制失败'
-                    });
+                    try {
+                        const range = document.createRange();
+                        range.selectNode(document.querySelector('#copyCode'));
+                        const selection = window.getSelection();
+                        if( selection.rangeCount > 0 ) {
+                            selection.removeAllRanges();
+                        }
+                        selection.addRange(range);
+                        document.execCommand('Copy');
+                        selection.removeAllRanges();
+                        this.$toast({
+                            message: '复制成功'
+                        });
+                    } catch (error) {
+                        this.$toast({
+                            message: '复制失败'
+                        });
+                    }
                 }
                 
             }
