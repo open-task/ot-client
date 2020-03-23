@@ -224,16 +224,14 @@ router.beforeEach((to, from, next) => {
   // if( eth && !eth.coinbase ) {
   //   Vue.prototype.$account = '';
   // }
-  if( !Vue.prototype.$account ) {
+  if( !Vue.prototype.$account ) { 
     if( to.meta.isVaid ) {
       if( !from.name ) {
         next({ path: '/' });
       }else {
         let _deffer;
-        (_deffer = getMetamaskAccount()) && _deffer.then((data) => {
-          if( data && (Vue.prototype.$account = data[0]) ) {
-            next({ path: to.path });
-          }
+        (_deffer = getMetamaskAccount()) && _deffer.then(data => {
+          data && next({ path: to.path });
         })
         Toast({ message: '请打开metamask登录！' })
         next(false);

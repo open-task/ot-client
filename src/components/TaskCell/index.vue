@@ -1,6 +1,6 @@
 <template>
     <div>
-        <van-cell :is-link="isLink"  @click="handleTaskClick(task.missionId)">
+        <van-cell :is-link="isLink" v-if="!!task.text"  @click="handleTaskClick(task.missionId)">
             <template slot="title" v-if="listType == '0'">
                 <van-row type="flex" justify="end">
                     <van-col span="18">

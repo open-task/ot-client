@@ -28,21 +28,23 @@
                 @load="getAnswerList"
                 ref="answerLisk"
             >
-                <van-panel class="bt-card" v-for="a in answerList" :key="a.missionId" @click="handleAnsClick(a.missionId)">
-                    <div class="van-cell van-panel__header" slot="header">
-                        <span class="bt-det"><span class="bt-det-num">{{ a.reward }}</span><i>DET</i></span>
-                        <div class="van-cell__title">
-                            <span>{{a.title}}</span>
+                <template v-for="a in answerList">
+                    <van-panel v-if="!!a.text" class="bt-card" :key="a.missionId"  @click="handleAnsClick(a.missionId)">
+                        <div class="van-cell van-panel__header" slot="header">
+                            <span class="bt-det"><span class="bt-det-num">{{ a.reward }}</span><i>DET</i></span>
+                            <div class="van-cell__title">
+                                <span>{{a.title}}</span>
+                            </div>
+                            <div class="van-cell__value van-panel__header-value">
+                                <img class="answer-a" src="/img/ans-icon.png" alt="答">
+                            </div>
                         </div>
-                        <div class="van-cell__value van-panel__header-value">
-                            <img class="answer-a" src="/img/ans-icon.png" alt="答">
+                        <div class="bt-card-footer clearfix" slot="footer">
+                            <span class="pull-right" :class="{ [a.type]: true }">{{ a.text }}</span>
+                            <div class="pull-left"><span class="t-warning">{{a.answer_amount}}</span>参与了回复</div>
                         </div>
-                    </div>
-                    <div class="bt-card-footer clearfix" slot="footer">
-                        <span class="pull-right" :class="{ [a.type]: true }">{{ a.text }}</span>
-                        <div class="pull-left"><span class="t-warning">{{a.answer_amount}}</span>参与了回复</div>
-                    </div>
-                </van-panel>
+                    </van-panel>
+                </template>
             </van-list>
             <bt-noresult v-show="!answerList || !answerList.length" />
         </div>

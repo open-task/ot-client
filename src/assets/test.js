@@ -1,5 +1,6 @@
 import det_abi from '@/assets/detabi.js';
 import abi from '@/assets/abi.js';
+import Vue from 'vue';
 import { Dialog, Toast } from 'vant';
 
 //rinkeby
@@ -35,7 +36,6 @@ export const getWeb3Data = () => {
             $task: web3.eth.contract(abi).at(token_address),
             $det: web3.eth.contract(det_abi).at(det_address),
             $token_address: token_address,
-            $account: web3.eth.accounts && web3.eth.accounts[0] || '',
             $abi: abi
         }
     }
@@ -43,7 +43,15 @@ export const getWeb3Data = () => {
 
 export const getMetamaskAccount = () => {
     if( checkBrowsers() ) {
-        return ethereum.enable().catch(() => {
+        return ethereum.enable()
+        .then(data => {
+            let _account;
+            if( data ) {
+                Vue.prototype.$account = _account = data[0] || '';
+            }
+            return _account;
+        })
+        .catch(() => {
             Toast({
                 message: '用户拒绝登录，请重试'
             })

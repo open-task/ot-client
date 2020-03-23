@@ -32,7 +32,8 @@
             // position: relative;
             max-width: 480px;
             margin: 0 auto;
-
+            
+            .van-overlay,
             .layout-vertical, 
             .bt-tabbar-fixed, 
             .bt-home-popup, 
